@@ -16,15 +16,18 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import pe.epsel.aguaya.auth.service.JwtService;
 import pe.epsel.aguaya.common.exception.ErrorResponse;
+import pe.epsel.aguaya.common.seguridad.JwtAuthenticationFilter;
+import pe.epsel.aguaya.usuario.entity.Rol;
 
 /**
- * Seguridad base: API stateless, rutas públicas abiertas y el resto autenticado.
- * El filtro JWT y las reglas por rol se agregan en feature/auth.
+ * API stateless con JWT. Rutas públicas abiertas y el resto restringido por rol.
  */
 @Configuration
 public class SecurityConfig {
@@ -40,7 +43,8 @@ public class SecurityConfig {
     };
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, ObjectMapper objectMapper) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, ObjectMapper objectMapper,
+                                                   JwtService jwtService) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
@@ -49,7 +53,12 @@ public class SecurityConfig {
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(RUTAS_PUBLICAS).permitAll()
+                        .requestMatchers("/api/admin/**").hasRole(Rol.ADMIN.name())
+                        .requestMatchers("/api/conductor/**").hasRole(Rol.CONDUCTOR.name())
+                        .requestMatchers("/api/vecino/**").hasRole(Rol.VECINO.name())
+                        .requestMatchers("/api/incidencias/**").hasAnyRole(Rol.CONDUCTOR.name(), Rol.VECINO.name())
                         .anyRequest().authenticated())
+                .addFilterBefore(new JwtAuthenticationFilter(jwtService), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint((request, response, e) -> escribirError(response, objectMapper,
                                 HttpStatus.UNAUTHORIZED, "NO_AUTENTICADO", "Se requiere autenticación"))
