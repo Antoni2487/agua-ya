@@ -1,0 +1,35 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: aguaya
+      POSTGRES_USER: ${DB_USER:-aguaya}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-aguaya}
+      TZ: America/Lima
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-aguaya} -d aguaya"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  backend:
+    build: ./backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      DB_URL: jdbc:postgresql://postgres:5432/aguaya
+      DB_USER: ${DB_USER:-aguaya}
+      DB_PASSWORD: ${DB_PASSWORD:-aguaya}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173}
+      GEOCERCA_RADIO_METROS: ${GEOCERCA_RADIO_METROS:-50}
+    ports:
+      - "8080:8080"
+
+volumes:
+  pgdata:
