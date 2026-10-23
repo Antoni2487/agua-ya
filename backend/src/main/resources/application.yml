@@ -41,3 +41,13 @@ aguaya:
     origins: ${CORS_ORIGINS:http://localhost:5173}
   geocerca:
     radio-metros: ${GEOCERCA_RADIO_METROS:50}
+  jwt:
+    secret: ${JWT_SECRET}
+    access-minutos: ${JWT_ACCESS_MINUTOS:15}
+    refresh-dias: ${JWT_REFRESH_DIAS:30}
+  otp:
+    provider: ${OTP_PROVIDER:log}
+    exponer-codigo: false
+    vigencia-minutos: 5
+    max-intentos: 3
+    max-envios-hora: 3

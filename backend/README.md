@@ -25,6 +25,21 @@ Perfiles: `dev` (por defecto) y `prod` (`SPRING_PROFILES_ACTIVE=prod`; credencia
 
 Los tests de integración levantan Postgres con Testcontainers (requiere Docker).
 
+## Autenticación
+
+| Usuario | Cómo ingresa |
+|---|---|
+| Vecino | `POST /api/auth/otp/solicitar` → `POST /api/auth/registro/vecino` o `/api/auth/login/vecino` (teléfono + OTP) |
+| Admin / Conductor | `POST /api/auth/login` (DNI + contraseña) |
+
+- Respuesta: `accessToken` (JWT, 15 min) + `refreshToken` (opaco, 30 días). Enviar `Authorization: Bearer <accessToken>`.
+- `POST /api/auth/refresh` rota el refresh token; reusar uno ya rotado revoca todas las sesiones del usuario.
+- `POST /api/auth/logout` revoca el refresh token.
+- OTP: 6 dígitos, vence en 5 min, 3 intentos, 3 envíos por hora por teléfono. En dev el código sale en el log
+  y en la respuesta (`OTP_EXPONER_CODIGO=true`); en prod esa opción no arranca.
+- Rutas por rol: `/api/admin/**` ADMIN, `/api/conductor/**` CONDUCTOR, `/api/vecino/**` VECINO,
+  `/api/incidencias` CONDUCTOR o VECINO; `/api/auth/**`, `/api/public/**` y `/api/health` son públicas.
+
 ## Base de datos
 
 - Esquema gestionado solo por Flyway (`src/main/resources/db/migration`); Hibernate en modo `validate`.
