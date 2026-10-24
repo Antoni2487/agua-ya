@@ -22,14 +22,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import pe.epsel.aguaya.TestcontainersConfig;
+import pe.epsel.aguaya.persona.entity.Administrador;
+import pe.epsel.aguaya.persona.entity.Conductor;
+import pe.epsel.aguaya.persona.entity.Vecino;
+import pe.epsel.aguaya.persona.repository.PersonaRepository;
+import pe.epsel.aguaya.persona.repository.VecinoRepository;
 import pe.epsel.aguaya.sector.entity.Modalidad;
 import pe.epsel.aguaya.sector.entity.Sector;
 import pe.epsel.aguaya.sector.repository.SectorRepository;
-import pe.epsel.aguaya.usuario.entity.Administrador;
-import pe.epsel.aguaya.usuario.entity.Conductor;
-import pe.epsel.aguaya.usuario.entity.Vecino;
-import pe.epsel.aguaya.usuario.repository.UsuarioRepository;
-import pe.epsel.aguaya.usuario.repository.VecinoRepository;
 
 @SpringBootTest(properties = "aguaya.otp.exponer-codigo=true")
 @AutoConfigureMockMvc
@@ -38,6 +38,7 @@ class AuthIntegrationTest {
 
     /** Cada test usa DNI y teléfono propios para no interferir con los demás. */
     private static final AtomicInteger SECUENCIA = new AtomicInteger(1000);
+    private static final String PASSWORD = "Clave1234";
 
     @Autowired
     private MockMvc mockMvc;
@@ -46,7 +47,7 @@ class AuthIntegrationTest {
     private SectorRepository sectorRepository;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private PersonaRepository personaRepository;
 
     @Autowired
     private VecinoRepository vecinoRepository;
@@ -71,58 +72,82 @@ class AuthIntegrationTest {
                 .findFirst().orElseThrow();
     }
 
-    // ------------------------------------------------------------------ vecino
+    // ---------------------------------------------------------------- registro
 
     @Test
-    void registroDeVecinoAsignaSectorMasCercanoYQuedaPendiente() throws Exception {
+    void registroDeVecinoAsignaSectorMasCercanoYAbreSesion() throws Exception {
         String telefono = telefonoNuevo();
         String dni = dniNuevo();
-        String codigo = solicitarOtp(telefono, "REGISTRO");
 
         // Pin cerca de Monsefú
-        registrar(dni, telefono, codigo, "-6.875000", "-79.868000")
+        registrar(dni, telefono, solicitarOtp(telefono), "-6.875000", "-79.868000")
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.accessToken").isNotEmpty())
                 .andExpect(jsonPath("$.refreshToken").isNotEmpty())
                 .andExpect(jsonPath("$.tipoToken").value("Bearer"))
-                .andExpect(jsonPath("$.usuario.rol").value("VECINO"))
-                .andExpect(jsonPath("$.usuario.estadoVecino").value("PENDIENTE_VALIDACION"));
+                .andExpect(jsonPath("$.usuario.rol").value("VECINO"));
 
         Vecino vecino = vecinoRepository.findByTelefono("+51" + telefono).orElseThrow();
         assertThat(vecino.getDni()).isEqualTo(dni);
-        assertThat(vecino.getPasswordHash()).isNull();
+        assertThat(vecino.isActivo()).isTrue();
+        assertThat(passwordEncoder.matches(PASSWORD, vecino.getPasswordHash())).isTrue();
         assertThat(vecino.getSector().getId()).isEqualTo(sectorMonsefu.getId());
         assertThat(vecino.getSector().getId()).isNotEqualTo(sectorChiclayo.getId());
     }
 
     @Test
-    void registroConDniDuplicadoDevuelve409() throws Exception {
-        String telefono = telefonoNuevo();
+    void vecinoRegistradoIngresaConDniYPassword() throws Exception {
         String dni = dniNuevo();
-        registrar(dni, telefono, solicitarOtp(telefono, "REGISTRO"), "-6.765000", "-79.850000")
+        String telefono = telefonoNuevo();
+        registrar(dni, telefono, solicitarOtp(telefono), "-6.765000", "-79.850000")
+                .andExpect(status().isCreated());
+
+        login(dni, PASSWORD)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.usuario.rol").value("VECINO"));
+    }
+
+    @Test
+    void registroConDniDuplicadoDevuelve409() throws Exception {
+        String dni = dniNuevo();
+        String telefono = telefonoNuevo();
+        registrar(dni, telefono, solicitarOtp(telefono), "-6.765000", "-79.850000")
                 .andExpect(status().isCreated());
 
         String otroTelefono = telefonoNuevo();
-        registrar(dni, otroTelefono, solicitarOtp(otroTelefono, "REGISTRO"), "-6.765000", "-79.850000")
+        registrar(dni, otroTelefono, solicitarOtp(otroTelefono), "-6.765000", "-79.850000")
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.codigo").value("DNI_REGISTRADO"));
     }
 
     @Test
-    void solicitarOtpDeRegistroConTelefonoYaRegistradoDevuelve409() throws Exception {
-        String telefono = registrarVecino();
+    void solicitarOtpConTelefonoYaRegistradoDevuelve409() throws Exception {
+        String telefono = telefonoNuevo();
+        registrar(dniNuevo(), telefono, solicitarOtp(telefono), "-6.765000", "-79.850000")
+                .andExpect(status().isCreated());
 
         postJson("/api/auth/otp/solicitar", """
-                {"telefono":"%s","proposito":"REGISTRO"}""".formatted(telefono))
+                {"telefono":"%s"}""".formatted(telefono))
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.codigo").value("TELEFONO_REGISTRADO"));
+    }
+
+    @Test
+    void passwordCortoEsRechazado() throws Exception {
+        String telefono = telefonoNuevo();
+        postJson("/api/auth/registro/vecino", """
+                {"nombres":"María","apellidos":"Chávez","dni":"%s","telefono":"%s","codigo":"%s",
+                 "password":"corta","latitud":-6.765,"longitud":-79.85}"""
+                .formatted(dniNuevo(), telefono, solicitarOtp(telefono)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.detalles[0].campo").value("password"));
     }
 
     @Test
     void tresIntentosFallidosInvalidanElCodigoAunqueElRegistroFalle() throws Exception {
         String telefono = telefonoNuevo();
         String dni = dniNuevo();
-        String codigo = solicitarOtp(telefono, "REGISTRO");
+        String codigo = solicitarOtp(telefono);
         String incorrecto = codigo.equals("000000") ? "111111" : "000000";
 
         registrar(dni, telefono, incorrecto, "-6.765000", "-79.850000")
@@ -141,101 +166,74 @@ class AuthIntegrationTest {
     void cuartoOtpEnUnaHoraDevuelve429() throws Exception {
         String telefono = telefonoNuevo();
         for (int i = 0; i < 3; i++) {
-            solicitarOtp(telefono, "REGISTRO");
+            solicitarOtp(telefono);
         }
         postJson("/api/auth/otp/solicitar", """
-                {"telefono":"%s","proposito":"REGISTRO"}""".formatted(telefono))
+                {"telefono":"%s"}""".formatted(telefono))
                 .andExpect(status().isTooManyRequests())
                 .andExpect(jsonPath("$.codigo").value("OTP_LIMITE_ENVIOS"));
     }
 
     @Test
-    void loginDeVecinoConOtp() throws Exception {
-        String telefono = registrarVecino();
-        String codigo = solicitarOtp(telefono, "LOGIN");
-
-        postJson("/api/auth/login/vecino", """
-                {"telefono":"%s","codigo":"%s"}""".formatted(telefono, codigo))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.accessToken").isNotEmpty())
-                .andExpect(jsonPath("$.usuario.rol").value("VECINO"));
-    }
-
-    @Test
-    void otpDeLoginParaTelefonoNoRegistradoDevuelve404() throws Exception {
-        postJson("/api/auth/otp/solicitar", """
-                {"telefono":"%s","proposito":"LOGIN"}""".formatted(telefonoNuevo()))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.codigo").value("VECINO_NO_ENCONTRADO"));
-    }
-
-    @Test
     void validacionDeEntradaDevuelveDetallesPorCampo() throws Exception {
         postJson("/api/auth/otp/solicitar", """
-                {"telefono":"123","proposito":"REGISTRO"}""")
+                {"telefono":"123"}""")
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.codigo").value("VALIDACION"))
                 .andExpect(jsonPath("$.detalles[0].campo").value("telefono"));
     }
 
-    // ------------------------------------------------------- admin / conductor
+    // ------------------------------------------------------------------ login
 
     @Test
-    void loginDeAdminConDniYPassword() throws Exception {
-        String dni = crearAdmin("Secreta123");
+    void loginDeAdmin() throws Exception {
+        String dni = crearAdmin();
 
-        login(dni, "Secreta123")
+        login(dni, PASSWORD)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.usuario.rol").value("ADMIN"))
-                .andExpect(jsonPath("$.usuario.estadoVecino").doesNotExist());
+                .andExpect(jsonPath("$.usuario.rol").value("ADMIN"));
     }
 
     @Test
     void loginDeConductor() throws Exception {
         String dni = dniNuevo();
-        Conductor conductor = new Conductor(dni, "Luis", "Ramos", "+51" + telefonoNuevo(), "Q" + dni);
-        conductor.setPasswordHash(passwordEncoder.encode("Conductor1"));
-        usuarioRepository.save(conductor);
+        personaRepository.save(new Conductor(dni, "Luis", "Ramos", "+51" + telefonoNuevo(),
+                passwordEncoder.encode(PASSWORD), "Q" + dni));
 
-        login(dni, "Conductor1")
+        login(dni, PASSWORD)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.usuario.rol").value("CONDUCTOR"));
     }
 
     @Test
     void passwordIncorrectoDevuelve401() throws Exception {
-        String dni = crearAdmin("Secreta123");
-
-        login(dni, "otra")
+        login(crearAdmin(), "otra-clave")
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.codigo").value("CREDENCIALES_INVALIDAS"));
     }
 
     @Test
-    void usuarioInactivoNoPuedeIngresar() throws Exception {
-        String dni = crearAdmin("Secreta123");
-        var admin = usuarioRepository.findByDni(dni).orElseThrow();
+    void dniInexistenteDevuelve401() throws Exception {
+        login(dniNuevo(), PASSWORD)
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.codigo").value("CREDENCIALES_INVALIDAS"));
+    }
+
+    @Test
+    void personaInactivaNoPuedeIngresar() throws Exception {
+        String dni = crearAdmin();
+        var admin = personaRepository.findByDni(dni).orElseThrow();
         admin.setActivo(false);
-        usuarioRepository.save(admin);
+        personaRepository.save(admin);
 
-        login(dni, "Secreta123").andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    void vecinoNoPuedeIngresarConPassword() throws Exception {
-        String telefono = registrarVecino();
-        String dni = vecinoRepository.findByTelefono("+51" + telefono).orElseThrow().getDni();
-
-        login(dni, "cualquiera")
-                .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("$.codigo").value("CREDENCIALES_INVALIDAS"));
+        login(dni, PASSWORD).andExpect(status().isUnauthorized());
     }
 
     // ----------------------------------------------------------- refresh / logout
 
     @Test
     void refreshRotaElTokenYElAnteriorYaNoSirve() throws Exception {
-        String refresh1 = JsonPath.read(login(crearAdmin("Secreta123"), "Secreta123")
+        String refresh1 = JsonPath.read(login(crearAdmin(), PASSWORD)
                 .andReturn().getResponse().getContentAsString(), "$.refreshToken");
 
         String refresh2 = JsonPath.read(refrescar(refresh1)
@@ -245,7 +243,7 @@ class AuthIntegrationTest {
                 .andReturn().getResponse().getContentAsString(), "$.refreshToken");
         assertThat(refresh2).isNotEqualTo(refresh1);
 
-        // Reusar el token ya rotado revoca todas las sesiones del usuario
+        // Reusar el token ya rotado revoca todas las sesiones de la persona
         refrescar(refresh1)
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.codigo").value("REFRESH_INVALIDO"));
@@ -253,19 +251,8 @@ class AuthIntegrationTest {
     }
 
     @Test
-    void refreshDeVecinoMantieneSuEstado() throws Exception {
-        String telefono = telefonoNuevo();
-        String refresh = JsonPath.read(registrar(dniNuevo(), telefono, solicitarOtp(telefono, "REGISTRO"),
-                "-6.765000", "-79.850000").andReturn().getResponse().getContentAsString(), "$.refreshToken");
-
-        refrescar(refresh)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.usuario.estadoVecino").value("PENDIENTE_VALIDACION"));
-    }
-
-    @Test
     void logoutRevocaElRefreshToken() throws Exception {
-        String refresh = JsonPath.read(login(crearAdmin("Secreta123"), "Secreta123")
+        String refresh = JsonPath.read(login(crearAdmin(), PASSWORD)
                 .andReturn().getResponse().getContentAsString(), "$.refreshToken");
 
         postJson("/api/auth/logout", """
@@ -278,10 +265,10 @@ class AuthIntegrationTest {
 
     @Test
     void accesoPorRol() throws Exception {
-        String tokenAdmin = JsonPath.read(login(crearAdmin("Secreta123"), "Secreta123")
+        String tokenAdmin = JsonPath.read(login(crearAdmin(), PASSWORD)
                 .andReturn().getResponse().getContentAsString(), "$.accessToken");
         String telefono = telefonoNuevo();
-        String tokenVecino = JsonPath.read(registrar(dniNuevo(), telefono, solicitarOtp(telefono, "REGISTRO"),
+        String tokenVecino = JsonPath.read(registrar(dniNuevo(), telefono, solicitarOtp(telefono),
                 "-6.765000", "-79.850000").andReturn().getResponse().getContentAsString(), "$.accessToken");
 
         // Admin pasa la seguridad (el endpoint aún no existe -> 404)
@@ -312,25 +299,16 @@ class AuthIntegrationTest {
         return String.format("%08d", 40_000_000 + SECUENCIA.incrementAndGet());
     }
 
-    private String crearAdmin(String password) {
+    private String crearAdmin() {
         String dni = dniNuevo();
-        Administrador admin = new Administrador(dni, "Ana", "Pérez", "+51" + telefonoNuevo());
-        admin.setPasswordHash(passwordEncoder.encode(password));
-        usuarioRepository.save(admin);
+        personaRepository.save(new Administrador(dni, "Ana", "Pérez", "+51" + telefonoNuevo(),
+                passwordEncoder.encode(PASSWORD)));
         return dni;
     }
 
-    /** Registra un vecino nuevo y devuelve su teléfono (9 dígitos). */
-    private String registrarVecino() throws Exception {
-        String telefono = telefonoNuevo();
-        registrar(dniNuevo(), telefono, solicitarOtp(telefono, "REGISTRO"), "-6.765000", "-79.850000")
-                .andExpect(status().isCreated());
-        return telefono;
-    }
-
-    private String solicitarOtp(String telefono, String proposito) throws Exception {
+    private String solicitarOtp(String telefono) throws Exception {
         String body = postJson("/api/auth/otp/solicitar", """
-                {"telefono":"%s","proposito":"%s"}""".formatted(telefono, proposito))
+                {"telefono":"%s"}""".formatted(telefono))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.expiraEn").exists())
                 .andReturn().getResponse().getContentAsString();
@@ -341,8 +319,9 @@ class AuthIntegrationTest {
             throws Exception {
         return postJson("/api/auth/registro/vecino", """
                 {"nombres":"María","apellidos":"Chávez","dni":"%s","telefono":"%s","codigo":"%s",
-                 "direccionReferencia":"Mz. B Lt. 12, AA.HH. Prueba","latitud":%s,"longitud":%s}"""
-                .formatted(dni, telefono, codigo, lat, lng));
+                 "password":"%s","direccionReferencia":"Mz. B Lt. 12, AA.HH. Prueba",
+                 "latitud":%s,"longitud":%s}"""
+                .formatted(dni, telefono, codigo, PASSWORD, lat, lng));
     }
 
     private ResultActions login(String dni, String password) throws Exception {

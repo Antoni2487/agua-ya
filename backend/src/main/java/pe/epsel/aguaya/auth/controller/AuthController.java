@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import pe.epsel.aguaya.auth.dto.AuthResponse;
 import pe.epsel.aguaya.auth.dto.LoginRequest;
-import pe.epsel.aguaya.auth.dto.LoginVecinoRequest;
 import pe.epsel.aguaya.auth.dto.RefreshRequest;
 import pe.epsel.aguaya.auth.dto.RegistroVecinoRequest;
 import pe.epsel.aguaya.auth.dto.SolicitarOtpRequest;
@@ -29,26 +28,20 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @Operation(summary = "Envía un código OTP por SMS (registro o login de vecino)")
+    @Operation(summary = "Envía por SMS el código que confirma el teléfono del vecino antes de registrarse")
     @PostMapping("/otp/solicitar")
     public SolicitarOtpResponse solicitarOtp(@Valid @RequestBody SolicitarOtpRequest request) {
         return authService.solicitarOtp(request);
     }
 
-    @Operation(summary = "Registra un vecino verificando el OTP; queda pendiente de validación")
+    @Operation(summary = "Registra un vecino verificando el código; queda activo y con sesión iniciada")
     @PostMapping("/registro/vecino")
     @ResponseStatus(HttpStatus.CREATED)
     public AuthResponse registrarVecino(@Valid @RequestBody RegistroVecinoRequest request) {
         return authService.registrarVecino(request);
     }
 
-    @Operation(summary = "Login de vecino con teléfono + OTP")
-    @PostMapping("/login/vecino")
-    public AuthResponse loginVecino(@Valid @RequestBody LoginVecinoRequest request) {
-        return authService.loginVecino(request);
-    }
-
-    @Operation(summary = "Login de administrador o conductor con DNI + contraseña")
+    @Operation(summary = "Login con DNI + contraseña (vecino, conductor o administrador)")
     @PostMapping("/login")
     public AuthResponse login(@Valid @RequestBody LoginRequest request) {
         return authService.login(request);

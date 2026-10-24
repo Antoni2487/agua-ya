@@ -1,4 +1,4 @@
-package pe.epsel.aguaya.usuario.entity;
+package pe.epsel.aguaya.persona.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,11 +11,11 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "administrador")
-@PrimaryKeyJoinColumn(name = "usuario_id")
+@PrimaryKeyJoinColumn(name = "persona_id")
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Administrador extends Usuario {
+public class Administrador extends Persona {
 
     @Column(length = 100)
     private String cargo;
@@ -23,7 +23,7 @@ public class Administrador extends Usuario {
     @Column(name = "nivel_acceso", length = 30)
     private String nivelAcceso;
 
-    public Administrador(String dni, String nombres, String apellidos, String telefono) {
-        super(Rol.ADMIN, dni, nombres, apellidos, telefono);
+    public Administrador(String dni, String nombres, String apellidos, String telefono, String passwordHash) {
+        super(Rol.ADMIN, dni, nombres, apellidos, telefono, passwordHash);
     }
 }

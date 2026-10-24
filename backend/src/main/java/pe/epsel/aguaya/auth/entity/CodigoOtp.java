@@ -4,8 +4,6 @@ import java.time.OffsetDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,6 +13,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Código OTP emitido por el proveedor local (dev). Con Twilio Verify el código lo guarda Twilio.
+ */
 @Entity
 @Table(name = "codigo_otp")
 @Getter
@@ -32,10 +33,6 @@ public class CodigoOtp {
     @Column(name = "codigo_hash", nullable = false, length = 100)
     private String codigoHash;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 10)
-    private PropositoOtp proposito;
-
     @Column(name = "expira_en", nullable = false)
     private OffsetDateTime expiraEn;
 
@@ -48,11 +45,9 @@ public class CodigoOtp {
     @Column(name = "creado_en", nullable = false, updatable = false)
     private OffsetDateTime creadoEn;
 
-    public CodigoOtp(String telefono, String codigoHash, PropositoOtp proposito,
-                     OffsetDateTime creadoEn, OffsetDateTime expiraEn) {
+    public CodigoOtp(String telefono, String codigoHash, OffsetDateTime creadoEn, OffsetDateTime expiraEn) {
         this.telefono = telefono;
         this.codigoHash = codigoHash;
-        this.proposito = proposito;
         this.creadoEn = creadoEn;
         this.expiraEn = expiraEn;
     }
