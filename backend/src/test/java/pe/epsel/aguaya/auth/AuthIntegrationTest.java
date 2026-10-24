@@ -6,11 +6,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.math.BigDecimal;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.jayway.jsonpath.JsonPath;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -27,7 +25,6 @@ import pe.epsel.aguaya.persona.entity.Conductor;
 import pe.epsel.aguaya.persona.entity.Vecino;
 import pe.epsel.aguaya.persona.repository.PersonaRepository;
 import pe.epsel.aguaya.persona.repository.VecinoRepository;
-import pe.epsel.aguaya.sector.entity.Modalidad;
 import pe.epsel.aguaya.sector.entity.Sector;
 import pe.epsel.aguaya.sector.repository.SectorRepository;
 
@@ -55,20 +52,9 @@ class AuthIntegrationTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private Sector sectorChiclayo;
-    private Sector sectorMonsefu;
-
-    @BeforeEach
-    void sectores() {
-        if (sectorRepository.count() == 0) {
-            sectorRepository.save(new Sector("Cerropón", "Chiclayo", Modalidad.PERMANENTE, 300, 4,
-                    new BigDecimal("-6.765000"), new BigDecimal("-79.850000")));
-            sectorRepository.save(new Sector("Callanca", "Monsefú", Modalidad.PERMANENTE, 200, 3,
-                    new BigDecimal("-6.880000"), new BigDecimal("-79.870000")));
-        }
-        sectorChiclayo = sectorRepository.findAll().stream().filter(s -> s.getDistrito().equals("Chiclayo"))
-                .findFirst().orElseThrow();
-        sectorMonsefu = sectorRepository.findAll().stream().filter(s -> s.getDistrito().equals("Monsefú"))
+    /** Los sectores vienen de V3__datos_referenciales.sql. */
+    private Sector sector(String nombre) {
+        return sectorRepository.findAll().stream().filter(s -> s.getNombre().equals(nombre))
                 .findFirst().orElseThrow();
     }
 
@@ -79,8 +65,8 @@ class AuthIntegrationTest {
         String telefono = telefonoNuevo();
         String dni = dniNuevo();
 
-        // Pin cerca de Monsefú
-        registrar(dni, telefono, solicitarOtp(telefono), "-6.875000", "-79.868000")
+        // Pin junto al centro de Valle Hermoso (Monsefú)
+        registrar(dni, telefono, solicitarOtp(telefono), "-6.892800", "-79.885200")
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.accessToken").isNotEmpty())
                 .andExpect(jsonPath("$.refreshToken").isNotEmpty())
@@ -91,8 +77,7 @@ class AuthIntegrationTest {
         assertThat(vecino.getDni()).isEqualTo(dni);
         assertThat(vecino.isActivo()).isTrue();
         assertThat(passwordEncoder.matches(PASSWORD, vecino.getPasswordHash())).isTrue();
-        assertThat(vecino.getSector().getId()).isEqualTo(sectorMonsefu.getId());
-        assertThat(vecino.getSector().getId()).isNotEqualTo(sectorChiclayo.getId());
+        assertThat(vecino.getSector().getId()).isEqualTo(sector("Valle Hermoso").getId());
     }
 
     @Test
