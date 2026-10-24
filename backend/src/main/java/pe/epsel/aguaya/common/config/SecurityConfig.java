@@ -24,7 +24,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import pe.epsel.aguaya.auth.service.JwtService;
 import pe.epsel.aguaya.common.exception.ErrorResponse;
 import pe.epsel.aguaya.common.seguridad.JwtAuthenticationFilter;
-import pe.epsel.aguaya.usuario.entity.Rol;
+import pe.epsel.aguaya.persona.entity.Rol;
 
 /**
  * API stateless con JWT. Rutas públicas abiertas y el resto restringido por rol.

@@ -1,4 +1,4 @@
-package pe.epsel.aguaya.usuario.entity;
+package pe.epsel.aguaya.persona.entity;
 
 import java.time.OffsetDateTime;
 
@@ -22,15 +22,16 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 /**
- * Persona del dominio: tabla base {@code usuario} con una tabla por subtipo (herencia JOINED).
+ * Clase padre de vecino, conductor y administrador: tabla base {@code persona}
+ * con una tabla por subtipo (herencia JOINED). Todas ingresan con DNI + contraseña.
  */
 @Entity
-@Table(name = "usuario")
+@Table(name = "persona")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class Usuario {
+public abstract class Persona {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,7 +53,7 @@ public abstract class Usuario {
     @Column(length = 150)
     private String email;
 
-    @Column(name = "password_hash", length = 100)
+    @Column(name = "password_hash", nullable = false, length = 100)
     private String passwordHash;
 
     @Enumerated(EnumType.STRING)
@@ -66,8 +67,9 @@ public abstract class Usuario {
     @Column(name = "creado_en", nullable = false, updatable = false)
     private OffsetDateTime creadoEn;
 
-    protected Usuario(Rol rol, String dni, String nombres, String apellidos, String telefono) {
+    protected Persona(Rol rol, String dni, String nombres, String apellidos, String telefono, String passwordHash) {
         this.rol = rol;
+        this.passwordHash = passwordHash;
         this.dni = dni;
         this.nombres = nombres;
         this.apellidos = apellidos;

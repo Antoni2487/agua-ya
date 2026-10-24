@@ -18,11 +18,11 @@ import org.springframework.stereotype.Service;
 
 import pe.epsel.aguaya.common.config.AguayaProperties;
 import pe.epsel.aguaya.common.seguridad.UsuarioAutenticado;
-import pe.epsel.aguaya.usuario.entity.Rol;
-import pe.epsel.aguaya.usuario.entity.Usuario;
+import pe.epsel.aguaya.persona.entity.Rol;
+import pe.epsel.aguaya.persona.entity.Persona;
 
 /**
- * Access tokens JWT (HS256) de corta duración. {@code sub} = id del usuario, claim {@code rol}.
+ * Access tokens JWT (HS256) de corta duración. {@code sub} = id de la persona, claim {@code rol}.
  */
 @Service
 public class JwtService {
@@ -39,11 +39,11 @@ public class JwtService {
         this.clock = clock;
     }
 
-    public String generarAccessToken(Usuario usuario) {
+    public String generarAccessToken(Persona persona) {
         Instant ahora = clock.instant();
         return Jwts.builder()
-                .subject(usuario.getId().toString())
-                .claim(CLAIM_ROL, usuario.getRol().name())
+                .subject(persona.getId().toString())
+                .claim(CLAIM_ROL, persona.getRol().name())
                 .issuedAt(Date.from(ahora))
                 .expiration(Date.from(ahora.plus(vigencia)))
                 .signWith(clave)
@@ -55,7 +55,7 @@ public class JwtService {
     }
 
     /**
-     * @return el usuario del token, o vacío si la firma es inválida, expiró o está mal formado
+     * @return la persona del token, o vacío si la firma es inválida, expiró o está mal formado
      */
     public Optional<UsuarioAutenticado> validar(String token) {
         try {

@@ -1,4 +1,4 @@
-package pe.epsel.aguaya.usuario.entity;
+package pe.epsel.aguaya.persona.entity;
 
 public enum Rol {
     ADMIN,
