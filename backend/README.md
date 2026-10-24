@@ -41,6 +41,26 @@ Los tests de integración levantan Postgres con Testcontainers (requiere Docker)
 - Rutas por rol: `/api/admin/**` ADMIN, `/api/conductor/**` CONDUCTOR, `/api/vecino/**` VECINO,
   `/api/incidencias` CONDUCTOR o VECINO; `/api/auth/**`, `/api/public/**` y `/api/health` son públicas.
 
+## Datos de prueba (referenciales)
+
+`V3__datos_referenciales.sql` carga datos **referenciales, no oficiales de EPSEL** (coordenadas aproximadas,
+placas, DNI y teléfonos ficticios):
+
+- 5 sectores: Cerropón (Chiclayo), P.J. Atusparias y P.J. Urrunaga (José Leonardo Ortiz), Callanca y
+  Valle Hermoso (Monsefú), con 8 instituciones críticas.
+- 1 punto de llenado (planta EPSEL, ubicación aproximada).
+- 5 cisternas `AYA-101` a `AYA-105`: `AYA-104` con autorización sanitaria vencida y `AYA-105` en mantenimiento.
+
+Cuentas de prueba (login con DNI + contraseña, **solo para desarrollo y demos**):
+
+| Rol | DNI | Contraseña |
+|---|---|---|
+| Admin | `10000001` | `Admin2026!` |
+| Conductores | `20000001` a `20000003` | `Conductor2026!` |
+| Vecinos (12) | `30000001` a `30000012` | `Vecino2026!` |
+
+> Estas cuentas también se crean en el despliegue: cambiar o desactivar sus contraseñas si el backend queda público.
+
 ## Base de datos
 
 - Esquema gestionado solo por Flyway (`src/main/resources/db/migration`); Hibernate en modo `validate`.

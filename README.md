@@ -5,6 +5,7 @@ Sistema de gestión logística del abastecimiento de agua potable mediante camio
 Proyecto académico del curso **Sistemas de Información Empresarial** — Universidad Tecnológica del Perú (UTP), sede Chiclayo.
 
 > Los datos de sectores, cisternas y placas incluidos en el sistema son **referenciales**, no oficiales de EPSEL.
+> Las cuentas de prueba están en [`backend/README.md`](backend/README.md#datos-de-prueba-referenciales).
 
 ## Núcleo de valor
 
