@@ -23,7 +23,8 @@ public record AguayaProperties(
         @Valid @NotNull Cors cors,
         @Valid @NotNull Geocerca geocerca,
         @Valid @NotNull Jwt jwt,
-        @Valid @NotNull Otp otp) {
+        @Valid @NotNull Otp otp,
+        @NotNull Twilio twilio) {
 
     public record Cors(@NotEmpty List<String> origins) {
     }
@@ -41,8 +42,11 @@ public record AguayaProperties(
     }
 
     /**
-     * @param provider      {@code log} (dev) o {@code twilio} (prod)
-     * @param exponerCodigo devuelve el código en la respuesta; solo para desarrollo
+     * @param provider        {@code log} (dev) o {@code twilio} (prod)
+     * @param exponerCodigo   devuelve el código en la respuesta; solo para desarrollo
+     * @param vigenciaMinutos solo proveedor {@code log}; con Twilio aplica su configuración
+     * @param maxIntentos     solo proveedor {@code log}
+     * @param maxEnviosHora   solo proveedor {@code log}
      */
     public record Otp(
             @NotBlank String provider,
@@ -50,5 +54,11 @@ public record AguayaProperties(
             @Positive int vigenciaMinutos,
             @Positive int maxIntentos,
             @Positive int maxEnviosHora) {
+    }
+
+    /**
+     * Credenciales de Twilio Verify; obligatorias solo con {@code aguaya.otp.provider=twilio}.
+     */
+    public record Twilio(String accountSid, String authToken, String verifySid) {
     }
 }

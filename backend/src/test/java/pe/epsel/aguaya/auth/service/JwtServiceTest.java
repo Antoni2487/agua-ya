@@ -13,8 +13,8 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import pe.epsel.aguaya.common.config.AguayaProperties;
 import pe.epsel.aguaya.common.seguridad.UsuarioAutenticado;
-import pe.epsel.aguaya.usuario.entity.Administrador;
-import pe.epsel.aguaya.usuario.entity.Rol;
+import pe.epsel.aguaya.persona.entity.Administrador;
+import pe.epsel.aguaya.persona.entity.Rol;
 
 class JwtServiceTest {
 
@@ -26,11 +26,12 @@ class JwtServiceTest {
                 new AguayaProperties.Cors(List.of("http://localhost")),
                 new AguayaProperties.Geocerca(50),
                 new AguayaProperties.Jwt(secret, 15, 30),
-                new AguayaProperties.Otp("log", false, 5, 3, 3)), clock);
+                new AguayaProperties.Otp("log", false, 5, 3, 3),
+                new AguayaProperties.Twilio(null, null, null)), clock);
     }
 
     private static Administrador admin() {
-        Administrador admin = new Administrador("12345678", "Ana", "Pérez", "+51900000001");
+        Administrador admin = new Administrador("12345678", "Ana", "Pérez", "+51900000001", "hash");
         ReflectionTestUtils.setField(admin, "id", 7L);
         return admin;
     }

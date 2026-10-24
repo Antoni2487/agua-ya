@@ -1,6 +1,6 @@
 package pe.epsel.aguaya.common.seguridad;
 
-import pe.epsel.aguaya.usuario.entity.Rol;
+import pe.epsel.aguaya.persona.entity.Rol;
 
 /**
  * Principal de Spring Security, construido desde el access token (sin consultar la BD).

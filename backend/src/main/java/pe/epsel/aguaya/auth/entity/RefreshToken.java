@@ -16,7 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import pe.epsel.aguaya.usuario.entity.Usuario;
+import pe.epsel.aguaya.persona.entity.Persona;
 
 /**
  * Refresh token opaco. Solo se guarda su hash SHA-256; el valor en claro lo tiene el cliente.
@@ -33,8 +33,8 @@ public class RefreshToken {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario usuario;
+    @JoinColumn(name = "persona_id", nullable = false)
+    private Persona persona;
 
     @Column(name = "token_hash", nullable = false, length = 100)
     private String tokenHash;
@@ -45,8 +45,8 @@ public class RefreshToken {
     @Column(nullable = false)
     private boolean revocado;
 
-    public RefreshToken(Usuario usuario, String tokenHash, OffsetDateTime expiraEn) {
-        this.usuario = usuario;
+    public RefreshToken(Persona persona, String tokenHash, OffsetDateTime expiraEn) {
+        this.persona = persona;
         this.tokenHash = tokenHash;
         this.expiraEn = expiraEn;
     }

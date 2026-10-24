@@ -1,11 +1,9 @@
-package pe.epsel.aguaya.usuario.entity;
+package pe.epsel.aguaya.persona.entity;
 
 import java.math.BigDecimal;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -20,11 +18,11 @@ import pe.epsel.aguaya.sector.entity.Sector;
 
 @Entity
 @Table(name = "vecino")
-@PrimaryKeyJoinColumn(name = "usuario_id")
+@PrimaryKeyJoinColumn(name = "persona_id")
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Vecino extends Usuario {
+public class Vecino extends Persona {
 
     @Column(name = "direccion_referencia", length = 255)
     private String direccionReferencia;
@@ -39,11 +37,7 @@ public class Vecino extends Usuario {
     @JoinColumn(name = "sector_id", nullable = false)
     private Sector sector;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 25)
-    private EstadoVecino estado = EstadoVecino.PENDIENTE_VALIDACION;
-
-    public Vecino(String dni, String nombres, String apellidos, String telefono) {
-        super(Rol.VECINO, dni, nombres, apellidos, telefono);
+    public Vecino(String dni, String nombres, String apellidos, String telefono, String passwordHash) {
+        super(Rol.VECINO, dni, nombres, apellidos, telefono, passwordHash);
     }
 }
