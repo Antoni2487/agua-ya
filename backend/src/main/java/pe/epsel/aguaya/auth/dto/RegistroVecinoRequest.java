@@ -13,8 +13,8 @@ import jakarta.validation.constraints.Size;
 import pe.epsel.aguaya.common.util.Telefono;
 
 /**
- * Registro del vecino. La ubicación que manda es el pin (latitud/longitud);
- * {@code direccionReferencia} es texto libre de apoyo.
+ * Registro del vecino. El código OTP confirma el teléfono; después ingresa con DNI + contraseña.
+ * La ubicación que manda es el pin (latitud/longitud); {@code direccionReferencia} es texto libre de apoyo.
  */
 public record RegistroVecinoRequest(
         @NotBlank @Size(max = 100) String nombres,
@@ -22,7 +22,8 @@ public record RegistroVecinoRequest(
         @NotBlank @Pattern(regexp = "^\\d{8}$", message = "debe tener 8 dígitos") String dni,
         @NotBlank @Pattern(regexp = Telefono.PATRON, message = "debe ser un celular peruano (9 dígitos)")
         String telefono,
-        @NotBlank @Pattern(regexp = "^\\d{6}$", message = "debe tener 6 dígitos") String codigo,
+        @NotBlank @Pattern(regexp = "^\\d{4,10}$", message = "código inválido") String codigo,
+        @NotBlank @Size(min = 8, max = 72, message = "debe tener entre 8 y 72 caracteres") String password,
         @Size(max = 255) String direccionReferencia,
         @NotNull @DecimalMin("-90") @DecimalMax("90") @Digits(integer = 3, fraction = 6) BigDecimal latitud,
         @NotNull @DecimalMin("-180") @DecimalMax("180") @Digits(integer = 3, fraction = 6) BigDecimal longitud) {

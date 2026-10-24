@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 /**
- * Login de administrador y conductor.
+ * Login de cualquier persona (vecino, conductor o administrador).
  */
 public record LoginRequest(
         @NotBlank @Pattern(regexp = "^\\d{8}$", message = "debe tener 8 dígitos") String dni,

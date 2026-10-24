@@ -51,3 +51,7 @@ aguaya:
     vigencia-minutos: 5
     max-intentos: 3
     max-envios-hora: 3
+  twilio:
+    account-sid: ${TWILIO_ACCOUNT_SID:}
+    auth-token: ${TWILIO_AUTH_TOKEN:}
+    verify-sid: ${TWILIO_VERIFY_SID:}

@@ -20,11 +20,11 @@ import pe.epsel.aguaya.auth.entity.RefreshToken;
 import pe.epsel.aguaya.auth.repository.RefreshTokenRepository;
 import pe.epsel.aguaya.common.config.AguayaProperties;
 import pe.epsel.aguaya.common.exception.NegocioException;
-import pe.epsel.aguaya.usuario.entity.Usuario;
+import pe.epsel.aguaya.persona.entity.Persona;
 
 /**
  * Refresh tokens opacos con rotación: cada uso revoca el token y emite uno nuevo.
- * Si llega un token ya revocado se asume robo y se revocan todos los del usuario.
+ * Si llega un token ya revocado se asume robo y se revocan todos los de la persona.
  */
 @Slf4j
 @Service
@@ -43,17 +43,17 @@ public class RefreshTokenService {
     }
 
     @Transactional
-    public String emitir(Usuario usuario) {
+    public String emitir(Persona persona) {
         byte[] bytes = new byte[32];
         random.nextBytes(bytes);
         String token = Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
         OffsetDateTime expiraEn = OffsetDateTime.now(clock).plusDays(vigenciaDias);
-        refreshTokenRepository.save(new RefreshToken(usuario, hash(token), expiraEn));
+        refreshTokenRepository.save(new RefreshToken(persona, hash(token), expiraEn));
         return token;
     }
 
     /**
-     * Valida y revoca el token. Devuelve el id de su usuario para emitir el nuevo par.
+     * Valida y revoca el token. Devuelve el id de su persona para emitir el nuevo par.
      * La revocación por reuso se confirma aunque se lance la excepción.
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackFor = NegocioException.class)
@@ -61,18 +61,18 @@ public class RefreshTokenService {
         RefreshToken refresh = refreshTokenRepository.findByTokenHash(hash(token))
                 .orElseThrow(RefreshTokenService::invalido);
 
-        Usuario usuario = refresh.getUsuario();
+        Persona persona = refresh.getPersona();
         if (refresh.isRevocado()) {
-            log.warn("Reuso de refresh token revocado del usuario {}; se revocan todas sus sesiones", usuario.getId());
-            refreshTokenRepository.revocarTodosDelUsuario(usuario.getId());
+            log.warn("Reuso de refresh token revocado de la persona {}; se revocan todas sus sesiones", persona.getId());
+            refreshTokenRepository.revocarTodosDeLaPersona(persona.getId());
             throw invalido();
         }
-        if (refresh.expirado(OffsetDateTime.now(clock)) || !usuario.isActivo()) {
+        if (refresh.expirado(OffsetDateTime.now(clock)) || !persona.isActivo()) {
             throw invalido();
         }
 
         refresh.setRevocado(true);
-        return usuario.getId();
+        return persona.getId();
     }
 
     @Transactional

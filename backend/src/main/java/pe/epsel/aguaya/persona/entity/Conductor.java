@@ -1,4 +1,4 @@
-package pe.epsel.aguaya.usuario.entity;
+package pe.epsel.aguaya.persona.entity;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -18,11 +18,11 @@ import pe.epsel.aguaya.common.dominio.Turno;
 
 @Entity
 @Table(name = "conductor")
-@PrimaryKeyJoinColumn(name = "usuario_id")
+@PrimaryKeyJoinColumn(name = "persona_id")
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Conductor extends Usuario {
+public class Conductor extends Persona {
 
     @Column(nullable = false, length = 20)
     private String licencia;
@@ -44,8 +44,8 @@ public class Conductor extends Usuario {
     @Column(name = "ubicacion_actualizada_en")
     private OffsetDateTime ubicacionActualizadaEn;
 
-    public Conductor(String dni, String nombres, String apellidos, String telefono, String licencia) {
-        super(Rol.CONDUCTOR, dni, nombres, apellidos, telefono);
+    public Conductor(String dni, String nombres, String apellidos, String telefono, String passwordHash, String licencia) {
+        super(Rol.CONDUCTOR, dni, nombres, apellidos, telefono, passwordHash);
         this.licencia = licencia;
     }
 }
