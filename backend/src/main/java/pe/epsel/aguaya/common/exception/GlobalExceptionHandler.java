@@ -5,7 +5,10 @@ import java.util.List;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 
+import org.hibernate.query.sqm.UnknownPathException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -52,6 +55,23 @@ public class GlobalExceptionHandler {
         return responder(HttpStatus.BAD_REQUEST, "SOLICITUD_INVALIDA", "La solicitud no tiene un formato válido");
     }
 
+    /** {@code ?sort=} con un campo inexistente (consultas derivadas). */
+    @ExceptionHandler(PropertyReferenceException.class)
+    public ResponseEntity<ErrorResponse> ordenInvalido(PropertyReferenceException e) {
+        return ordenInvalido();
+    }
+
+    /** {@code ?sort=} con un campo inexistente en consultas {@code @Query}; cualquier otro caso es un 500. */
+    @ExceptionHandler(InvalidDataAccessApiUsageException.class)
+    public ResponseEntity<ErrorResponse> usoInvalidoDeDatos(InvalidDataAccessApiUsageException e) {
+        for (Throwable causa = e; causa != null; causa = causa.getCause()) {
+            if (causa instanceof UnknownPathException) {
+                return ordenInvalido();
+            }
+        }
+        return inesperado(e);
+    }
+
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<ErrorResponse> noEncontrado(NoResourceFoundException e) {
         return responder(HttpStatus.NOT_FOUND, "NO_ENCONTRADO", "Recurso no encontrado");
@@ -82,6 +102,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> inesperado(Exception e) {
         log.error("Error no controlado", e);
         return responder(HttpStatus.INTERNAL_SERVER_ERROR, "ERROR_INTERNO", "Ocurrió un error inesperado");
+    }
+
+    private static ResponseEntity<ErrorResponse> ordenInvalido() {
+        return responder(HttpStatus.BAD_REQUEST, "ORDEN_INVALIDO", "El campo de ordenamiento (sort) no existe");
     }
 
     private static ResponseEntity<ErrorResponse> responder(HttpStatus status, String codigo, String mensaje) {
