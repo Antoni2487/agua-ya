@@ -256,9 +256,9 @@ class AuthIntegrationTest {
         String tokenVecino = JsonPath.read(registrar(dniNuevo(), telefono, solicitarOtp(telefono),
                 "-6.765000", "-79.850000").andReturn().getResponse().getContentAsString(), "$.accessToken");
 
-        // Admin pasa la seguridad (el endpoint aún no existe -> 404)
+        // Admin pasa la seguridad
         mockMvc.perform(get("/api/admin/sectores").header("Authorization", "Bearer " + tokenAdmin))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isOk());
         // Vecino no puede entrar a rutas de admin ni de conductor
         mockMvc.perform(get("/api/admin/sectores").header("Authorization", "Bearer " + tokenVecino))
                 .andExpect(status().isForbidden())
