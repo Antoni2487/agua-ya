@@ -41,6 +41,20 @@ Los tests de integración levantan Postgres con Testcontainers (requiere Docker)
 - Rutas por rol: `/api/admin/**` ADMIN, `/api/conductor/**` CONDUCTOR, `/api/vecino/**` VECINO,
   `/api/incidencias` CONDUCTOR o VECINO; `/api/auth/**`, `/api/public/**` y `/api/health` son públicas.
 
+## Catálogos del administrador (rol ADMIN)
+
+| Recurso | Endpoint | Baja |
+|---|---|---|
+| Sectores | `/api/admin/sectores` (`?distrito=&activo=`) | lógica (`activo=false`) |
+| Instituciones críticas | `/api/admin/instituciones` (`?sectorId=&tipo=&activo=`) | lógica |
+| Puntos de llenado | `/api/admin/puntos-llenado` (`?tipo=&activo=`) | lógica |
+| Cisternas | `/api/admin/cisternas` (`?estado=`) | física, solo si no tiene rutas (si no, 409) |
+| Conductores | `/api/admin/conductores` (`?estado=&turno=&activo=`) | lógica: no puede ingresar y se cierran sus sesiones |
+
+Cada uno tiene `GET` (lista y por id), `POST`, `PUT /{id}` y `DELETE /{id}`. Las listas son paginadas
+(`?page=0&size=20&sort=campo,asc`, máximo 100 por página) y responden `{ contenido, page, size, totalElements, totalPages }`.
+La cisterna informa `autorizacionVigente` (regla 2) y el admin crea los conductores con una contraseña inicial.
+
 ## Datos de prueba (referenciales)
 
 `V3__datos_referenciales.sql` carga datos **referenciales, no oficiales de EPSEL** (coordenadas aproximadas,

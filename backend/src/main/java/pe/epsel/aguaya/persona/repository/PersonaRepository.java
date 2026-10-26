@@ -13,4 +13,6 @@ public interface PersonaRepository extends JpaRepository<Persona, Long> {
     boolean existsByDni(String dni);
 
     boolean existsByTelefono(String telefono);
+
+    boolean existsByTelefonoAndIdNot(String telefono, Long id);
 }
