@@ -1,5 +1,7 @@
 package pe.epsel.aguaya.cisterna.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,6 +14,8 @@ public interface CisternaRepository extends JpaRepository<Cisterna, Long> {
 
     @Query("SELECT c FROM Cisterna c WHERE (:estado IS NULL OR c.estadoVehiculo = :estado)")
     Page<Cisterna> buscar(EstadoVehiculo estado, Pageable pageable);
+
+    List<Cisterna> findByEstadoVehiculo(EstadoVehiculo estado);
 
     boolean existsByPlaca(String placa);
 

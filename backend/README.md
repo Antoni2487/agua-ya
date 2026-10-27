@@ -50,10 +50,23 @@ Los tests de integración levantan Postgres con Testcontainers (requiere Docker)
 | Puntos de llenado | `/api/admin/puntos-llenado` (`?tipo=&activo=`) | lógica |
 | Cisternas | `/api/admin/cisternas` (`?estado=`) | física, solo si no tiene rutas (si no, 409) |
 | Conductores | `/api/admin/conductores` (`?estado=&turno=&activo=`) | lógica: no puede ingresar y se cierran sus sesiones |
+| Puntos de entrega | `/api/admin/puntos-entrega` (`?sectorId=&activo=`) | lógica |
 
 Cada uno tiene `GET` (lista y por id), `POST`, `PUT /{id}` y `DELETE /{id}`. Las listas son paginadas
 (`?page=0&size=20&sort=campo,asc`, máximo 100 por página) y responden `{ contenido, page, size, totalElements, totalPages }`.
 La cisterna informa `autorizacionVigente` (regla 2) y el admin crea los conductores con una contraseña inicial.
+
+## Rutas (RF01 y RF03)
+
+1. `POST /api/admin/rutas` con `sectorId`, `fecha`, `turno` y `puntoLlenadoId`: genera las paradas
+   (instituciones críticas primero; luego hogares o puntos de entrega según el sector) en recorrido encadenado.
+2. `GET /api/admin/rutas/{id}/sugerencias-asignacion`: cisternas asignables con los viajes que necesitarían
+   (`⌈UU × dotación × frecuencia ÷ capacidad⌉`) y conductores libres en ese turno.
+3. `PATCH /api/admin/rutas/{id}/asignar` con `cisternaId`, `conductorId` y `viajesPlanificados` opcional:
+   valida la regla 2 (cisterna OPERATIVA con autorización vigente, conductor activo, ambos libres en el turno).
+
+Errores de negocio: `RUTA_DUPLICADA`, `FECHA_PASADA`, `RUTA_SIN_PARADAS`, `CISTERNA_NO_OPERATIVA`,
+`CISTERNA_AUTORIZACION_VENCIDA`, `CISTERNA_OCUPADA`, `CONDUCTOR_INACTIVO`, `CONDUCTOR_OCUPADO`, `RUTA_NO_EDITABLE`.
 
 ## Datos de prueba (referenciales)
 
