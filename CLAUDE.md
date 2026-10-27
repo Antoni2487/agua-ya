@@ -162,13 +162,14 @@ Cada módulo: `controller/`, `service/`, `repository/`, `entity/`, `dto/`, `mapp
 | `codigo_otp` | id, telefono, codigo_hash, expira_en, intentos, usado, creado_en (solo proveedor OTP local; con Twilio el código lo guarda Twilio) |
 | `refresh_token` | id, persona_id, token_hash, expira_en, revocado |
 | `dispositivo_push` | id, persona_id, expo_token (único), plataforma, actualizado_en |
-| `sector` | id, nombre, distrito, modalidad (PERMANENTE / CONTINGENCIA), es_zona_alta, unidades_uso, dotacion_litros (def. 80), frecuencia_dias, max_viajes_diarios, lat_centro, lng_centro, activo |
+| `sector` | id, nombre, distrito, modalidad (PERMANENTE / CONTINGENCIA), es_zona_alta, unidades_uso, dotacion_litros (def. 80), frecuencia_dias, max_viajes_diarios, lat_centro, lng_centro, tipo_entrega (DOMICILIO / PUNTO_ENTREGA), activo |
 | `institucion_critica` | id, nombre, tipo (SALUD / BOMBEROS / EDUCACION / OTRO), sector_id, latitud, longitud, activo |
+| `punto_entrega` | id, sector_id, nombre, referencia, latitud, longitud, activo (lugar fijo donde se detiene la cisterna en sectores PUNTO_ENTREGA) |
 | `punto_llenado` | id, nombre, tipo (PLANTA / SURTIDOR / POZO), direccion, latitud, longitud, activo |
 | `cisterna` | id, placa (único), capacidad_litros, estado_vehiculo (OPERATIVA / MANTENIMIENTO / AVERIADA), nro_autorizacion_sanitaria, vence_autorizacion |
-| `ruta` | id, fecha_programada, turno (MANANA / TARDE), sector_id, conductor_id, cisterna_id, administrador_id, viajes_planificados, estado (PROGRAMADA / EN_CURSO / INTERRUMPIDA / COMPLETADA), inicio, fin, creado_en |
+| `ruta` | id, fecha_programada, turno (MANANA / TARDE), sector_id, punto_llenado_id, conductor_id, cisterna_id, administrador_id, viajes_planificados, estado (PROGRAMADA / EN_CURSO / INTERRUMPIDA / COMPLETADA), inicio, fin, creado_en |
 | `viaje` | id, ruta_id, nro_viaje, punto_llenado_id, volumen_cargado_litros, salida, retorno, estado (EN_CARGA / EN_REPARTO / FINALIZADO) |
-| `parada` | id, ruta_id, viaje_id (null), tipo (HOGAR / INSTITUCION), vecino_id (null), institucion_id (null), latitud, longitud, orden, prioridad (CRITICA / NORMAL), estado (PENDIENTE / ATENDIDA / NO_ATENDIDA / REASIGNADA), volumen_entregado_litros, verificada_gps, atendida_en |
+| `parada` | id, ruta_id, viaje_id (null), tipo (HOGAR / INSTITUCION / PUNTO_ENTREGA), vecino_id (null), institucion_id (null), punto_entrega_id (null), latitud, longitud, orden, prioridad (CRITICA / NORMAL), estado (PENDIENTE / ATENDIDA / NO_ATENDIDA / REASIGNADA), volumen_entregado_litros, verificada_gps, atendida_en |
 | `monitoreo_gps` | id, ruta_id, latitud, longitud, registrado_en |
 | `incidencia` | id, ruta_id, parada_id (null), reportado_por (persona_id), tipo, descripcion, estado (ABIERTA / REASIGNADA / CERRADA), ruta_destino_id (null), resuelta_por (null), creado_en, resuelto_en |
 | `calificacion_servicio` | id, parada_id (único), vecino_id, estrellas (1–5, CHECK), comentario, creado_en |
@@ -186,11 +187,11 @@ Cada módulo: `controller/`, `service/`, `repository/`, `entity/`, `dto/`, `mapp
 ## 8. Reglas de negocio (obligatorias)
 
 1. **Capacidad (RF02)**
-   - `viajes_necesarios = ceil(unidades_uso × dotacion_litros ÷ capacidad_litros_cisterna)`
+   - `viajes_necesarios = ceil(unidades_uso × dotacion_litros × frecuencia_dias ÷ capacidad_litros_cisterna)` (cada visita cubre los días hasta la siguiente; mínimo 1). Implementado en `capacidad/service/CalculadoraViajes`.
    - `cisternas_necesarias = ceil(viajes_necesarios ÷ max_viajes_diarios)`
    - Comparar con cisternas OPERATIVAS con autorización vigente y devolver el **déficit**. Es un cálculo; no se persiste (salvo `ruta.viajes_planificados`).
-2. **Asignación (RF03)**: no se puede asignar una cisterna con `vence_autorizacion < fecha_programada` ni con estado ≠ OPERATIVA. No se puede asignar un conductor INACTIVO ni con otra ruta en el mismo turno y fecha. El sistema **sugiere** la cisterna/conductor más cercano (Haversine al centro del sector); el Admin **confirma**.
-3. **Paradas**: al programar una ruta se generan paradas con los vecinos activos (`persona.activo`) del sector y sus instituciones críticas. Orden: primero `CRITICA`, luego `NORMAL` por cercanía.
+2. **Asignación (RF03)**: no se puede asignar una cisterna con `vence_autorizacion < fecha_programada` ni con estado ≠ OPERATIVA. No se puede asignar un conductor INACTIVO ni con otra ruta en el mismo turno y fecha. Una cisterna no puede tener dos rutas en la misma fecha y turno. El sistema **sugiere**: cisternas por menos viajes necesarios (no tienen GPS propio) y conductores primero del mismo turno y luego por cercanía de su última posición al centro del sector (Haversine); el Admin **confirma** y puede corregir los viajes planificados.
+3. **Paradas**: una ruta por sector, fecha y turno, con fecha de hoy en adelante. Al programarla se generan paradas con las instituciones críticas activas (`CRITICA`) y, según `sector.tipo_entrega`, los vecinos activos (`HOGAR`) o los puntos de entrega activos (`PUNTO_ENTREGA`), ambos `NORMAL`. Orden: primero las `CRITICA` y luego las `NORMAL`, cada grupo como recorrido encadenado desde el punto de llenado (siguiente = la más cercana aún no visitada). Las paradas se generan al programar: un vecino registrado después entra en la siguiente ruta. Una ruta solo se elimina mientras está PROGRAMADA.
 4. **Geocerca (RF05)**: una parada pasa a `ATENDIDA` solo si la última posición del conductor está a ≤ `aguaya.geocerca.radio-metros` (def. 50 m) de la parada. Si no, se rechaza (409) y se registra el intento.
 5. **Estados de ruta**: PROGRAMADA → EN_CURSO (conductor inicia) → COMPLETADA (todas las paradas en estado final) | INTERRUMPIDA (incidencia que la detiene). No se permiten saltos inválidos.
 6. **Reasignación (RF07, manual)**: el Admin elige la ruta destino; las paradas PENDIENTES de la ruta origen se mueven (copia en destino, origen queda `REASIGNADA`), la incidencia pasa a `REASIGNADA` con `ruta_destino_id`. El sistema solo sugiere la cisterna disponible más cercana. **Sin algoritmo automático.**
@@ -267,6 +268,7 @@ POST /api/auth/logout
 # Admin
 CRUD /api/admin/sectores
 CRUD /api/admin/instituciones
+CRUD /api/admin/puntos-entrega
 CRUD /api/admin/puntos-llenado
 CRUD /api/admin/cisternas
 CRUD /api/admin/conductores
@@ -274,7 +276,9 @@ GET  /api/admin/capacidad?sectorId=&fecha=          (RF02)
 POST /api/admin/rutas                                (RF01)
 GET  /api/admin/rutas/{id}/sugerencias-asignacion    (RF03)
 PATCH /api/admin/rutas/{id}/asignar                  (RF03)
-GET  /api/admin/rutas?fecha=&estado=
+GET  /api/admin/rutas?fecha=&estado=&sectorId=
+GET  /api/admin/rutas/{id}                           (detalle con paradas)
+DELETE /api/admin/rutas/{id}                        (solo PROGRAMADA)
 GET  /api/admin/incidencias?estado=
 POST /api/admin/incidencias/{id}/reasignar           (RF07)
 PATCH /api/admin/incidencias/{id}/cerrar

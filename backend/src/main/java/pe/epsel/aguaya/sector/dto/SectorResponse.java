@@ -3,6 +3,7 @@ package pe.epsel.aguaya.sector.dto;
 import java.math.BigDecimal;
 
 import pe.epsel.aguaya.sector.entity.Modalidad;
+import pe.epsel.aguaya.sector.entity.TipoEntrega;
 
 public record SectorResponse(
         Long id,
@@ -16,5 +17,6 @@ public record SectorResponse(
         int maxViajesDiarios,
         BigDecimal latCentro,
         BigDecimal lngCentro,
+        TipoEntrega tipoEntrega,
         boolean activo) {
 }

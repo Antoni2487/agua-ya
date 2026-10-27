@@ -15,7 +15,7 @@ public final class SectorMapper {
     public static SectorResponse aResponse(Sector s) {
         return new SectorResponse(s.getId(), s.getNombre(), s.getDistrito(), s.getModalidad(), s.isEsZonaAlta(),
                 s.getUnidadesUso(), s.getDotacionLitros(), s.getFrecuenciaDias(), s.getMaxViajesDiarios(),
-                s.getLatCentro(), s.getLngCentro(), s.isActivo());
+                s.getLatCentro(), s.getLngCentro(), s.getTipoEntrega(), s.isActivo());
     }
 
     public static Sector nuevo(SectorRequest r) {
@@ -36,6 +36,9 @@ public final class SectorMapper {
         s.setMaxViajesDiarios(r.maxViajesDiarios());
         s.setLatCentro(r.latCentro());
         s.setLngCentro(r.lngCentro());
+        if (r.tipoEntrega() != null) {
+            s.setTipoEntrega(r.tipoEntrega());
+        }
         if (r.activo() != null) {
             s.setActivo(r.activo());
         }
