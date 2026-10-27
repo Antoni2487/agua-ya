@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import pe.epsel.aguaya.common.util.Coordenada;
 import pe.epsel.aguaya.common.dto.PaginaResponse;
 import pe.epsel.aguaya.common.exception.NegocioException;
 import pe.epsel.aguaya.sector.dto.PuntoEntregaRequest;
@@ -35,7 +36,7 @@ public class PuntoEntregaService {
     @Transactional
     public PuntoEntregaResponse crear(PuntoEntregaRequest r) {
         PuntoEntrega punto = new PuntoEntrega(sectorService.buscar(r.sectorId()), r.nombre().trim(),
-                r.latitud(), r.longitud());
+                Coordenada.normalizar(r.latitud()), Coordenada.normalizar(r.longitud()));
         punto.setReferencia(r.referencia());
         if (r.activo() != null) {
             punto.setActivo(r.activo());
@@ -49,8 +50,8 @@ public class PuntoEntregaService {
         punto.setSector(sectorService.buscar(r.sectorId()));
         punto.setNombre(r.nombre().trim());
         punto.setReferencia(r.referencia());
-        punto.setLatitud(r.latitud());
-        punto.setLongitud(r.longitud());
+        punto.setLatitud(Coordenada.normalizar(r.latitud()));
+        punto.setLongitud(Coordenada.normalizar(r.longitud()));
         if (r.activo() != null) {
             punto.setActivo(r.activo());
         }
