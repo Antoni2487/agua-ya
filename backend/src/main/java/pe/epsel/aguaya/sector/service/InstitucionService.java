@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import pe.epsel.aguaya.common.util.Coordenada;
 import pe.epsel.aguaya.common.dto.PaginaResponse;
 import pe.epsel.aguaya.common.exception.NegocioException;
 import pe.epsel.aguaya.sector.dto.InstitucionRequest;
@@ -37,7 +38,7 @@ public class InstitucionService {
     @Transactional
     public InstitucionResponse crear(InstitucionRequest r) {
         InstitucionCritica institucion = new InstitucionCritica(r.nombre().trim(), r.tipo(),
-                sectorService.buscar(r.sectorId()), r.latitud(), r.longitud());
+                sectorService.buscar(r.sectorId()), Coordenada.normalizar(r.latitud()), Coordenada.normalizar(r.longitud()));
         if (r.activo() != null) {
             institucion.setActivo(r.activo());
         }
@@ -50,8 +51,8 @@ public class InstitucionService {
         institucion.setNombre(r.nombre().trim());
         institucion.setTipo(r.tipo());
         institucion.setSector(sectorService.buscar(r.sectorId()));
-        institucion.setLatitud(r.latitud());
-        institucion.setLongitud(r.longitud());
+        institucion.setLatitud(Coordenada.normalizar(r.latitud()));
+        institucion.setLongitud(Coordenada.normalizar(r.longitud()));
         if (r.activo() != null) {
             institucion.setActivo(r.activo());
         }

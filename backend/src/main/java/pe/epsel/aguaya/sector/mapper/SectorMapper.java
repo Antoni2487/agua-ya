@@ -1,5 +1,6 @@
 package pe.epsel.aguaya.sector.mapper;
 
+import pe.epsel.aguaya.common.util.Coordenada;
 import pe.epsel.aguaya.sector.dto.SectorRequest;
 import pe.epsel.aguaya.sector.dto.SectorResponse;
 import pe.epsel.aguaya.sector.entity.Sector;
@@ -20,7 +21,7 @@ public final class SectorMapper {
 
     public static Sector nuevo(SectorRequest r) {
         Sector sector = new Sector(r.nombre().trim(), r.distrito().trim(), r.modalidad(), r.unidadesUso(),
-                r.maxViajesDiarios(), r.latCentro(), r.lngCentro());
+                r.maxViajesDiarios(), Coordenada.normalizar(r.latCentro()), Coordenada.normalizar(r.lngCentro()));
         aplicar(r, sector);
         return sector;
     }
@@ -34,8 +35,8 @@ public final class SectorMapper {
         s.setDotacionLitros(r.dotacionLitros() != null ? r.dotacionLitros() : DOTACION_POR_DEFECTO);
         s.setFrecuenciaDias(r.frecuenciaDias());
         s.setMaxViajesDiarios(r.maxViajesDiarios());
-        s.setLatCentro(r.latCentro());
-        s.setLngCentro(r.lngCentro());
+        s.setLatCentro(Coordenada.normalizar(r.latCentro()));
+        s.setLngCentro(Coordenada.normalizar(r.lngCentro()));
         if (r.tipoEntrega() != null) {
             s.setTipoEntrega(r.tipoEntrega());
         }
