@@ -12,11 +12,13 @@ import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 
 import pe.epsel.aguaya.sector.entity.Modalidad;
+import pe.epsel.aguaya.sector.entity.TipoEntrega;
 
 /**
  * Alta y edición de sector.
  *
  * @param dotacionLitros litros por unidad de uso al día; si se omite, 80 (SUNASS)
+ * @param tipoEntrega    si se omite, DOMICILIO al crear / se mantiene al editar
  * @param activo         si se omite, se crea activo / se mantiene el valor actual
  */
 public record SectorRequest(
@@ -30,5 +32,6 @@ public record SectorRequest(
         @NotNull @Positive Integer maxViajesDiarios,
         @NotNull @DecimalMin("-90") @DecimalMax("90") @Digits(integer = 3, fraction = 6) BigDecimal latCentro,
         @NotNull @DecimalMin("-180") @DecimalMax("180") @Digits(integer = 3, fraction = 6) BigDecimal lngCentro,
+        TipoEntrega tipoEntrega,
         Boolean activo) {
 }

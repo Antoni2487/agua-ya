@@ -57,6 +57,10 @@ public class Sector {
     @Column(name = "lng_centro", nullable = false, precision = 9, scale = 6)
     private BigDecimal lngCentro;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_entrega", nullable = false, length = 15)
+    private TipoEntrega tipoEntrega = TipoEntrega.DOMICILIO;
+
     @Column(nullable = false)
     private boolean activo = true;
 

@@ -1,5 +1,7 @@
 package pe.epsel.aguaya.sector.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -15,4 +17,6 @@ public interface InstitucionCriticaRepository extends JpaRepository<InstitucionC
     @Query("SELECT i FROM InstitucionCritica i WHERE (:sectorId IS NULL OR i.sector.id = :sectorId) "
             + "AND (:tipo IS NULL OR i.tipo = :tipo) AND (:activo IS NULL OR i.activo = :activo)")
     Page<InstitucionCritica> buscar(Long sectorId, TipoInstitucion tipo, Boolean activo, Pageable pageable);
+
+    List<InstitucionCritica> findBySectorIdAndActivoTrue(Long sectorId);
 }
