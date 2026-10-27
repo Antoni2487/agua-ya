@@ -23,6 +23,11 @@ public interface RutaRepository extends JpaRepository<Ruta, Long> {
 
     boolean existsBySectorIdAndFechaProgramadaAndTurno(Long sectorId, LocalDate fecha, Turno turno);
 
+    @EntityGraph(attributePaths = {"sector", "cisterna", "conductor", "puntoLlenado"})
+    List<Ruta> findByConductorIdAndFechaProgramadaOrderByTurnoAsc(Long conductorId, LocalDate fecha);
+
+    boolean existsByConductorIdAndEstado(Long conductorId, EstadoRuta estado);
+
     /** Cisternas ya asignadas a otra ruta en esa fecha y turno. */
     @Query("SELECT r.cisterna.id FROM Ruta r WHERE r.cisterna IS NOT NULL AND r.fechaProgramada = :fecha "
             + "AND r.turno = :turno AND r.id <> :excluirRutaId")
