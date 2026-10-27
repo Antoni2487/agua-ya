@@ -36,6 +36,8 @@ public class SecurityConfig {
             "/api/health",
             "/api/auth/**",
             "/api/public/**",
+            // WebSocket: la autenticación va en el CONNECT de STOMP (StompAutenticacionInterceptor)
+            "/ws/**",
             "/swagger-ui.html",
             "/swagger-ui/**",
             "/v3/api-docs/**",

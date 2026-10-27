@@ -144,7 +144,7 @@ Cada módulo: `controller/`, `service/`, `repository/`, `entity/`, `dto/`, `mapp
 - Errores con `@RestControllerAdvice` → respuesta uniforme `{ timestamp, status, codigo, mensaje, detalles }`.
 - Enums persistidos como `STRING`.
 - Fechas en `OffsetDateTime` / `timestamptz`; zona horaria del negocio `America/Lima`.
-- Coordenadas como `numeric(9,6)` / `BigDecimal` o `double`; distancia con Haversine en `common/util`.
+- Coordenadas como `numeric(9,6)` / `BigDecimal` o `double`; distancia con Haversine en `common/util`. La API acepta más decimales (GPS, mapas) y los redondea a 6 con `Coordenada.normalizar`.
 - Lógica de negocio en `service`, nunca en controladores.
 
 ---
@@ -171,6 +171,7 @@ Cada módulo: `controller/`, `service/`, `repository/`, `entity/`, `dto/`, `mapp
 | `viaje` | id, ruta_id, nro_viaje, punto_llenado_id, volumen_cargado_litros, salida, retorno, estado (EN_CARGA / EN_REPARTO / FINALIZADO) |
 | `parada` | id, ruta_id, viaje_id (null), tipo (HOGAR / INSTITUCION / PUNTO_ENTREGA), vecino_id (null), institucion_id (null), punto_entrega_id (null), latitud, longitud, orden, prioridad (CRITICA / NORMAL), estado (PENDIENTE / ATENDIDA / NO_ATENDIDA / REASIGNADA), volumen_entregado_litros, verificada_gps, atendida_en |
 | `monitoreo_gps` | id, ruta_id, latitud, longitud, registrado_en |
+| `intento_geocerca` | id, parada_id, conductor_id, latitud (null), longitud (null), distancia_metros (null), registrado_en (intentos de atender fuera de la geocerca; evidencia ante desvíos) |
 | `incidencia` | id, ruta_id, parada_id (null), reportado_por (persona_id), tipo, descripcion, estado (ABIERTA / REASIGNADA / CERRADA), ruta_destino_id (null), resuelta_por (null), creado_en, resuelto_en |
 | `calificacion_servicio` | id, parada_id (único), vecino_id, estrellas (1–5, CHECK), comentario, creado_en |
 
@@ -192,8 +193,8 @@ Cada módulo: `controller/`, `service/`, `repository/`, `entity/`, `dto/`, `mapp
    - Comparar con cisternas OPERATIVAS con autorización vigente y devolver el **déficit**. Es un cálculo; no se persiste (salvo `ruta.viajes_planificados`).
 2. **Asignación (RF03)**: no se puede asignar una cisterna con `vence_autorizacion < fecha_programada` ni con estado ≠ OPERATIVA. No se puede asignar un conductor INACTIVO ni con otra ruta en el mismo turno y fecha. Una cisterna no puede tener dos rutas en la misma fecha y turno. El sistema **sugiere**: cisternas por menos viajes necesarios (no tienen GPS propio) y conductores primero del mismo turno y luego por cercanía de su última posición al centro del sector (Haversine); el Admin **confirma** y puede corregir los viajes planificados.
 3. **Paradas**: una ruta por sector, fecha y turno, con fecha de hoy en adelante. Al programarla se generan paradas con las instituciones críticas activas (`CRITICA`) y, según `sector.tipo_entrega`, los vecinos activos (`HOGAR`) o los puntos de entrega activos (`PUNTO_ENTREGA`), ambos `NORMAL`. Orden: primero las `CRITICA` y luego las `NORMAL`, cada grupo como recorrido encadenado desde el punto de llenado (siguiente = la más cercana aún no visitada). Las paradas se generan al programar: un vecino registrado después entra en la siguiente ruta. Una ruta solo se elimina mientras está PROGRAMADA.
-4. **Geocerca (RF05)**: una parada pasa a `ATENDIDA` solo si la última posición del conductor está a ≤ `aguaya.geocerca.radio-metros` (def. 50 m) de la parada. Si no, se rechaza (409) y se registra el intento.
-5. **Estados de ruta**: PROGRAMADA → EN_CURSO (conductor inicia) → COMPLETADA (todas las paradas en estado final) | INTERRUMPIDA (incidencia que la detiene). No se permiten saltos inválidos.
+4. **Geocerca (RF05)**: una parada pasa a `ATENDIDA` solo si la última posición del conductor (`conductor.lat_actual/lng_actual`) está a ≤ `aguaya.geocerca.radio-metros` (def. 50 m) de la parada. Si no, se rechaza (409 `FUERA_DE_GEOCERCA`, o `SIN_POSICION_GPS` si aún no envió posición) y se registra el intento en `intento_geocerca`. Marcar `NO_ATENDIDA` no exige geocerca. Solo el conductor asignado opera su ruta; una ruta ajena responde 404.
+5. **Estados de ruta**: PROGRAMADA → EN_CURSO (conductor inicia, solo el día programado y sin otra ruta EN_CURSO; queda EN_RUTA) → COMPLETADA (todas las paradas en estado final; vuelve a DISPONIBLE) | INTERRUMPIDA (incidencia que la detiene). No se permiten saltos inválidos (409 `TRANSICION_INVALIDA`). El GPS solo se acepta con la ruta EN_CURSO.
 6. **Reasignación (RF07, manual)**: el Admin elige la ruta destino; las paradas PENDIENTES de la ruta origen se mueven (copia en destino, origen queda `REASIGNADA`), la incidencia pasa a `REASIGNADA` con `ruta_destino_id`. El sistema solo sugiere la cisterna disponible más cercana. **Sin algoritmo automático.**
 7. **Calificación**: solo el vecino dueño de la parada, solo si está ATENDIDA, una vez por parada.
 8. **Registro de vecino**: el OTP confirma que el teléfono es suyo; el sector se asigna automáticamente al más cercano (por centro) y el vecino queda **activo de inmediato** (sin validación del Admin) y con sesión iniciada. El Admin solo puede desactivar cuentas (`persona.activo`).
@@ -247,7 +248,8 @@ Fase 0 (base): repo, setup backend, auth + OTP, datos semilla.
 ### GPS en tiempo real
 - Conductor envía `POST /api/conductor/rutas/{id}/posicion` cada ~15 s (no socket abierto desde el móvil, ahorra batería/datos).
 - Backend guarda en `monitoreo_gps`, actualiza `conductor.lat_actual/lng_actual` y publica por STOMP.
-- Endpoint WebSocket: `/ws`. Tópicos: `/topic/rutas/{id}/posicion`, `/topic/admin/incidencias`, `/topic/admin/rutas`.
+- Endpoint WebSocket: `/ws` (STOMP). El CONNECT lleva `Authorization: Bearer <accessToken>`; cada SUBSCRIBE se autoriza: `/topic/admin/**` solo ADMIN; `/topic/rutas/{id}/posicion` ADMIN, el conductor de la ruta o un vecino de su sector mientras está EN_CURSO. Los clientes no envían mensajes. Se publica después del commit.
+- Tópicos: `/topic/rutas/{id}/posicion`, `/topic/admin/incidencias`, `/topic/admin/rutas` (eventos RUTA_INICIADA, PARADA_ATENDIDA, PARADA_NO_ATENDIDA, RUTA_COMPLETADA).
 
 ### Notificaciones
 - Vecino: push vía Expo (ruta iniciada, cisterna cerca, parada atendida, reasignación).
@@ -279,6 +281,7 @@ PATCH /api/admin/rutas/{id}/asignar                  (RF03)
 GET  /api/admin/rutas?fecha=&estado=&sectorId=
 GET  /api/admin/rutas/{id}                           (detalle con paradas)
 DELETE /api/admin/rutas/{id}                        (solo PROGRAMADA)
+GET  /api/admin/rutas/{id}/recorrido                 (posiciones GPS + intentos fuera de geocerca)
 GET  /api/admin/incidencias?estado=
 POST /api/admin/incidencias/{id}/reasignar           (RF07)
 PATCH /api/admin/incidencias/{id}/cerrar
