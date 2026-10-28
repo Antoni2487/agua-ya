@@ -173,7 +173,7 @@ Cada módulo: `controller/`, `service/`, `repository/`, `entity/`, `dto/`, `mapp
 | `monitoreo_gps` | id, ruta_id, latitud, longitud, registrado_en |
 | `intento_geocerca` | id, parada_id, conductor_id, latitud (null), longitud (null), distancia_metros (null), registrado_en (intentos de atender fuera de la geocerca; evidencia ante desvíos) |
 | `incidencia` | id, ruta_id, parada_id (null), reportado_por (persona_id), tipo, descripcion, estado (ABIERTA / REASIGNADA / CERRADA), ruta_destino_id (null), resuelta_por (null), creado_en, resuelto_en |
-| `calificacion_servicio` | id, parada_id (único), vecino_id, estrellas (1–5, CHECK), comentario, creado_en |
+| `calificacion_servicio` | id, parada_id, vecino_id (único por parada y vecino, V7: en un punto de entrega califican todos sus vecinos), estrellas (1–5, CHECK), comentario, creado_en |
 
 **Tipos de incidencia**
 - Conductor: `AVERIA`, `ACCESO_BLOQUEADO`, `AGUA_AGOTADA`, `OTRO`
@@ -200,7 +200,7 @@ Cada módulo: `controller/`, `service/`, `repository/`, `entity/`, `dto/`, `mapp
    - Solo incidencias ABIERTA (409 `INCIDENCIA_NO_ABIERTA`) de una ruta INTERRUMPIDA o EN_CURSO (409 `RUTA_ORIGEN_NO_REASIGNABLE`) con paradas pendientes (409 `SIN_PARADAS_PENDIENTES`). Destino: otra ruta (400 `MISMA_RUTA`) **del mismo sector** (409 `RUTA_DESTINO_OTRO_SECTOR`; la próxima atención, el GPS y los avisos del vecino se filtran por sector), PROGRAMADA o EN_CURSO y de hoy en adelante (409 `RUTA_DESTINO_NO_DISPONIBLE`).
    - Si la destino ya tiene pendiente el mismo hogar, institución o punto, no se duplica (igual queda REASIGNADA en el origen). Las copias CRITICA van tras las CRITICA de la destino y las NORMAL al final, encadenadas desde el punto de llenado; la destino se renumera. Resuelve la incidencia (`resuelta_por`, `resuelto_en`), publica `PARADAS_REASIGNADAS` y avisa por push a los vecinos de las paradas copiadas.
    - `GET /api/admin/incidencias/{id}/sugerencias-reasignacion`: rutas candidatas del sector; primero las EN_CURSO por distancia de su conductor a la primera parada pendiente, luego por fecha y turno.
-7. **Calificación**: solo el vecino dueño de la parada, solo si está ATENDIDA, una vez por parada.
+7. **Calificación (RF08)**: solo el vecino dueño de la parada (su hogar o el punto de entrega más cercano; si no, 404), solo si está ATENDIDA (409 `PARADA_NO_ATENDIDA`), una vez por parada y vecino (409 `CALIFICACION_DUPLICADA`). 1–5 estrellas y comentario opcional (≤ 500). La próxima atención del vecino incluye `miCalificacion`. El Admin lista (`?sectorId=`, paginado) y ve el resumen: promedio, distribución por estrellas y promedio por conductor (del peor al mejor).
 8. **Registro de vecino**: el OTP confirma que el teléfono es suyo; el sector se asigna automáticamente al más cercano (por centro) y el vecino queda **activo de inmediato** (sin validación del Admin) y con sesión iniciada. El Admin solo puede desactivar cuentas (`persona.activo`).
 9. **Privacidad**: el panel público nunca expone datos personales ni coordenadas de viviendas. La ubicación del conductor solo se expone a vecinos/admin mientras la ruta está EN_CURSO. La próxima atención del vecino solo incluye su propia parada (su hogar o el punto de entrega más cercano).
 10. **Incidencias (RF06)**: el conductor reporta sobre su ruta (AVERIA, ACCESO_BLOQUEADO, AGUA_AGOTADA, OTRO) y el vecino sobre una ruta de su sector (NO_LLEGO, LLEGO_TARDE, YA_PASO, VOLUMEN_INSUFICIENTE, OTRO); otro tipo → 400 `TIPO_NO_PERMITIDO`. La parada, si se indica, debe ser de la ruta (y el vecino no puede indicar el hogar de otro). No se repite una incidencia ABIERTA de la misma persona, ruta y tipo (409). Cada reporte alerta al admin por `/topic/admin/incidencias`; el admin la cierra (CERRADA, `resuelta_por`, `resuelto_en`).
@@ -295,7 +295,8 @@ GET  /api/admin/incidencias/{id}
 GET  /api/admin/incidencias/{id}/sugerencias-reasignacion   (RF07)
 POST /api/admin/incidencias/{id}/reasignar           (RF07, body: rutaDestinoId)
 PATCH /api/admin/incidencias/{id}/cerrar
-GET  /api/admin/calificaciones?sectorId=
+GET  /api/admin/calificaciones?sectorId=              (RF08, paginado)
+GET  /api/admin/calificaciones/resumen?sectorId=      (promedio, distribución, por conductor)
 
 # Conductor
 GET  /api/conductor/rutas/hoy
