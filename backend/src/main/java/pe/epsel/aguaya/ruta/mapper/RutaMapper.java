@@ -6,9 +6,11 @@ import pe.epsel.aguaya.persona.entity.Conductor;
 import pe.epsel.aguaya.ruta.dto.ParadaResponse;
 import pe.epsel.aguaya.ruta.dto.RutaDetalleResponse;
 import pe.epsel.aguaya.ruta.dto.RutaResumenResponse;
+import pe.epsel.aguaya.ruta.dto.ViajeResponse;
 import pe.epsel.aguaya.ruta.entity.EstadoParada;
 import pe.epsel.aguaya.ruta.entity.Parada;
 import pe.epsel.aguaya.ruta.entity.Ruta;
+import pe.epsel.aguaya.ruta.entity.Viaje;
 
 public final class RutaMapper {
 
@@ -31,7 +33,18 @@ public final class RutaMapper {
         return new RutaDetalleResponse(aResumen(r, paradas.size(), atendidas),
                 r.getPuntoLlenado() != null ? r.getPuntoLlenado().getId() : null,
                 r.getPuntoLlenado() != null ? r.getPuntoLlenado().getNombre() : null,
+                r.getViajes().stream().map(v -> aViaje(v, paradas)).toList(),
                 paradas.stream().map(RutaMapper::aParada).toList());
+    }
+
+    /** @param paradas paradas de la ruta, para contar las atendidas en el viaje sin otra consulta */
+    public static ViajeResponse aViaje(Viaje v, List<Parada> paradas) {
+        long atendidas = paradas.stream()
+                .filter(p -> p.getViaje() != null && p.getViaje().getId().equals(v.getId()))
+                .count();
+        return new ViajeResponse(v.getId(), v.getRuta().getId(), v.getNroViaje(), v.getEstado(),
+                v.getPuntoLlenado().getId(), v.getPuntoLlenado().getNombre(), v.getVolumenCargadoLitros(),
+                v.getSalida(), v.getRetorno(), atendidas);
     }
 
     public static ParadaResponse aParada(Parada p) {
@@ -53,6 +66,7 @@ public final class RutaMapper {
             default -> throw new IllegalStateException("Tipo de parada no soportado: " + p.getTipo());
         }
         return new ParadaResponse(p.getId(), p.getOrden(), p.getTipo(), p.getPrioridad(), p.getEstado(),
-                nombre, referencia, p.getLatitud(), p.getLongitud());
+                nombre, referencia, p.getLatitud(), p.getLongitud(),
+                p.getViaje() != null ? p.getViaje().getId() : null);
     }
 }

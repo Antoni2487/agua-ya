@@ -200,6 +200,7 @@ Cada módulo: `controller/`, `service/`, `repository/`, `entity/`, `dto/`, `mapp
 8. **Registro de vecino**: el OTP confirma que el teléfono es suyo; el sector se asigna automáticamente al más cercano (por centro) y el vecino queda **activo de inmediato** (sin validación del Admin) y con sesión iniciada. El Admin solo puede desactivar cuentas (`persona.activo`).
 9. **Privacidad**: el panel público nunca expone datos personales ni coordenadas de viviendas. La ubicación del conductor solo se expone a vecinos/admin mientras la ruta está EN_CURSO. La próxima atención del vecino solo incluye su propia parada (su hogar o el punto de entrega más cercano).
 10. **Incidencias (RF06)**: el conductor reporta sobre su ruta (AVERIA, ACCESO_BLOQUEADO, AGUA_AGOTADA, OTRO) y el vecino sobre una ruta de su sector (NO_LLEGO, LLEGO_TARDE, YA_PASO, VOLUMEN_INSUFICIENTE, OTRO); otro tipo → 400 `TIPO_NO_PERMITIDO`. La parada, si se indica, debe ser de la ruta (y el vecino no puede indicar el hogar de otro). No se repite una incidencia ABIERTA de la misma persona, ruta y tipo (409). Cada reporte alerta al admin por `/topic/admin/incidencias`; el admin la cierra (CERRADA, `resuelta_por`, `resuelto_en`).
+11. **Viajes**: el conductor registra cada viaje al salir cargado (`POST /rutas/{id}/viajes`, ruta EN_CURSO): queda EN_REPARTO con `salida`, `nro_viaje` correlativo, punto de llenado de la ruta por defecto (otro activo si lo indica) y `volumen_cargado_litros` ≤ capacidad de la cisterna (400 `VOLUMEN_EXCEDE_CAPACIDAD`). Solo un viaje abierto por ruta (409 `VIAJE_EN_CURSO`); al finalizarlo pasa a FINALIZADO con `retorno`. Una parada atendida con un viaje abierto queda asociada a él (`parada.viaje_id`); sin viaje abierto, `viaje_id` queda null. La ruta no se completa con un viaje abierto (409 `VIAJE_SIN_FINALIZAR`); si se interrumpe, el viaje abierto se cierra. `viajes_planificados` es referencial: no limita los viajes. EN_CARGA no se usa en el MVP.
 
 ---
 
@@ -250,7 +251,7 @@ Fase 0 (base): repo, setup backend, auth + OTP, datos semilla.
 - Conductor envía `POST /api/conductor/rutas/{id}/posicion` cada ~15 s (no socket abierto desde el móvil, ahorra batería/datos).
 - Backend guarda en `monitoreo_gps`, actualiza `conductor.lat_actual/lng_actual` y publica por STOMP.
 - Endpoint WebSocket: `/ws` (STOMP). El CONNECT lleva `Authorization: Bearer <accessToken>`; cada SUBSCRIBE se autoriza: `/topic/admin/**` solo ADMIN; `/topic/rutas/{id}/posicion` ADMIN, el conductor de la ruta o un vecino de su sector mientras está EN_CURSO. Los clientes no envían mensajes. Se publica después del commit.
-- Tópicos: `/topic/rutas/{id}/posicion`, `/topic/admin/incidencias`, `/topic/admin/rutas` (eventos RUTA_INICIADA, PARADA_ATENDIDA, PARADA_NO_ATENDIDA, RUTA_COMPLETADA).
+- Tópicos: `/topic/rutas/{id}/posicion`, `/topic/admin/incidencias`, `/topic/admin/rutas` (eventos RUTA_INICIADA, VIAJE_INICIADO, VIAJE_FINALIZADO, PARADA_ATENDIDA, PARADA_NO_ATENDIDA, RUTA_COMPLETADA, RUTA_INTERRUMPIDA).
 
 ### Notificaciones
 - Vecino: push vía Expo (ruta iniciada, cisterna cerca, parada atendida, reasignación).
@@ -293,7 +294,7 @@ GET  /api/admin/calificaciones?sectorId=
 GET  /api/conductor/rutas/hoy
 PATCH /api/conductor/rutas/{id}/iniciar
 PATCH /api/conductor/rutas/{id}/finalizar
-POST /api/conductor/rutas/{id}/viajes
+POST /api/conductor/rutas/{id}/viajes               (salida cargada; un viaje abierto a la vez)
 PATCH /api/conductor/viajes/{id}/finalizar
 POST /api/conductor/rutas/{id}/posicion              (RF04)
 PATCH /api/conductor/paradas/{id}/atender            (RF05, geocerca)

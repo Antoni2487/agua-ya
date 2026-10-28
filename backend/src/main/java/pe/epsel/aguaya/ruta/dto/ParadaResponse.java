@@ -9,6 +9,7 @@ import pe.epsel.aguaya.ruta.entity.TipoParada;
 /**
  * @param nombre     vecino, institución o punto de entrega
  * @param referencia dirección de referencia del vecino o referencia del punto
+ * @param viajeId    viaje en el que se atendió, si había uno en reparto
  */
 public record ParadaResponse(
         Long id,
@@ -19,5 +20,6 @@ public record ParadaResponse(
         String nombre,
         String referencia,
         BigDecimal latitud,
-        BigDecimal longitud) {
+        BigDecimal longitud,
+        Long viajeId) {
 }
