@@ -31,7 +31,8 @@ public record AtencionVecinoResponse(Atencion proxima, Atencion ultima) {
     }
 
     /**
-     * @param pendientesAntes paradas pendientes que la cisterna atenderá antes que la suya
+     * @param pendientesAntes  paradas pendientes que la cisterna atenderá antes que la suya
+     * @param miCalificacion   estrellas que ya dio a esta entrega; nula si aún no califica
      */
     public record MiParada(
             Long paradaId,
@@ -40,6 +41,7 @@ public record AtencionVecinoResponse(Atencion proxima, Atencion ultima) {
             String referencia,
             int orden,
             EstadoParada estado,
-            long pendientesAntes) {
+            long pendientesAntes,
+            Integer miCalificacion) {
     }
 }
