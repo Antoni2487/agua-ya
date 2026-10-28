@@ -47,6 +47,7 @@ aguaya:
     origins: ${CORS_ORIGINS:http://localhost:5173}
   geocerca:
     radio-metros: ${GEOCERCA_RADIO_METROS:50}
+    vigencia-posicion-segundos: ${GEOCERCA_VIGENCIA_POSICION_SEGUNDOS:120}
   jwt:
     secret: ${JWT_SECRET}
     access-minutos: ${JWT_ACCESS_MINUTOS:15}

@@ -73,7 +73,7 @@ Errores de negocio: `RUTA_DUPLICADA`, `FECHA_PASADA`, `RUTA_SIN_PARADAS`, `CISTE
 Conductor (app móvil):
 1. `GET /api/conductor/rutas/hoy` → `PATCH /api/conductor/rutas/{id}/iniciar` (solo el día programado).
 2. `POST /api/conductor/rutas/{id}/posicion` cada ~15 s con `{ latitud, longitud }` (responde 204).
-3. `PATCH /api/conductor/paradas/{id}/atender` (a ≤ 50 m de la parada) o `/no-atendida`.
+3. `PATCH /api/conductor/paradas/{id}/atender` (a ≤ 50 m de la parada y con una posición de los últimos 2 minutos) o `/no-atendida`.
 4. `PATCH /api/conductor/rutas/{id}/finalizar` cuando no quedan paradas pendientes.
 
 Vecino: `GET /api/vecino/rutas/{id}/posicion`, solo rutas de su sector y mientras están EN_CURSO.

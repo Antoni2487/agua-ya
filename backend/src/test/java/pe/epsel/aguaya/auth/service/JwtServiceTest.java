@@ -24,7 +24,7 @@ class JwtServiceTest {
     private static JwtService crear(String secret, Clock clock) {
         return new JwtService(new AguayaProperties(LIMA,
                 new AguayaProperties.Cors(List.of("http://localhost")),
-                new AguayaProperties.Geocerca(50),
+                new AguayaProperties.Geocerca(50, 120),
                 new AguayaProperties.Jwt(secret, 15, 30),
                 new AguayaProperties.Otp("log", false, 5, 3, 3),
                 new AguayaProperties.Twilio(null, null, null)), clock);

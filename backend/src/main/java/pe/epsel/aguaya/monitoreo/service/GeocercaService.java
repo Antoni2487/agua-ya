@@ -37,8 +37,10 @@ public class GeocercaService {
     private final Clock clock;
 
     /**
-     * La parada pasa a ATENDIDA solo si la última posición del conductor está dentro del radio.
-     * Si no, se rechaza con 409 y el intento queda registrado (por eso no se revierte la transacción).
+     * La parada pasa a ATENDIDA solo si la última posición del conductor es reciente (por defecto,
+     * de los últimos 2 minutos) y está dentro del radio. Si no, se rechaza con 409 y el intento queda
+     * registrado (por eso no se revierte la transacción). La vigencia evita que un conductor que dejó
+     * de enviar GPS junto a una parada la marque después desde otro lugar.
      */
     @Transactional(noRollbackFor = NegocioException.class)
     public ParadaResponse atender(Long paradaId, Long conductorId, AtenderParadaRequest r) {
@@ -60,9 +62,18 @@ public class GeocercaService {
         double distancia = Haversine.distanciaMetros(conductor.getLatActual().doubleValue(),
                 conductor.getLngActual().doubleValue(), parada.getLatitud().doubleValue(),
                 parada.getLongitud().doubleValue());
-        if (distancia > radio) {
+        boolean desactualizada = conductor.getUbicacionActualizadaEn() == null
+                || conductor.getUbicacionActualizadaEn().isBefore(
+                        ahora.minusSeconds(properties.geocerca().vigenciaPosicionSegundos()));
+        if (desactualizada || distancia > radio) {
             intentoRepository.save(new IntentoGeocerca(parada, conductor, conductor.getLatActual(),
                     conductor.getLngActual(), BigDecimal.valueOf(distancia).setScale(1, RoundingMode.HALF_UP), ahora));
+        }
+        if (desactualizada) {
+            throw NegocioException.conflicto("POSICION_DESACTUALIZADA",
+                    "Tu última ubicación no es reciente. Verifica que el GPS esté activo y vuelve a intentarlo");
+        }
+        if (distancia > radio) {
             throw NegocioException.conflicto("FUERA_DE_GEOCERCA", "Estás a " + Math.round(distancia)
                     + " m de la parada; debes estar a " + radio + " m o menos para marcarla como atendida");
         }
