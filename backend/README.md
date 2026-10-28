@@ -91,6 +91,42 @@ en el CONNECT; tópicos `/topic/rutas/{id}/posicion` y `/topic/admin/rutas`.
 - Vecino: `GET /api/vecino/proxima-atencion` devuelve su próxima ruta (y la última) con su parada y
   cuántas paradas faltan antes de la suya; con eso sabe a qué ruta reportar.
 
+## Viajes
+
+`POST /api/conductor/rutas/{id}/viajes` con `volumenCargadoLitros` (y `puntoLlenadoId` opcional) al salir
+cargado; `PATCH /api/conductor/viajes/{id}/finalizar` al volver. Un viaje abierto por ruta; las paradas
+atendidas durante el viaje quedan asociadas a él. Errores: `VIAJE_EN_CURSO`, `VOLUMEN_EXCEDE_CAPACIDAD`,
+`VIAJE_SIN_FINALIZAR`.
+
+## Notificaciones push
+
+La app registra su token con `POST /api/dispositivos` (`{ expoToken, plataforma }`) y lo da de baja con
+`DELETE /api/dispositivos` al cerrar sesión. Avisos al vecino: ruta iniciada, cisterna cerca (≤ 500 m, una vez
+por parada), entrega registrada y reasignación. `PUSH_PROVIDER=log` (dev, solo log) o `expo` (prod).
+
+## Capacidad (RF02)
+
+`GET /api/admin/capacidad?fecha=&sectorId=&capacidadLitros=`: viajes y cisternas que necesita cada sector
+frente a las cisternas OPERATIVAS con autorización vigente en la fecha, con el déficit global y por sector.
+
+## Reasignación (RF07)
+
+`GET /api/admin/incidencias/{id}/sugerencias-reasignacion` lista rutas del mismo sector (primero las cisternas
+en ruta más cercanas); `POST /api/admin/incidencias/{id}/reasignar` con `rutaDestinoId` mueve las paradas
+pendientes. Errores: `INCIDENCIA_NO_ABIERTA`, `RUTA_ORIGEN_NO_REASIGNABLE`, `RUTA_DESTINO_OTRO_SECTOR`,
+`RUTA_DESTINO_NO_DISPONIBLE`, `SIN_PARADAS_PENDIENTES`.
+
+## Calificaciones (RF08)
+
+Vecino: `POST /api/vecino/calificaciones` con `paradaId`, `estrellas` (1–5) y `comentario` opcional, solo para
+su parada ATENDIDA y una vez. Admin: `GET /api/admin/calificaciones?sectorId=` y `/resumen` (promedio,
+distribución y promedio por conductor).
+
+## Transparencia (RF09, público)
+
+Sin login: `GET /api/public/transparencia/resumen`, `/sectores` y `/cronograma` (`?distrito=&desde=&hasta=`).
+Solo datos agregados: sin nombres, teléfonos ni coordenadas de viviendas.
+
 ## Datos de prueba (referenciales)
 
 `V3__datos_referenciales.sql` carga datos **referenciales, no oficiales de EPSEL** (coordenadas aproximadas,

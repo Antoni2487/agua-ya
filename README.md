@@ -13,6 +13,11 @@ Proyecto académico del curso **Sistemas de Información Empresarial** — Unive
 - Verificación de entregas con GPS y geocerca.
 - Información al vecino sobre cuándo llega el agua.
 
+## Estado
+
+**v0.1.0 (Avance 1)**: backend REST completo del MVP (RF01–RF09). Pendientes: app móvil y panel web.
+Detalle en [`CHANGELOG.md`](CHANGELOG.md).
+
 ## Clientes
 
 | Cliente | Usuarios | Carpeta |
