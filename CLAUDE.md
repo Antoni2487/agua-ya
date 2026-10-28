@@ -99,7 +99,7 @@ Las **averías mecánicas en ruta NO son un problema recurrente documentado**. P
 | Tests | JUnit 5, Spring Boot Test, Testcontainers (Postgres) |
 | Móvil | React Native + Expo, `expo-location`, `react-native-maps`, `expo-notifications` |
 | Web | React + Vite, Leaflet + OpenStreetMap (sin API key) |
-| Infra | Docker Compose (postgres + backend). Despliegue de `develop` en Railway (o Render). |
+| Infra | Docker Compose (postgres + backend). Despliegue de `develop` en Render (`render.yaml`: Docker + PostgreSQL 16). |
 
 ---
 
@@ -355,11 +355,11 @@ Respuestas paginadas con `page`, `size`, `totalElements`. Swagger documenta todo
 
 ## 13. Entornos y configuración
 
-- Perfiles: `dev` (local, docker-compose) y `prod` (Railway).
+- Perfiles: `dev` (local, docker-compose) y `prod` (Render, Blueprint `render.yaml`). En `prod` la BD se configura con `DB_URL` o con `DB_HOST`, `DB_PORT` y `DB_NAME` (como las entrega Render).
 - Variables de entorno (nunca commitear secretos; usar `.env` en `.gitignore` y un `.env.example`):
   `DB_URL`, `DB_USER`, `DB_PASSWORD`, `JWT_SECRET`, `JWT_ACCESS_MINUTOS`, `JWT_REFRESH_DIAS`, `OTP_PROVIDER` (log|twilio), `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_VERIFY_SID`, `PUSH_PROVIDER` (log|expo), `EXPO_ACCESS_TOKEN`, `PUSH_RADIO_CERCANIA_METROS`, `GEOCERCA_RADIO_METROS`, `GEOCERCA_VIGENCIA_POSICION_SEGUNDOS`, `CORS_ORIGINS`.
 - CORS: permitir el origen del panel web y del panel público.
-- Para probar GPS desde el celular el backend debe ser accesible por red: Railway (rama `develop`) o `ngrok` en local.
+- Para probar GPS desde el celular el backend debe ser accesible por red: Render (rama `develop`) o `ngrok` en local.
 
 ---
 
@@ -381,7 +381,7 @@ Marcar como **datos referenciales** (comentario en la migración y en README).
 2. **`feature/backend-setup`**: proyecto Spring Boot (Java 21), perfiles, docker-compose con Postgres, Flyway `V1__esquema_inicial.sql` con **todo** el modelo de la sección 7, Swagger, handler global de errores, endpoint de health. PR → `develop`.
 3. **`feature/auth`**: entidades de persona, OTP de registro (local + Twilio Verify), registro de vecino, login con DNI + contraseña, JWT + refresh, seguridad por roles. Tests de servicio. PR → `develop`.
 4. **`feature/seed-data`**: `V3` con datos referenciales. PR → `develop`.
-5. **Despliegue** de `develop` en Railway.
+5. **Despliegue** de `develop` en Render (`render.yaml`).
 
 En paralelo (otros integrantes): `feature/mobile-setup` (Expo) y `feature/web-setup` (Vite).
 

@@ -1,0 +1,75 @@
+# Blueprint de Render: backend Spring Boot (Docker) + PostgreSQL 16.
+# En Render: New > Blueprint > este repositorio. Despliega la rama develop (CLAUDE.md, sección 15).
+# Las variables con "sync: false" se completan en el panel de Render; nunca se commitean.
+
+databases:
+  - name: aguaya-db
+    databaseName: aguaya
+    user: aguaya
+    plan: free
+    region: virginia
+    postgresMajorVersion: "16"
+
+services:
+  - type: web
+    name: aguaya-backend
+    runtime: docker
+    plan: free
+    region: virginia
+    branch: develop
+    autoDeploy: true
+    dockerContext: ./backend
+    dockerfilePath: ./backend/Dockerfile
+    healthCheckPath: /api/health
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      # La instancia free tiene 512 MB: la JVM usa como máximo el 75 %
+      - key: JAVA_TOOL_OPTIONS
+        value: -XX:MaxRAMPercentage=75 -XX:+UseSerialGC
+
+      # Base de datos (conexión interna de Render, misma región)
+      - key: DB_HOST
+        fromDatabase:
+          name: aguaya-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: aguaya-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: aguaya-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: aguaya-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: aguaya-db
+          property: password
+
+      # Auth: Render genera un secreto aleatorio en el primer despliegue
+      - key: JWT_SECRET
+        generateValue: true
+
+      # Orígenes del panel web y del panel público, separados por coma (actualizar al desplegar el web)
+      - key: CORS_ORIGINS
+        value: http://localhost:5173
+
+      # OTP: "log" deja el código solo en los logs de Render (demo). Con las credenciales, cambiar a "twilio".
+      - key: OTP_PROVIDER
+        value: log
+      - key: TWILIO_ACCOUNT_SID
+        sync: false
+      - key: TWILIO_AUTH_TOKEN
+        sync: false
+      - key: TWILIO_VERIFY_SID
+        sync: false
+
+      # Push al vecino por Expo
+      - key: PUSH_PROVIDER
+        value: expo
+      - key: EXPO_ACCESS_TOKEN
+        sync: false
