@@ -1,9 +1,10 @@
-package pe.epsel.aguaya.monitoreo;
+package pe.epsel.aguaya.soporte;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
@@ -13,38 +14,52 @@ import com.jayway.jsonpath.JsonPath;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import pe.epsel.aguaya.persona.entity.Vecino;
+import pe.epsel.aguaya.persona.repository.VecinoRepository;
+import pe.epsel.aguaya.sector.repository.SectorRepository;
+
 /**
- * Base de los tests de monitoreo: arma una ruta de HOY en un sector propio (lejos de los datos de
+ * Base de los tests de operación de rutas (monitoreo, incidencias): arma una ruta de HOY en un sector propio (lejos de los datos de
  * prueba), con 2 puntos de entrega, una cisterna y un conductor nuevos.
  */
-abstract class EscenarioMonitoreo {
+public abstract class EscenarioRutaHoy {
 
-    static final AtomicInteger SECUENCIA = new AtomicInteger(1);
-    static final LocalDate HOY = LocalDate.now(ZoneId.of("America/Lima"));
-
-    @Autowired
-    MockMvc mockMvc;
+    protected static final AtomicInteger SECUENCIA = new AtomicInteger(1);
+    protected static final LocalDate HOY = LocalDate.now(ZoneId.of("America/Lima"));
 
     @Autowired
-    JdbcTemplate jdbc;
+    protected MockMvc mockMvc;
+
+    @Autowired
+    protected JdbcTemplate jdbc;
+
+    @Autowired
+    private VecinoRepository vecinoRepository;
+
+    @Autowired
+    private SectorRepository sectorRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     /** Ruta asignada y lista para que el conductor la inicie. */
-    record Escenario(long rutaId, long sectorId, long conductorId, String tokenConductor,
+    public record Escenario(long rutaId, long sectorId, long conductorId, String tokenConductor,
                      List<Parada> paradas) {
     }
 
-    record Parada(long id, double latitud, double longitud) {
+    public record Parada(long id, double latitud, double longitud) {
     }
 
-    Escenario escenario() throws Exception {
+    protected Escenario escenario() throws Exception {
         return escenario(HOY);
     }
 
-    Escenario escenario(LocalDate fecha) throws Exception {
+    protected Escenario escenario(LocalDate fecha) throws Exception {
         int n = SECUENCIA.incrementAndGet();
         String admin = login("10000001", "Admin2026!");
         double lat = -6.300 - n * 0.05;
@@ -88,23 +103,37 @@ abstract class EscenarioMonitoreo {
         return new Escenario(rutaId, sectorId, conductorId, login(dni, "Conductor2026!"), paradas);
     }
 
-    String login(String dni, String password) throws Exception {
+    protected String login(String dni, String password) throws Exception {
         return JsonPath.read(mockMvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
                         .content("{\"dni\":\"%s\",\"password\":\"%s\"}".formatted(dni, password)))
                 .andExpect(status().isOk()).andReturn().getResponse().getContentAsString(), "$.accessToken");
     }
 
-    ResultActions iniciar(Escenario e) throws Exception {
+    protected ResultActions iniciar(Escenario e) throws Exception {
         return mockMvc.perform(conToken(e.tokenConductor(), patch("/api/conductor/rutas/" + e.rutaId() + "/iniciar")));
     }
 
-    ResultActions enviarPosicion(Escenario e, double lat, double lng) throws Exception {
+    protected ResultActions enviarPosicion(Escenario e, double lat, double lng) throws Exception {
         return mockMvc.perform(conToken(e.tokenConductor(), post("/api/conductor/rutas/" + e.rutaId() + "/posicion"))
                 .content("{\"latitud\":%s,\"longitud\":%s}".formatted(lat, lng)));
     }
 
-    static MockHttpServletRequestBuilder conToken(String token, MockHttpServletRequestBuilder request) {
+    protected static MockHttpServletRequestBuilder conToken(String token, MockHttpServletRequestBuilder request) {
         return request.header("Authorization", "Bearer " + token).contentType(MediaType.APPLICATION_JSON);
+    }
+
+    /** Crea un vecino con su vivienda junto a la primera parada del escenario y devuelve su token. */
+    protected String vecinoDelSector(Escenario e) throws Exception {
+        int n = SECUENCIA.incrementAndGet();
+        String dni = String.format("%08d", 33_000_000 + n);
+        Vecino vecino = new Vecino(dni, "Vecina", "Prueba", "+519" + String.format("%08d", 33_000_000 + n),
+                passwordEncoder.encode("Vecino2026!"));
+        Parada p = e.paradas().get(0);
+        vecino.setLatitud(BigDecimal.valueOf(p.latitud()));
+        vecino.setLongitud(BigDecimal.valueOf(p.longitud()));
+        vecino.setSector(sectorRepository.getReferenceById(e.sectorId()));
+        vecinoRepository.save(vecino);
+        return login(dni, "Vecino2026!");
     }
 
     private long idDe(MockHttpServletRequestBuilder request, String path) throws Exception {

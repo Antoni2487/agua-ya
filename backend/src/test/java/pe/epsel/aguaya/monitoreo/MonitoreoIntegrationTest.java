@@ -10,17 +10,13 @@ import java.math.BigDecimal;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.ResultActions;
 
 import pe.epsel.aguaya.TestcontainersConfig;
-import pe.epsel.aguaya.persona.entity.Vecino;
-import pe.epsel.aguaya.persona.repository.VecinoRepository;
-import pe.epsel.aguaya.sector.repository.SectorRepository;
+import pe.epsel.aguaya.soporte.EscenarioRutaHoy;
 
 /**
  * Monitoreo GPS (RF04), geocerca (RF05) y estados de la ruta (regla 5) vistos por el conductor,
@@ -29,19 +25,11 @@ import pe.epsel.aguaya.sector.repository.SectorRepository;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Import(TestcontainersConfig.class)
-class MonitoreoIntegrationTest extends EscenarioMonitoreo {
+class MonitoreoIntegrationTest extends EscenarioRutaHoy {
 
     /** ~220 m al norte de la parada: fuera del radio de 50 m. */
     private static final double LEJOS = 0.002;
 
-    @Autowired
-    private VecinoRepository vecinoRepository;
-
-    @Autowired
-    private SectorRepository sectorRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     // ------------------------------------------------------------- iniciar
 
@@ -222,16 +210,4 @@ class MonitoreoIntegrationTest extends EscenarioMonitoreo {
                 e.conductorId());
     }
 
-    private String vecinoDelSector(Escenario e) throws Exception {
-        int n = SECUENCIA.incrementAndGet();
-        String dni = String.format("%08d", 33_000_000 + n);
-        Vecino vecino = new Vecino(dni, "Vecina", "Monitoreo", "+519" + String.format("%08d", 33_000_000 + n),
-                passwordEncoder.encode("Vecino2026!"));
-        Parada p = e.paradas().get(0);
-        vecino.setLatitud(BigDecimal.valueOf(p.latitud()));
-        vecino.setLongitud(BigDecimal.valueOf(p.longitud()));
-        vecino.setSector(sectorRepository.getReferenceById(e.sectorId()));
-        vecinoRepository.save(vecino);
-        return login(dni, "Vecino2026!");
-    }
 }

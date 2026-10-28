@@ -194,11 +194,12 @@ Cada módulo: `controller/`, `service/`, `repository/`, `entity/`, `dto/`, `mapp
 2. **Asignación (RF03)**: no se puede asignar una cisterna con `vence_autorizacion < fecha_programada` ni con estado ≠ OPERATIVA. No se puede asignar un conductor INACTIVO ni con otra ruta en el mismo turno y fecha. Una cisterna no puede tener dos rutas en la misma fecha y turno. El sistema **sugiere**: cisternas por menos viajes necesarios (no tienen GPS propio) y conductores primero del mismo turno y luego por cercanía de su última posición al centro del sector (Haversine); el Admin **confirma** y puede corregir los viajes planificados.
 3. **Paradas**: una ruta por sector, fecha y turno, con fecha de hoy en adelante. Al programarla se generan paradas con las instituciones críticas activas (`CRITICA`) y, según `sector.tipo_entrega`, los vecinos activos (`HOGAR`) o los puntos de entrega activos (`PUNTO_ENTREGA`), ambos `NORMAL`. Orden: primero las `CRITICA` y luego las `NORMAL`, cada grupo como recorrido encadenado desde el punto de llenado (siguiente = la más cercana aún no visitada). Las paradas se generan al programar: un vecino registrado después entra en la siguiente ruta. Una ruta solo se elimina mientras está PROGRAMADA.
 4. **Geocerca (RF05)**: una parada pasa a `ATENDIDA` solo si la última posición del conductor (`conductor.lat_actual/lng_actual`) tiene como máximo `aguaya.geocerca.vigencia-posicion-segundos` (def. 120 s) de antigüedad y está a ≤ `aguaya.geocerca.radio-metros` (def. 50 m) de la parada. Si no, se rechaza (409 `FUERA_DE_GEOCERCA`, `POSICION_DESACTUALIZADA`, o `SIN_POSICION_GPS` si aún no envió posición) y se registra el intento en `intento_geocerca`. Marcar `NO_ATENDIDA` no exige geocerca. Solo el conductor asignado opera su ruta; una ruta ajena responde 404.
-5. **Estados de ruta**: PROGRAMADA → EN_CURSO (conductor inicia, solo el día programado y sin otra ruta EN_CURSO; queda EN_RUTA) → COMPLETADA (todas las paradas en estado final; vuelve a DISPONIBLE) | INTERRUMPIDA (incidencia que la detiene). No se permiten saltos inválidos (409 `TRANSICION_INVALIDA`). El GPS solo se acepta con la ruta EN_CURSO.
+5. **Estados de ruta**: PROGRAMADA → EN_CURSO (conductor inicia, solo el día programado y sin otra ruta EN_CURSO; queda EN_RUTA) → COMPLETADA (todas las paradas en estado final; vuelve a DISPONIBLE) | INTERRUMPIDA (incidencia del conductor con `detieneRuta: true`; vuelve a DISPONIBLE y las paradas pendientes quedan PENDIENTE para RF07). No se permiten saltos inválidos (409 `TRANSICION_INVALIDA`). El GPS solo se acepta con la ruta EN_CURSO.
 6. **Reasignación (RF07, manual)**: el Admin elige la ruta destino; las paradas PENDIENTES de la ruta origen se mueven (copia en destino, origen queda `REASIGNADA`), la incidencia pasa a `REASIGNADA` con `ruta_destino_id`. El sistema solo sugiere la cisterna disponible más cercana. **Sin algoritmo automático.**
 7. **Calificación**: solo el vecino dueño de la parada, solo si está ATENDIDA, una vez por parada.
 8. **Registro de vecino**: el OTP confirma que el teléfono es suyo; el sector se asigna automáticamente al más cercano (por centro) y el vecino queda **activo de inmediato** (sin validación del Admin) y con sesión iniciada. El Admin solo puede desactivar cuentas (`persona.activo`).
-9. **Privacidad**: el panel público nunca expone datos personales ni coordenadas de viviendas. La ubicación del conductor solo se expone a vecinos/admin mientras la ruta está EN_CURSO.
+9. **Privacidad**: el panel público nunca expone datos personales ni coordenadas de viviendas. La ubicación del conductor solo se expone a vecinos/admin mientras la ruta está EN_CURSO. La próxima atención del vecino solo incluye su propia parada (su hogar o el punto de entrega más cercano).
+10. **Incidencias (RF06)**: el conductor reporta sobre su ruta (AVERIA, ACCESO_BLOQUEADO, AGUA_AGOTADA, OTRO) y el vecino sobre una ruta de su sector (NO_LLEGO, LLEGO_TARDE, YA_PASO, VOLUMEN_INSUFICIENTE, OTRO); otro tipo → 400 `TIPO_NO_PERMITIDO`. La parada, si se indica, debe ser de la ruta (y el vecino no puede indicar el hogar de otro). No se repite una incidencia ABIERTA de la misma persona, ruta y tipo (409). Cada reporte alerta al admin por `/topic/admin/incidencias`; el admin la cierra (CERRADA, `resuelta_por`, `resuelto_en`).
 
 ---
 
@@ -282,7 +283,8 @@ GET  /api/admin/rutas?fecha=&estado=&sectorId=
 GET  /api/admin/rutas/{id}                           (detalle con paradas)
 DELETE /api/admin/rutas/{id}                        (solo PROGRAMADA)
 GET  /api/admin/rutas/{id}/recorrido                 (posiciones GPS + intentos fuera de geocerca)
-GET  /api/admin/incidencias?estado=
+GET  /api/admin/incidencias?estado=&tipo=&rutaId=
+GET  /api/admin/incidencias/{id}
 POST /api/admin/incidencias/{id}/reasignar           (RF07)
 PATCH /api/admin/incidencias/{id}/cerrar
 GET  /api/admin/calificaciones?sectorId=
@@ -299,10 +301,11 @@ PATCH /api/conductor/paradas/{id}/no-atendida
 
 # Vecino
 GET  /api/vecino/me
-GET  /api/vecino/proxima-atencion
+GET  /api/vecino/proxima-atencion                    (ruta en curso o siguiente + última, con su parada)
 GET  /api/vecino/rutas/{id}/posicion
 POST /api/vecino/calificaciones                      (RF08)
 POST /api/incidencias                                (RF06, conductor o vecino)
+GET  /api/incidencias                                (las que reportó la persona autenticada)
 POST /api/dispositivos                               (registrar expo_token)
 
 # Público (sin auth)
