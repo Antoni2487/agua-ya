@@ -1,7 +1,9 @@
 package pe.epsel.aguaya.ruta.repository;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.data.domain.Page;
@@ -27,6 +29,14 @@ public interface RutaRepository extends JpaRepository<Ruta, Long> {
     List<Ruta> findByConductorIdAndFechaProgramadaOrderByTurnoAsc(Long conductorId, LocalDate fecha);
 
     boolean existsByConductorIdAndEstado(Long conductorId, EstadoRuta estado);
+
+    Optional<Ruta> findFirstBySectorIdAndEstadoOrderByFechaProgramadaDesc(Long sectorId, EstadoRuta estado);
+
+    Optional<Ruta> findFirstBySectorIdAndEstadoAndFechaProgramadaGreaterThanEqualOrderByFechaProgramadaAscTurnoAsc(
+            Long sectorId, EstadoRuta estado, LocalDate desde);
+
+    Optional<Ruta> findFirstBySectorIdAndEstadoInOrderByFechaProgramadaDescIdDesc(Long sectorId,
+                                                                                   Collection<EstadoRuta> estados);
 
     /** Cisternas ya asignadas a otra ruta en esa fecha y turno. */
     @Query("SELECT r.cisterna.id FROM Ruta r WHERE r.cisterna IS NOT NULL AND r.fechaProgramada = :fecha "

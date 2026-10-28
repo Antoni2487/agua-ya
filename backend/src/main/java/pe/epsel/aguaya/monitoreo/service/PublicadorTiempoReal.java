@@ -19,6 +19,7 @@ import pe.epsel.aguaya.monitoreo.dto.PosicionResponse;
 public class PublicadorTiempoReal {
 
     public static final String TOPICO_ADMIN_RUTAS = "/topic/admin/rutas";
+    public static final String TOPICO_ADMIN_INCIDENCIAS = "/topic/admin/incidencias";
 
     private final SimpMessagingTemplate messagingTemplate;
 
@@ -32,6 +33,11 @@ public class PublicadorTiempoReal {
 
     public void eventoRuta(EventoRuta evento) {
         enviar(TOPICO_ADMIN_RUTAS, evento);
+    }
+
+    /** Alerta al panel del administrador (RF06). */
+    public void incidencia(Object incidencia) {
+        enviar(TOPICO_ADMIN_INCIDENCIAS, incidencia);
     }
 
     private void enviar(String destino, Object payload) {

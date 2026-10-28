@@ -127,6 +127,16 @@ public class Ruta {
         this.fin = ahora;
     }
 
+    /**
+     * Regla 5: EN_CURSO -> INTERRUMPIDA por una incidencia que detiene la ruta. Las paradas pendientes
+     * quedan PENDIENTE para que el administrador las reasigne (RF07).
+     */
+    public void interrumpir(OffsetDateTime ahora) {
+        exigirEstado(EstadoRuta.EN_CURSO, "interrumpir");
+        this.estado = EstadoRuta.INTERRUMPIDA;
+        this.fin = ahora;
+    }
+
     public void exigirEnCurso() {
         exigirEstado(EstadoRuta.EN_CURSO, "operar");
     }

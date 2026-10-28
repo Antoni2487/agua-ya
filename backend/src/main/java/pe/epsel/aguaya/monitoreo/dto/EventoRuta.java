@@ -17,6 +17,7 @@ public record EventoRuta(
         RUTA_INICIADA,
         PARADA_ATENDIDA,
         PARADA_NO_ATENDIDA,
-        RUTA_COMPLETADA
+        RUTA_COMPLETADA,
+        RUTA_INTERRUMPIDA
     }
 }
