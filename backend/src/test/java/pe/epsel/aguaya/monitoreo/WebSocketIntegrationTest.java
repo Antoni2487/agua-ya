@@ -29,6 +29,7 @@ import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import pe.epsel.aguaya.TestcontainersConfig;
+import pe.epsel.aguaya.soporte.EscenarioRutaHoy;
 
 /**
  * STOMP en {@code /ws}: autenticación en el CONNECT y autorización por tópico (regla 9).
@@ -36,7 +37,7 @@ import pe.epsel.aguaya.TestcontainersConfig;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @Import(TestcontainersConfig.class)
-class WebSocketIntegrationTest extends EscenarioMonitoreo {
+class WebSocketIntegrationTest extends EscenarioRutaHoy {
 
     @LocalServerPort
     private int puerto;
@@ -78,6 +79,31 @@ class WebSocketIntegrationTest extends EscenarioMonitoreo {
         assertThat(((Number) posicion.get("rutaId")).longValue()).isEqualTo(e.rutaId());
         assertThat(((Number) posicion.get("latitud")).doubleValue()).isCloseTo(p.latitud(),
                 org.assertj.core.data.Offset.offset(1e-6));
+    }
+
+    @Test
+    void adminRecibeLaAlertaDeIncidencia() throws Exception {
+        Escenario e = escenario();
+        StompSession sesion = conectar(login("10000001", "Admin2026!"));
+        BlockingQueue<Map<String, Object>> alertas = suscribir(sesion, "/topic/admin/incidencias");
+        Thread.sleep(300);
+
+        mockMvc.perform(conToken(e.tokenConductor(),
+                        org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post("/api/incidencias"))
+                        .content("{\"rutaId\":%d,\"tipo\":\"AGUA_AGOTADA\"}".formatted(e.rutaId())))
+                .andExpect(status().isCreated());
+
+        long limite = System.currentTimeMillis() + 5000;
+        Map<String, Object> alerta = null;
+        while (alerta == null && System.currentTimeMillis() < limite) {
+            Map<String, Object> m = alertas.poll(500, TimeUnit.MILLISECONDS);
+            if (m != null && ((Number) m.get("rutaId")).longValue() == e.rutaId()) {
+                alerta = m;
+            }
+        }
+        assertThat(alerta).isNotNull();
+        assertThat(alerta.get("tipo")).isEqualTo("AGUA_AGOTADA");
+        assertThat(alerta.get("estado")).isEqualTo("ABIERTA");
     }
 
     @Test

@@ -82,6 +82,15 @@ Admin: `GET /api/admin/rutas/{id}/recorrido` con las posiciones y los intentos f
 Tiempo real (panel web): STOMP en `ws://<host>/ws` con la cabecera `Authorization: Bearer <accessToken>`
 en el CONNECT; tópicos `/topic/rutas/{id}/posicion` y `/topic/admin/rutas`.
 
+## Incidencias (RF06)
+
+- `POST /api/incidencias` (conductor o vecino) con `rutaId`, `tipo`, `paradaId` y `descripcion` opcionales.
+  El conductor puede enviar `"detieneRuta": true` (p. ej. avería) para dejar la ruta INTERRUMPIDA.
+- `GET /api/incidencias`: las propias. Admin: `GET /api/admin/incidencias?estado=ABIERTA` y
+  `PATCH /api/admin/incidencias/{id}/cerrar`. Alerta en vivo en `/topic/admin/incidencias`.
+- Vecino: `GET /api/vecino/proxima-atencion` devuelve su próxima ruta (y la última) con su parada y
+  cuántas paradas faltan antes de la suya; con eso sabe a qué ruta reportar.
+
 ## Datos de prueba (referenciales)
 
 `V3__datos_referenciales.sql` carga datos **referenciales, no oficiales de EPSEL** (coordenadas aproximadas,
