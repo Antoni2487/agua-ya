@@ -5,12 +5,18 @@ Sistema de gestión logística del abastecimiento de agua potable mediante camio
 Proyecto académico del curso **Sistemas de Información Empresarial** — Universidad Tecnológica del Perú (UTP), sede Chiclayo.
 
 > Los datos de sectores, cisternas y placas incluidos en el sistema son **referenciales**, no oficiales de EPSEL.
+> Las cuentas de prueba están en [`backend/README.md`](backend/README.md#datos-de-prueba-referenciales).
 
 ## Núcleo de valor
 
 - Planificación por capacidad (viajes y cisternas necesarios vs. disponibles, según SUNASS).
 - Verificación de entregas con GPS y geocerca.
 - Información al vecino sobre cuándo llega el agua.
+
+## Estado
+
+**v0.1.0 (Avance 1)**: backend REST completo del MVP (RF01–RF09). Pendientes: app móvil y panel web.
+Detalle en [`CHANGELOG.md`](CHANGELOG.md).
 
 ## Clientes
 
