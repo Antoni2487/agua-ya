@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import pe.epsel.aguaya.calificacion.repository.CalificacionRepository;
 import pe.epsel.aguaya.common.exception.NegocioException;
 import pe.epsel.aguaya.common.util.Haversine;
 import pe.epsel.aguaya.persona.entity.Vecino;
@@ -39,6 +40,7 @@ public class VecinoRutaService {
     private final VecinoRepository vecinoRepository;
     private final RutaRepository rutaRepository;
     private final ParadaRepository paradaRepository;
+    private final CalificacionRepository calificacionRepository;
     private final Clock clock;
 
     /** Próxima: la ruta EN_CURSO del sector o, si no hay, la siguiente PROGRAMADA desde hoy. */
@@ -70,7 +72,9 @@ public class VecinoRutaService {
                             .filter(o -> o.getOrden() < p.getOrden() && o.getEstado() == EstadoParada.PENDIENTE)
                             .count();
                     return new MiParada(p.getId(), p.getTipo(), datos.nombre(), datos.referencia(), p.getOrden(),
-                            p.getEstado(), pendientesAntes);
+                            p.getEstado(), pendientesAntes,
+                            calificacionRepository.findByParadaIdAndVecinoId(p.getId(), vecino.getId())
+                                    .map(c -> (int) c.getEstrellas()).orElse(null));
                 })
                 .orElse(null);
         return new Atencion(ruta.getId(), ruta.getFechaProgramada(), ruta.getTurno(), ruta.getEstado(),
