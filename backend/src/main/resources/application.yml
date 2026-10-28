@@ -62,3 +62,7 @@ aguaya:
     account-sid: ${TWILIO_ACCOUNT_SID:}
     auth-token: ${TWILIO_AUTH_TOKEN:}
     verify-sid: ${TWILIO_VERIFY_SID:}
+  push:
+    provider: ${PUSH_PROVIDER:log}
+    expo-access-token: ${EXPO_ACCESS_TOKEN:}
+    radio-cercania-metros: ${PUSH_RADIO_CERCANIA_METROS:500}

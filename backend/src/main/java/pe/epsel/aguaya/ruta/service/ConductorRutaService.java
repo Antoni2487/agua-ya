@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pe.epsel.aguaya.common.exception.NegocioException;
 import pe.epsel.aguaya.monitoreo.dto.EventoRuta;
 import pe.epsel.aguaya.monitoreo.service.PublicadorTiempoReal;
+import pe.epsel.aguaya.notificacion.service.NotificacionService;
 import pe.epsel.aguaya.persona.entity.EstadoDisponibilidad;
 import pe.epsel.aguaya.ruta.dto.RutaDetalleResponse;
 import pe.epsel.aguaya.ruta.entity.EstadoRuta;
@@ -31,6 +32,7 @@ public class ConductorRutaService {
     private final RutaRepository rutaRepository;
     private final ParadaRepository paradaRepository;
     private final PublicadorTiempoReal publicador;
+    private final NotificacionService notificacionService;
     private final Clock clock;
 
     @Transactional(readOnly = true)
@@ -57,6 +59,7 @@ public class ConductorRutaService {
         ruta.iniciar(ahora);
         ruta.getConductor().setEstadoDisponibilidad(EstadoDisponibilidad.EN_RUTA);
         publicador.eventoRuta(new EventoRuta(EventoRuta.Tipo.RUTA_INICIADA, rutaId, null, ahora));
+        notificacionService.rutaIniciada(ruta);
         return RutaMapper.aDetalle(ruta, paradaRepository.findDetalleByRutaId(rutaId));
     }
 
