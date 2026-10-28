@@ -5,7 +5,8 @@ import pe.epsel.aguaya.sector.entity.Sector;
 /**
  * Viajes que necesita una cisterna para atender un sector en una visita (fórmula SUNASS).
  * <pre>
- * viajes = ⌈ unidades_uso × dotacion_litros × frecuencia_dias ÷ capacidad_litros ⌉
+ * viajes    = ⌈ unidades_uso × dotacion_litros × frecuencia_dias ÷ capacidad_litros ⌉
+ * cisternas = ⌈ viajes ÷ max_viajes_diarios ⌉
  * </pre>
  * La frecuencia multiplica porque cada visita debe cubrir los días hasta la siguiente.
  */
@@ -27,5 +28,13 @@ public final class CalculadoraViajes {
         long litros = litrosPorVisita(sector);
         long viajes = (litros + capacidadLitros - 1) / capacidadLitros;
         return (int) Math.max(1, viajes);
+    }
+
+    /** Cisternas para hacer esos viajes sin pasar el máximo diario del sector. */
+    public static int cisternasNecesarias(int viajesNecesarios, int maxViajesDiarios) {
+        if (maxViajesDiarios <= 0) {
+            throw new IllegalArgumentException("El máximo de viajes diarios debe ser positivo");
+        }
+        return (viajesNecesarios + maxViajesDiarios - 1) / maxViajesDiarios;
     }
 }
