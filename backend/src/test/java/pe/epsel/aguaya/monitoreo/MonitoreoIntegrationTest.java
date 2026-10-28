@@ -129,6 +129,27 @@ class MonitoreoIntegrationTest extends EscenarioMonitoreo {
                 e.conductorId()).doubleValue()).isCloseTo(p.latitud() + 0.0001, org.assertj.core.data.Offset.offset(1e-6));
     }
 
+    @Test
+    void posicionDeHaceMasDeDosMinutosNoValidaLaGeocerca() throws Exception {
+        Escenario e = escenario();
+        Parada p = e.paradas().get(0);
+        iniciar(e).andExpect(status().isOk());
+        enviarPosicion(e, p.latitud(), p.longitud()).andExpect(status().isNoContent());
+
+        // El conductor dejó de enviar GPS hace 3 minutos junto a la parada
+        jdbc.update("UPDATE conductor SET ubicacion_actualizada_en = now() - interval '3 minutes' WHERE persona_id = ?",
+                e.conductorId());
+        atender(e, p.id())
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.codigo").value("POSICION_DESACTUALIZADA"));
+        assertThat(jdbc.queryForObject("SELECT count(*) FROM intento_geocerca WHERE parada_id = ?", Integer.class, p.id()))
+                .isEqualTo(1);
+
+        // Con una posición nueva se puede atender
+        enviarPosicion(e, p.latitud(), p.longitud()).andExpect(status().isNoContent());
+        atender(e, p.id()).andExpect(status().isOk());
+    }
+
     // ------------------------------------------------------------ finalizar
 
     @Test
