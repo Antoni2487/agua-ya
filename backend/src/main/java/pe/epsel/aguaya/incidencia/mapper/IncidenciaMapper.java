@@ -16,6 +16,7 @@ public final class IncidenciaMapper {
                 i.getParada() != null ? i.getParada().getId() : null,
                 i.getParada() != null ? i.getParada().getOrden() : null,
                 i.getTipo(), i.getDescripcion(), i.getEstado(),
+                i.getRutaDestino() != null ? i.getRutaDestino().getId() : null,
                 reporta.getId(), nombre(reporta), reporta.getRol(), i.getCreadoEn(),
                 i.getResueltaPor() != null ? nombre(i.getResueltaPor()) : null, i.getResueltoEn());
     }
