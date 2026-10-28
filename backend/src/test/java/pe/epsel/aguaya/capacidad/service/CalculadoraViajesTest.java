@@ -57,4 +57,13 @@ class CalculadoraViajesTest {
         assertThatThrownBy(() -> CalculadoraViajes.viajesNecesarios(sector(10, 1), 0))
                 .isInstanceOf(IllegalArgumentException.class);
     }
+
+    @Test
+    void cisternasNecesariasRedondeaHaciaArriba() {
+        // P.J. Urrunaga: 5 viajes con máximo 3 por cisterna al día -> 2 cisternas
+        assertThat(CalculadoraViajes.cisternasNecesarias(5, 3)).isEqualTo(2);
+        assertThat(CalculadoraViajes.cisternasNecesarias(4, 4)).isEqualTo(1);
+        assertThatThrownBy(() -> CalculadoraViajes.cisternasNecesarias(4, 0))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
 }
