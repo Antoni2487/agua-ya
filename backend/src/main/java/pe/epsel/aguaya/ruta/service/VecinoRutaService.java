@@ -78,7 +78,7 @@ public class VecinoRutaService {
     }
 
     /** Su hogar (reparto a domicilio) o el punto de entrega más cercano a su vivienda. */
-    private static Optional<Parada> paradaDelVecino(List<Parada> paradas, Vecino vecino) {
+    public static Optional<Parada> paradaDelVecino(List<Parada> paradas, Vecino vecino) {
         Optional<Parada> hogar = paradas.stream()
                 .filter(p -> p.getTipo() == TipoParada.HOGAR && p.getVecino().getId().equals(vecino.getId()))
                 .findFirst();
