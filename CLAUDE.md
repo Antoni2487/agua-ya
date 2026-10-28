@@ -191,6 +191,7 @@ Cada módulo: `controller/`, `service/`, `repository/`, `entity/`, `dto/`, `mapp
    - `viajes_necesarios = ceil(unidades_uso × dotacion_litros × frecuencia_dias ÷ capacidad_litros_cisterna)` (cada visita cubre los días hasta la siguiente; mínimo 1). Implementado en `capacidad/service/CalculadoraViajes`.
    - `cisternas_necesarias = ceil(viajes_necesarios ÷ max_viajes_diarios)`
    - Comparar con cisternas OPERATIVAS con autorización vigente y devolver el **déficit**. Es un cálculo; no se persiste (salvo `ruta.viajes_planificados`).
+   - `GET /api/admin/capacidad?fecha=&sectorId=&capacidadLitros=` (fecha por defecto hoy). La capacidad de referencia es el promedio de las cisternas disponibles en la fecha (o de toda la flota si no hay ninguna), o la que indique el Admin para simular. Sin `sectorId` suma todos los sectores activos frente a la misma flota (déficit global); cada sector trae además su déficit como si fuera el único. Devuelve el desglose de la flota (disponibles, no operativas, autorización vencida).
 2. **Asignación (RF03)**: no se puede asignar una cisterna con `vence_autorizacion < fecha_programada` ni con estado ≠ OPERATIVA. No se puede asignar un conductor INACTIVO ni con otra ruta en el mismo turno y fecha. Una cisterna no puede tener dos rutas en la misma fecha y turno. El sistema **sugiere**: cisternas por menos viajes necesarios (no tienen GPS propio) y conductores primero del mismo turno y luego por cercanía de su última posición al centro del sector (Haversine); el Admin **confirma** y puede corregir los viajes planificados.
 3. **Paradas**: una ruta por sector, fecha y turno, con fecha de hoy en adelante. Al programarla se generan paradas con las instituciones críticas activas (`CRITICA`) y, según `sector.tipo_entrega`, los vecinos activos (`HOGAR`) o los puntos de entrega activos (`PUNTO_ENTREGA`), ambos `NORMAL`. Orden: primero las `CRITICA` y luego las `NORMAL`, cada grupo como recorrido encadenado desde el punto de llenado (siguiente = la más cercana aún no visitada). Las paradas se generan al programar: un vecino registrado después entra en la siguiente ruta. Una ruta solo se elimina mientras está PROGRAMADA.
 4. **Geocerca (RF05)**: una parada pasa a `ATENDIDA` solo si la última posición del conductor (`conductor.lat_actual/lng_actual`) tiene como máximo `aguaya.geocerca.vigencia-posicion-segundos` (def. 120 s) de antigüedad y está a ≤ `aguaya.geocerca.radio-metros` (def. 50 m) de la parada. Si no, se rechaza (409 `FUERA_DE_GEOCERCA`, `POSICION_DESACTUALIZADA`, o `SIN_POSICION_GPS` si aún no envió posición) y se registra el intento en `intento_geocerca`. Marcar `NO_ATENDIDA` no exige geocerca. Solo el conductor asignado opera su ruta; una ruta ajena responde 404.
@@ -278,7 +279,7 @@ CRUD /api/admin/puntos-entrega
 CRUD /api/admin/puntos-llenado
 CRUD /api/admin/cisternas
 CRUD /api/admin/conductores
-GET  /api/admin/capacidad?sectorId=&fecha=          (RF02)
+GET  /api/admin/capacidad?fecha=&sectorId=&capacidadLitros=   (RF02)
 POST /api/admin/rutas                                (RF01)
 GET  /api/admin/rutas/{id}/sugerencias-asignacion    (RF03)
 PATCH /api/admin/rutas/{id}/asignar                  (RF03)
