@@ -169,7 +169,7 @@ Cada módulo: `controller/`, `service/`, `repository/`, `entity/`, `dto/`, `mapp
 | `cisterna` | id, placa (único), capacidad_litros, estado_vehiculo (OPERATIVA / MANTENIMIENTO / AVERIADA), nro_autorizacion_sanitaria, vence_autorizacion |
 | `ruta` | id, fecha_programada, turno (MANANA / TARDE), sector_id, punto_llenado_id, conductor_id, cisterna_id, administrador_id, viajes_planificados, estado (PROGRAMADA / EN_CURSO / INTERRUMPIDA / COMPLETADA), inicio, fin, creado_en |
 | `viaje` | id, ruta_id, nro_viaje, punto_llenado_id, volumen_cargado_litros, salida, retorno, estado (EN_CARGA / EN_REPARTO / FINALIZADO) |
-| `parada` | id, ruta_id, viaje_id (null), tipo (HOGAR / INSTITUCION / PUNTO_ENTREGA), vecino_id (null), institucion_id (null), punto_entrega_id (null), latitud, longitud, orden, prioridad (CRITICA / NORMAL), estado (PENDIENTE / ATENDIDA / NO_ATENDIDA / REASIGNADA), volumen_entregado_litros, verificada_gps, atendida_en |
+| `parada` | id, ruta_id, viaje_id (null), tipo (HOGAR / INSTITUCION / PUNTO_ENTREGA), vecino_id (null), institucion_id (null), punto_entrega_id (null), latitud, longitud, orden, prioridad (CRITICA / NORMAL), estado (PENDIENTE / ATENDIDA / NO_ATENDIDA / REASIGNADA), volumen_entregado_litros, verificada_gps, atendida_en, aviso_cercania_en (null; aviso push "cisterna cerca" enviado) |
 | `monitoreo_gps` | id, ruta_id, latitud, longitud, registrado_en |
 | `intento_geocerca` | id, parada_id, conductor_id, latitud (null), longitud (null), distancia_metros (null), registrado_en (intentos de atender fuera de la geocerca; evidencia ante desvíos) |
 | `incidencia` | id, ruta_id, parada_id (null), reportado_por (persona_id), tipo, descripcion, estado (ABIERTA / REASIGNADA / CERRADA), ruta_destino_id (null), resuelta_por (null), creado_en, resuelto_en |
@@ -254,7 +254,9 @@ Fase 0 (base): repo, setup backend, auth + OTP, datos semilla.
 - Tópicos: `/topic/rutas/{id}/posicion`, `/topic/admin/incidencias`, `/topic/admin/rutas` (eventos RUTA_INICIADA, VIAJE_INICIADO, VIAJE_FINALIZADO, PARADA_ATENDIDA, PARADA_NO_ATENDIDA, RUTA_COMPLETADA, RUTA_INTERRUMPIDA).
 
 ### Notificaciones
-- Vecino: push vía Expo (ruta iniciada, cisterna cerca, parada atendida, reasignación).
+- Vecino: push vía Expo (ruta iniciada, cisterna cerca, parada atendida, reasignación). La app registra su token con `POST /api/dispositivos` (VECINO o CONDUCTOR; un token es de una sola persona, si otra lo registra pasa a ella) y lo da de baja con `DELETE /api/dispositivos` al cerrar sesión.
+- Destinatarios: solo vecinos activos, cada uno por su parada (su hogar o el punto de entrega más cercano; regla 9). **Ruta iniciada**: vecinos con parada pendiente. **Cisterna cerca**: cuando una posición GPS queda a ≤ `aguaya.push.radio-cercania-metros` (def. 500 m) de una parada pendiente; una sola vez por parada (`parada.aviso_cercania_en`). **Entrega registrada**: al atender la parada (invita a calificar). La reasignación se notificará con RF07.
+- Interfaz `ProveedorPush` elegida con `PUSH_PROVIDER`: `log` (dev, solo log) o `expo` (Expo Push API por HTTP, lotes de 100, `EXPO_ACCESS_TOKEN` opcional; por defecto en `prod`). Envío después del commit en un pool propio (no demora al conductor); un fallo de Expo no afecta la operación y los tokens `DeviceNotRegistered` se eliminan.
 - Admin: alertas por WebSocket en el panel web.
 
 ---
@@ -307,7 +309,8 @@ GET  /api/vecino/rutas/{id}/posicion
 POST /api/vecino/calificaciones                      (RF08)
 POST /api/incidencias                                (RF06, conductor o vecino)
 GET  /api/incidencias                                (las que reportó la persona autenticada)
-POST /api/dispositivos                               (registrar expo_token)
+POST /api/dispositivos                               (registrar expo_token; vecino o conductor)
+DELETE /api/dispositivos                             (baja del token al cerrar sesión)
 
 # Público (sin auth)
 GET  /api/public/transparencia/resumen               (RF09)
@@ -347,7 +350,7 @@ Respuestas paginadas con `page`, `size`, `totalElements`. Swagger documenta todo
 
 - Perfiles: `dev` (local, docker-compose) y `prod` (Railway).
 - Variables de entorno (nunca commitear secretos; usar `.env` en `.gitignore` y un `.env.example`):
-  `DB_URL`, `DB_USER`, `DB_PASSWORD`, `JWT_SECRET`, `JWT_ACCESS_MINUTOS`, `JWT_REFRESH_DIAS`, `OTP_PROVIDER` (log|twilio), `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_VERIFY_SID`, `GEOCERCA_RADIO_METROS`, `GEOCERCA_VIGENCIA_POSICION_SEGUNDOS`, `CORS_ORIGINS`.
+  `DB_URL`, `DB_USER`, `DB_PASSWORD`, `JWT_SECRET`, `JWT_ACCESS_MINUTOS`, `JWT_REFRESH_DIAS`, `OTP_PROVIDER` (log|twilio), `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_VERIFY_SID`, `PUSH_PROVIDER` (log|expo), `EXPO_ACCESS_TOKEN`, `PUSH_RADIO_CERCANIA_METROS`, `GEOCERCA_RADIO_METROS`, `GEOCERCA_VIGENCIA_POSICION_SEGUNDOS`, `CORS_ORIGINS`.
 - CORS: permitir el origen del panel web y del panel público.
 - Para probar GPS desde el celular el backend debe ser accesible por red: Railway (rama `develop`) o `ngrok` en local.
 

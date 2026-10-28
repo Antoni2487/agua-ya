@@ -90,6 +90,10 @@ public class Parada {
     @Column(name = "atendida_en")
     private OffsetDateTime atendidaEn;
 
+    /** Cuándo se avisó al vecino que la cisterna estaba cerca; null si aún no. */
+    @Column(name = "aviso_cercania_en")
+    private OffsetDateTime avisoCercaniaEn;
+
     private Parada(TipoParada tipo, PrioridadParada prioridad, BigDecimal latitud, BigDecimal longitud) {
         this.tipo = tipo;
         this.prioridad = prioridad;

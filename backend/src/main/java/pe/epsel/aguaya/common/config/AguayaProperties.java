@@ -24,7 +24,8 @@ public record AguayaProperties(
         @Valid @NotNull Geocerca geocerca,
         @Valid @NotNull Jwt jwt,
         @Valid @NotNull Otp otp,
-        @NotNull Twilio twilio) {
+        @NotNull Twilio twilio,
+        @Valid @NotNull Push push) {
 
     public record Cors(@NotEmpty List<String> origins) {
     }
@@ -64,5 +65,13 @@ public record AguayaProperties(
      * Credenciales de Twilio Verify; obligatorias solo con {@code aguaya.otp.provider=twilio}.
      */
     public record Twilio(String accountSid, String authToken, String verifySid) {
+    }
+
+    /**
+     * @param provider             {@code log} (dev, solo escribe en el log) o {@code expo} (Expo Push API)
+     * @param expoAccessToken      opcional: token de acceso si el proyecto Expo exige push seguro
+     * @param radioCercaniaMetros  distancia de la cisterna a la parada para avisar "la cisterna está cerca"
+     */
+    public record Push(@NotBlank String provider, String expoAccessToken, @Positive int radioCercaniaMetros) {
     }
 }

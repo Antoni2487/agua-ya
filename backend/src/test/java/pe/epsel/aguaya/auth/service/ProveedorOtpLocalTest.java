@@ -56,7 +56,8 @@ class ProveedorOtpLocalTest {
                 new AguayaProperties.Geocerca(50, 120),
                 new AguayaProperties.Jwt("x".repeat(32), 15, 30),
                 new AguayaProperties.Otp("log", exponerCodigo, 5, 3, 3),
-                new AguayaProperties.Twilio(null, null, null));
+                new AguayaProperties.Twilio(null, null, null),
+                new AguayaProperties.Push("log", null, 500));
         return new ProveedorOtpLocal(repository, encoder, clock, properties, environment);
     }
 

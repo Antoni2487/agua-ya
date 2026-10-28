@@ -8,6 +8,8 @@ spring:
 aguaya:
   cors:
     origins: ${CORS_ORIGINS}
+  push:
+    provider: ${PUSH_PROVIDER:expo}
 
 logging:
   level:
