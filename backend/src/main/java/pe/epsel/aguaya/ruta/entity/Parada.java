@@ -47,6 +47,11 @@ public class Parada {
     @Column(nullable = false, length = 15)
     private TipoParada tipo;
 
+    /** Viaje en reparto cuando se atendió; null si se atendió sin viaje registrado. */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "viaje_id")
+    private Viaje viaje;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vecino_id")
     private Vecino vecino;
@@ -100,6 +105,7 @@ public class Parada {
     /** Regla 4: solo se llama cuando la posición del conductor ya pasó la geocerca. */
     public void marcarAtendida(OffsetDateTime ahora, Integer volumenLitros) {
         exigirPendiente();
+        this.viaje = ruta.viajeAbierto().orElse(null);
         this.estado = EstadoParada.ATENDIDA;
         this.verificadaGps = true;
         this.atendidaEn = ahora;
