@@ -38,6 +38,13 @@ public interface RutaRepository extends JpaRepository<Ruta, Long> {
     Optional<Ruta> findFirstBySectorIdAndEstadoInOrderByFechaProgramadaDescIdDesc(Long sectorId,
                                                                                    Collection<EstadoRuta> estados);
 
+    /** Rutas del sector que aún pueden recibir paradas reasignadas (RF07). */
+    @EntityGraph(attributePaths = {"sector", "cisterna", "conductor"})
+    @Query("SELECT r FROM Ruta r WHERE r.sector.id = :sectorId AND r.estado IN :estados "
+            + "AND r.fechaProgramada >= :desde AND r.id <> :excluirRutaId")
+    List<Ruta> candidatasReasignacion(Long sectorId, Collection<EstadoRuta> estados, LocalDate desde,
+                                      Long excluirRutaId);
+
     /** Cisternas ya asignadas a otra ruta en esa fecha y turno. */
     @Query("SELECT r.cisterna.id FROM Ruta r WHERE r.cisterna IS NOT NULL AND r.fechaProgramada = :fecha "
             + "AND r.turno = :turno AND r.id <> :excluirRutaId")
