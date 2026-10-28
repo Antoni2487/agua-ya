@@ -59,6 +59,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/conductor/**").hasRole(Rol.CONDUCTOR.name())
                         .requestMatchers("/api/vecino/**").hasRole(Rol.VECINO.name())
                         .requestMatchers("/api/incidencias/**").hasAnyRole(Rol.CONDUCTOR.name(), Rol.VECINO.name())
+                        .requestMatchers("/api/dispositivos/**").hasAnyRole(Rol.CONDUCTOR.name(), Rol.VECINO.name())
                         .anyRequest().authenticated())
                 .addFilterBefore(new JwtAuthenticationFilter(jwtService), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(ex -> ex

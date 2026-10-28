@@ -17,6 +17,7 @@ import pe.epsel.aguaya.monitoreo.dto.AtenderParadaRequest;
 import pe.epsel.aguaya.monitoreo.dto.EventoRuta;
 import pe.epsel.aguaya.monitoreo.entity.IntentoGeocerca;
 import pe.epsel.aguaya.monitoreo.repository.IntentoGeocercaRepository;
+import pe.epsel.aguaya.notificacion.service.NotificacionService;
 import pe.epsel.aguaya.persona.entity.Conductor;
 import pe.epsel.aguaya.ruta.dto.ParadaResponse;
 import pe.epsel.aguaya.ruta.entity.Parada;
@@ -33,6 +34,7 @@ public class GeocercaService {
     private final ParadaRepository paradaRepository;
     private final IntentoGeocercaRepository intentoRepository;
     private final PublicadorTiempoReal publicador;
+    private final NotificacionService notificacionService;
     private final AguayaProperties properties;
     private final Clock clock;
 
@@ -80,6 +82,7 @@ public class GeocercaService {
 
         parada.marcarAtendida(ahora, r != null ? r.volumenEntregadoLitros() : null);
         publicador.eventoRuta(new EventoRuta(EventoRuta.Tipo.PARADA_ATENDIDA, parada.getRuta().getId(), paradaId, ahora));
+        notificacionService.paradaAtendida(parada);
         return RutaMapper.aParada(parada);
     }
 

@@ -27,7 +27,8 @@ class JwtServiceTest {
                 new AguayaProperties.Geocerca(50, 120),
                 new AguayaProperties.Jwt(secret, 15, 30),
                 new AguayaProperties.Otp("log", false, 5, 3, 3),
-                new AguayaProperties.Twilio(null, null, null)), clock);
+                new AguayaProperties.Twilio(null, null, null),
+                new AguayaProperties.Push("log", null, 500)), clock);
     }
 
     private static Administrador admin() {

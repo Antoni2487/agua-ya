@@ -16,6 +16,7 @@ import pe.epsel.aguaya.monitoreo.dto.RecorridoResponse;
 import pe.epsel.aguaya.monitoreo.entity.MonitoreoGps;
 import pe.epsel.aguaya.monitoreo.repository.IntentoGeocercaRepository;
 import pe.epsel.aguaya.monitoreo.repository.MonitoreoGpsRepository;
+import pe.epsel.aguaya.notificacion.service.NotificacionService;
 import pe.epsel.aguaya.persona.entity.Conductor;
 import pe.epsel.aguaya.persona.entity.Vecino;
 import pe.epsel.aguaya.persona.repository.VecinoRepository;
@@ -38,6 +39,7 @@ public class MonitoreoService {
     private final VecinoRepository vecinoRepository;
     private final ConductorRutaService conductorRutaService;
     private final PublicadorTiempoReal publicador;
+    private final NotificacionService notificacionService;
     private final Clock clock;
 
     @Transactional
@@ -57,6 +59,7 @@ public class MonitoreoService {
 
         PosicionResponse posicion = new PosicionResponse(rutaId, latitud, longitud, ahora);
         publicador.posicion(posicion);
+        notificacionService.posicionCisterna(ruta, latitud.doubleValue(), longitud.doubleValue(), ahora);
         return posicion;
     }
 
