@@ -205,6 +205,7 @@ Cada módulo: `controller/`, `service/`, `repository/`, `entity/`, `dto/`, `mapp
 9. **Privacidad**: el panel público nunca expone datos personales ni coordenadas de viviendas. La ubicación del conductor solo se expone a vecinos/admin mientras la ruta está EN_CURSO. La próxima atención del vecino solo incluye su propia parada (su hogar o el punto de entrega más cercano).
 10. **Incidencias (RF06)**: el conductor reporta sobre su ruta (AVERIA, ACCESO_BLOQUEADO, AGUA_AGOTADA, OTRO) y el vecino sobre una ruta de su sector (NO_LLEGO, LLEGO_TARDE, YA_PASO, VOLUMEN_INSUFICIENTE, OTRO); otro tipo → 400 `TIPO_NO_PERMITIDO`. La parada, si se indica, debe ser de la ruta (y el vecino no puede indicar el hogar de otro). No se repite una incidencia ABIERTA de la misma persona, ruta y tipo (409). Cada reporte alerta al admin por `/topic/admin/incidencias`; el admin la cierra (CERRADA, `resuelta_por`, `resuelto_en`).
 11. **Viajes**: el conductor registra cada viaje al salir cargado (`POST /rutas/{id}/viajes`, ruta EN_CURSO): queda EN_REPARTO con `salida`, `nro_viaje` correlativo, punto de llenado de la ruta por defecto (otro activo si lo indica) y `volumen_cargado_litros` ≤ capacidad de la cisterna (400 `VOLUMEN_EXCEDE_CAPACIDAD`). Solo un viaje abierto por ruta (409 `VIAJE_EN_CURSO`); al finalizarlo pasa a FINALIZADO con `retorno`. Una parada atendida con un viaje abierto queda asociada a él (`parada.viaje_id`); sin viaje abierto, `viaje_id` queda null. La ruta no se completa con un viaje abierto (409 `VIAJE_SIN_FINALIZAR`); si se interrumpe, el viaje abierto se cierra. `viajes_planificados` es referencial: no limita los viajes. EN_CARGA no se usa en el MVP.
+12. **Transparencia (RF09)**: público, sin login, solo agregados. Nunca nombres, DNI, teléfonos ni coordenadas de viviendas o paradas (solo el centro del sector) ni el conductor; sí la placa de la cisterna, para que el vecino la reconozca. Indicadores del periodo `desde`/`hasta` (def. últimos 30 días, máx. 366; 400 `PERIODO_INVALIDO`). **Cumplimiento** = atendidas ÷ (atendidas + no atendidas + pendientes) de las paradas de rutas COMPLETADA o INTERRUMPIDA; las REASIGNADA no cuentan (se miden en la ruta que las recibió). Litros distribuidos = suma de `viaje.volumen_cargado_litros`. Cronograma: rutas de sectores activos de `desde` a `hasta` (def. hoy + 6 días, máx. 31), con avance de paradas. Filtro `distrito` sin distinguir mayúsculas.
 
 ---
 
@@ -319,9 +320,9 @@ POST /api/dispositivos                               (registrar expo_token; veci
 DELETE /api/dispositivos                             (baja del token al cerrar sesión)
 
 # Público (sin auth)
-GET  /api/public/transparencia/resumen               (RF09)
-GET  /api/public/transparencia/sectores
-GET  /api/public/transparencia/cronograma?distrito=
+GET  /api/public/transparencia/resumen?desde=&hasta=                 (RF09)
+GET  /api/public/transparencia/sectores?distrito=&desde=&hasta=      (última y próxima atención, cumplimiento)
+GET  /api/public/transparencia/cronograma?distrito=&desde=&hasta=
 ```
 
 Respuestas paginadas con `page`, `size`, `totalElements`. Swagger documenta todo.
