@@ -19,6 +19,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import pe.epsel.aguaya.common.exception.NegocioException;
 import pe.epsel.aguaya.persona.entity.Vecino;
 import pe.epsel.aguaya.sector.entity.InstitucionCritica;
 import pe.epsel.aguaya.sector.entity.PuntoEntrega;
@@ -89,6 +90,31 @@ public class Parada {
         this.prioridad = prioridad;
         this.latitud = latitud;
         this.longitud = longitud;
+    }
+
+    /** ATENDIDA, NO_ATENDIDA o REASIGNADA: ya no espera atención en esta ruta. */
+    public boolean enEstadoFinal() {
+        return estado != EstadoParada.PENDIENTE;
+    }
+
+    /** Regla 4: solo se llama cuando la posición del conductor ya pasó la geocerca. */
+    public void marcarAtendida(OffsetDateTime ahora, Integer volumenLitros) {
+        exigirPendiente();
+        this.estado = EstadoParada.ATENDIDA;
+        this.verificadaGps = true;
+        this.atendidaEn = ahora;
+        this.volumenEntregadoLitros = volumenLitros;
+    }
+
+    public void marcarNoAtendida() {
+        exigirPendiente();
+        this.estado = EstadoParada.NO_ATENDIDA;
+    }
+
+    private void exigirPendiente() {
+        if (estado != EstadoParada.PENDIENTE) {
+            throw NegocioException.conflicto("PARADA_NO_PENDIENTE", "La parada ya está en estado " + estado);
+        }
     }
 
     public static Parada deHogar(Vecino vecino) {

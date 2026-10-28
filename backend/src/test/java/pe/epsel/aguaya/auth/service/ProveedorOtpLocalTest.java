@@ -53,7 +53,7 @@ class ProveedorOtpLocalTest {
     private ProveedorOtpLocal crear(boolean exponerCodigo, MockEnvironment environment) {
         AguayaProperties properties = new AguayaProperties(LIMA,
                 new AguayaProperties.Cors(List.of("http://localhost")),
-                new AguayaProperties.Geocerca(50),
+                new AguayaProperties.Geocerca(50, 120),
                 new AguayaProperties.Jwt("x".repeat(32), 15, 30),
                 new AguayaProperties.Otp("log", exponerCodigo, 5, 3, 3),
                 new AguayaProperties.Twilio(null, null, null));

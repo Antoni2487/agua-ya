@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -30,8 +29,8 @@ public record SectorRequest(
         @Positive Integer dotacionLitros,
         @NotNull @Positive Integer frecuenciaDias,
         @NotNull @Positive Integer maxViajesDiarios,
-        @NotNull @DecimalMin("-90") @DecimalMax("90") @Digits(integer = 3, fraction = 6) BigDecimal latCentro,
-        @NotNull @DecimalMin("-180") @DecimalMax("180") @Digits(integer = 3, fraction = 6) BigDecimal lngCentro,
+        @NotNull @DecimalMin("-90") @DecimalMax("90") BigDecimal latCentro,
+        @NotNull @DecimalMin("-180") @DecimalMax("180") BigDecimal lngCentro,
         TipoEntrega tipoEntrega,
         Boolean activo) {
 }

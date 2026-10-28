@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import pe.epsel.aguaya.common.util.Coordenada;
 import pe.epsel.aguaya.auth.dto.AuthResponse;
 import pe.epsel.aguaya.auth.dto.LoginRequest;
 import pe.epsel.aguaya.auth.dto.RegistroVecinoRequest;
@@ -66,8 +67,8 @@ public class AuthService {
         Vecino vecino = new Vecino(request.dni(), request.nombres().trim(), request.apellidos().trim(), telefono,
                 passwordEncoder.encode(request.password()));
         vecino.setDireccionReferencia(request.direccionReferencia());
-        vecino.setLatitud(request.latitud());
-        vecino.setLongitud(request.longitud());
+        vecino.setLatitud(Coordenada.normalizar(request.latitud()));
+        vecino.setLongitud(Coordenada.normalizar(request.longitud()));
         vecino.setSector(sector);
         vecinoRepository.save(vecino);
 
