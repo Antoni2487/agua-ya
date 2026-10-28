@@ -49,21 +49,27 @@ class DatosReferencialesTest {
         return jdbc.queryForObject(sql, Integer.class);
     }
 
+    /** Filtra las filas de V3: el contenedor de BD es compartido y otros tests crean catálogos propios. */
+    private static final String SECTORES_SEMILLA = "('Cerropón', 'P.J. Atusparias', 'P.J. Urrunaga', 'Callanca', 'Valle Hermoso')";
+
     @Test
     void cantidadesSegunCatalogo() {
-        assertThat(contar("SELECT count(*) FROM sector")).isEqualTo(5);
-        assertThat(contar("SELECT count(*) FROM sector WHERE dotacion_litros <> 80")).isZero();
-        assertThat(contar("SELECT count(*) FROM punto_llenado")).isEqualTo(1);
-        assertThat(contar("SELECT count(*) FROM cisterna")).isEqualTo(5);
-        assertThat(contar("SELECT count(*) FROM administrador")).isEqualTo(1);
-        assertThat(contar("SELECT count(*) FROM conductor")).isEqualTo(3);
+        assertThat(contar("SELECT count(*) FROM sector WHERE nombre IN " + SECTORES_SEMILLA)).isEqualTo(5);
+        assertThat(contar("SELECT count(*) FROM sector WHERE nombre IN " + SECTORES_SEMILLA
+                + " AND dotacion_litros <> 80")).isZero();
+        assertThat(contar("SELECT count(*) FROM punto_llenado WHERE nombre LIKE '%EPSEL (referencial)'")).isEqualTo(1);
+        assertThat(contar("SELECT count(*) FROM cisterna WHERE placa LIKE 'AYA-%'")).isEqualTo(5);
+        assertThat(contar("SELECT count(*) FROM administrador WHERE persona_id IN "
+                + "(SELECT id FROM persona WHERE dni LIKE '1000%')")).isEqualTo(1);
+        assertThat(contar("SELECT count(*) FROM conductor WHERE persona_id IN "
+                + "(SELECT id FROM persona WHERE dni LIKE '2000%')")).isEqualTo(3);
         assertThat(contar("SELECT count(*) FROM vecino WHERE persona_id IN (SELECT id FROM persona WHERE dni LIKE '3000%')"))
                 .isEqualTo(12);
     }
 
     @Test
     void cadaSectorTieneAlMenosUnaInstitucionCritica() {
-        assertThat(contar("SELECT count(*) FROM sector s WHERE NOT EXISTS "
+        assertThat(contar("SELECT count(*) FROM sector s WHERE s.nombre IN " + SECTORES_SEMILLA + " AND NOT EXISTS "
                 + "(SELECT 1 FROM institucion_critica i WHERE i.sector_id = s.id)")).isZero();
     }
 
