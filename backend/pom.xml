@@ -13,7 +13,7 @@
 
     <groupId>pe.epsel</groupId>
     <artifactId>aguaya</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.0</version>
     <name>aguaya</name>
     <description>AguaYa - gestión logística del abastecimiento de agua con cisternas (EPSEL)</description>
 
