@@ -197,6 +197,9 @@ Cada módulo: `controller/`, `service/`, `repository/`, `entity/`, `dto/`, `mapp
 4. **Geocerca (RF05)**: una parada pasa a `ATENDIDA` solo si la última posición del conductor (`conductor.lat_actual/lng_actual`) tiene como máximo `aguaya.geocerca.vigencia-posicion-segundos` (def. 120 s) de antigüedad y está a ≤ `aguaya.geocerca.radio-metros` (def. 50 m) de la parada. Si no, se rechaza (409 `FUERA_DE_GEOCERCA`, `POSICION_DESACTUALIZADA`, o `SIN_POSICION_GPS` si aún no envió posición) y se registra el intento en `intento_geocerca`. Marcar `NO_ATENDIDA` no exige geocerca. Solo el conductor asignado opera su ruta; una ruta ajena responde 404.
 5. **Estados de ruta**: PROGRAMADA → EN_CURSO (conductor inicia, solo el día programado y sin otra ruta EN_CURSO; queda EN_RUTA) → COMPLETADA (todas las paradas en estado final; vuelve a DISPONIBLE) | INTERRUMPIDA (incidencia del conductor con `detieneRuta: true`; vuelve a DISPONIBLE y las paradas pendientes quedan PENDIENTE para RF07). No se permiten saltos inválidos (409 `TRANSICION_INVALIDA`). El GPS solo se acepta con la ruta EN_CURSO.
 6. **Reasignación (RF07, manual)**: el Admin elige la ruta destino; las paradas PENDIENTES de la ruta origen se mueven (copia en destino, origen queda `REASIGNADA`), la incidencia pasa a `REASIGNADA` con `ruta_destino_id`. El sistema solo sugiere la cisterna disponible más cercana. **Sin algoritmo automático.**
+   - Solo incidencias ABIERTA (409 `INCIDENCIA_NO_ABIERTA`) de una ruta INTERRUMPIDA o EN_CURSO (409 `RUTA_ORIGEN_NO_REASIGNABLE`) con paradas pendientes (409 `SIN_PARADAS_PENDIENTES`). Destino: otra ruta (400 `MISMA_RUTA`) **del mismo sector** (409 `RUTA_DESTINO_OTRO_SECTOR`; la próxima atención, el GPS y los avisos del vecino se filtran por sector), PROGRAMADA o EN_CURSO y de hoy en adelante (409 `RUTA_DESTINO_NO_DISPONIBLE`).
+   - Si la destino ya tiene pendiente el mismo hogar, institución o punto, no se duplica (igual queda REASIGNADA en el origen). Las copias CRITICA van tras las CRITICA de la destino y las NORMAL al final, encadenadas desde el punto de llenado; la destino se renumera. Resuelve la incidencia (`resuelta_por`, `resuelto_en`), publica `PARADAS_REASIGNADAS` y avisa por push a los vecinos de las paradas copiadas.
+   - `GET /api/admin/incidencias/{id}/sugerencias-reasignacion`: rutas candidatas del sector; primero las EN_CURSO por distancia de su conductor a la primera parada pendiente, luego por fecha y turno.
 7. **Calificación**: solo el vecino dueño de la parada, solo si está ATENDIDA, una vez por parada.
 8. **Registro de vecino**: el OTP confirma que el teléfono es suyo; el sector se asigna automáticamente al más cercano (por centro) y el vecino queda **activo de inmediato** (sin validación del Admin) y con sesión iniciada. El Admin solo puede desactivar cuentas (`persona.activo`).
 9. **Privacidad**: el panel público nunca expone datos personales ni coordenadas de viviendas. La ubicación del conductor solo se expone a vecinos/admin mientras la ruta está EN_CURSO. La próxima atención del vecino solo incluye su propia parada (su hogar o el punto de entrega más cercano).
@@ -252,11 +255,11 @@ Fase 0 (base): repo, setup backend, auth + OTP, datos semilla.
 - Conductor envía `POST /api/conductor/rutas/{id}/posicion` cada ~15 s (no socket abierto desde el móvil, ahorra batería/datos).
 - Backend guarda en `monitoreo_gps`, actualiza `conductor.lat_actual/lng_actual` y publica por STOMP.
 - Endpoint WebSocket: `/ws` (STOMP). El CONNECT lleva `Authorization: Bearer <accessToken>`; cada SUBSCRIBE se autoriza: `/topic/admin/**` solo ADMIN; `/topic/rutas/{id}/posicion` ADMIN, el conductor de la ruta o un vecino de su sector mientras está EN_CURSO. Los clientes no envían mensajes. Se publica después del commit.
-- Tópicos: `/topic/rutas/{id}/posicion`, `/topic/admin/incidencias`, `/topic/admin/rutas` (eventos RUTA_INICIADA, VIAJE_INICIADO, VIAJE_FINALIZADO, PARADA_ATENDIDA, PARADA_NO_ATENDIDA, RUTA_COMPLETADA, RUTA_INTERRUMPIDA).
+- Tópicos: `/topic/rutas/{id}/posicion`, `/topic/admin/incidencias`, `/topic/admin/rutas` (eventos RUTA_INICIADA, VIAJE_INICIADO, VIAJE_FINALIZADO, PARADA_ATENDIDA, PARADA_NO_ATENDIDA, RUTA_COMPLETADA, RUTA_INTERRUMPIDA, PARADAS_REASIGNADAS).
 
 ### Notificaciones
 - Vecino: push vía Expo (ruta iniciada, cisterna cerca, parada atendida, reasignación). La app registra su token con `POST /api/dispositivos` (VECINO o CONDUCTOR; un token es de una sola persona, si otra lo registra pasa a ella) y lo da de baja con `DELETE /api/dispositivos` al cerrar sesión.
-- Destinatarios: solo vecinos activos, cada uno por su parada (su hogar o el punto de entrega más cercano; regla 9). **Ruta iniciada**: vecinos con parada pendiente. **Cisterna cerca**: cuando una posición GPS queda a ≤ `aguaya.push.radio-cercania-metros` (def. 500 m) de una parada pendiente; una sola vez por parada (`parada.aviso_cercania_en`). **Entrega registrada**: al atender la parada (invita a calificar). La reasignación se notificará con RF07.
+- Destinatarios: solo vecinos activos, cada uno por su parada (su hogar o el punto de entrega más cercano; regla 9). **Ruta iniciada**: vecinos con parada pendiente. **Cisterna cerca**: cuando una posición GPS queda a ≤ `aguaya.push.radio-cercania-metros` (def. 500 m) de una parada pendiente; una sola vez por parada (`parada.aviso_cercania_en`). **Entrega registrada**: al atender la parada (invita a calificar). **Reasignación** (RF07): a los vecinos de las paradas copiadas, con la nueva fecha y turno.
 - Interfaz `ProveedorPush` elegida con `PUSH_PROVIDER`: `log` (dev, solo log) o `expo` (Expo Push API por HTTP, lotes de 100, `EXPO_ACCESS_TOKEN` opcional; por defecto en `prod`). Envío después del commit en un pool propio (no demora al conductor); un fallo de Expo no afecta la operación y los tokens `DeviceNotRegistered` se eliminan.
 - Admin: alertas por WebSocket en el panel web.
 
@@ -289,7 +292,8 @@ DELETE /api/admin/rutas/{id}                        (solo PROGRAMADA)
 GET  /api/admin/rutas/{id}/recorrido                 (posiciones GPS + intentos fuera de geocerca)
 GET  /api/admin/incidencias?estado=&tipo=&rutaId=
 GET  /api/admin/incidencias/{id}
-POST /api/admin/incidencias/{id}/reasignar           (RF07)
+GET  /api/admin/incidencias/{id}/sugerencias-reasignacion   (RF07)
+POST /api/admin/incidencias/{id}/reasignar           (RF07, body: rutaDestinoId)
 PATCH /api/admin/incidencias/{id}/cerrar
 GET  /api/admin/calificaciones?sectorId=
 

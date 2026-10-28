@@ -121,6 +121,30 @@ public class Parada {
         this.estado = EstadoParada.NO_ATENDIDA;
     }
 
+    /** RF07: la parada pasa a otra ruta; aquí queda como constancia. */
+    public void marcarReasignada() {
+        exigirPendiente();
+        this.estado = EstadoParada.REASIGNADA;
+    }
+
+    /** Copia PENDIENTE de la parada para otra ruta (mismo destino y coordenadas). */
+    public Parada copiaPendiente() {
+        Parada copia = new Parada(tipo, prioridad, latitud, longitud);
+        copia.vecino = vecino;
+        copia.institucion = institucion;
+        copia.puntoEntrega = puntoEntrega;
+        return copia;
+    }
+
+    /** Hogar, institución o punto de entrega al que corresponde: dos paradas con la misma clave son el mismo lugar. */
+    public String clave() {
+        return switch (tipo) {
+            case HOGAR -> "H" + vecino.getId();
+            case INSTITUCION -> "I" + institucion.getId();
+            case PUNTO_ENTREGA -> "P" + puntoEntrega.getId();
+        };
+    }
+
     private void exigirPendiente() {
         if (estado != EstadoParada.PENDIENTE) {
             throw NegocioException.conflicto("PARADA_NO_PENDIENTE", "La parada ya está en estado " + estado);

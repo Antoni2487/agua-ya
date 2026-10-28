@@ -21,6 +21,7 @@ public record IncidenciaResponse(
         TipoIncidencia tipo,
         String descripcion,
         EstadoIncidencia estado,
+        Long rutaDestinoId,
         Long reportadoPorId,
         String reportadoPorNombre,
         Rol reportadoPorRol,
