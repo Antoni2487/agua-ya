@@ -1,0 +1,16 @@
+# En prod las credenciales llegan solo por variables de entorno (sin valores por defecto).
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+
+aguaya:
+  cors:
+    origins: ${CORS_ORIGINS}
+  push:
+    provider: ${PUSH_PROVIDER:expo}
+
+logging:
+  level:
+    pe.epsel.aguaya: INFO
