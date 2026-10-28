@@ -26,6 +26,7 @@ public record EventoRuta(
         VIAJE_INICIADO,
         VIAJE_FINALIZADO,
         RUTA_COMPLETADA,
-        RUTA_INTERRUMPIDA
+        RUTA_INTERRUMPIDA,
+        PARADAS_REASIGNADAS
     }
 }

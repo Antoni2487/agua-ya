@@ -82,6 +82,17 @@ public class Incidencia {
         this.creadoEn = creadoEn;
     }
 
+    /** RF07: el administrador movió las paradas pendientes de la ruta a otra. */
+    public void reasignar(Ruta destino, Persona admin, OffsetDateTime ahora) {
+        if (estado != EstadoIncidencia.ABIERTA) {
+            throw NegocioException.conflicto("INCIDENCIA_NO_ABIERTA", "Solo se reasigna una incidencia ABIERTA; está " + estado);
+        }
+        this.estado = EstadoIncidencia.REASIGNADA;
+        this.rutaDestino = destino;
+        this.resueltaPor = admin;
+        this.resueltoEn = ahora;
+    }
+
     public void cerrar(Persona admin, OffsetDateTime ahora) {
         if (estado == EstadoIncidencia.CERRADA) {
             throw NegocioException.conflicto("INCIDENCIA_CERRADA", "La incidencia ya está cerrada");

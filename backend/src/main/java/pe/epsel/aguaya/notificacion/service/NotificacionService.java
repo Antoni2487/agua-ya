@@ -1,6 +1,7 @@
 package pe.epsel.aguaya.notificacion.service;
 
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -38,6 +39,8 @@ import pe.epsel.aguaya.ruta.service.VecinoRutaService;
 @Slf4j
 @Service
 public class NotificacionService {
+
+    private static final DateTimeFormatter FECHA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     private final VecinoRepository vecinoRepository;
     private final ParadaRepository paradaRepository;
@@ -102,6 +105,22 @@ public class NotificacionService {
         enviar(porParada.getOrDefault(parada.getId(), List.of()), "Entrega registrada",
                 "La cisterna registró la entrega en " + lugar(parada) + ". Cuéntanos cómo te fue calificando el servicio.",
                 Map.of("tipo", "PARADA_ATENDIDA", "rutaId", ruta.getId(), "paradaId", parada.getId()));
+    }
+
+    /** RF07: a los vecinos cuyas paradas pasaron a otra ruta, con la nueva fecha y turno. */
+    public void paradasReasignadas(Ruta destino, List<Parada> nuevas) {
+        if (nuevas.isEmpty()) {
+            return;
+        }
+        Map<Long, List<Long>> porParada = vecinosPorParada(destino, paradaRepository.findDetalleByRutaId(destino.getId()));
+        List<Long> vecinos = nuevas.stream()
+                .flatMap(p -> porParada.getOrDefault(p.getId(), List.of()).stream())
+                .distinct()
+                .toList();
+        enviar(vecinos, "Tu atención fue reprogramada",
+                "La cisterna pasará el " + destino.getFechaProgramada().format(FECHA) + " (" + turno(destino.getTurno())
+                        + "). Te avisaremos cuando inicie su recorrido.",
+                Map.of("tipo", "PARADA_REASIGNADA", "rutaId", destino.getId()));
     }
 
     /** Vecinos activos del sector agrupados por su parada en la ruta (las instituciones no tienen vecinos). */
