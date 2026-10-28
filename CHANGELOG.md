@@ -3,6 +3,12 @@
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); versiones con
 [SemVer](https://semver.org/lang/es/).
 
+## [Sin publicar]
+
+### Añadido
+- Blueprint de Render (`render.yaml`): backend Docker + PostgreSQL 16, despliegue automático de `develop`.
+- El perfil `prod` acepta `DB_HOST`, `DB_PORT` y `DB_NAME` además de `DB_URL`.
+
 ## [0.1.0] - 2026-10-28 · Avance 1 (SIE)
 
 Backend REST completo del MVP (RF01–RF09). Datos referenciales, no oficiales de EPSEL.
@@ -34,4 +40,4 @@ Backend REST completo del MVP (RF01–RF09). Datos referenciales, no oficiales d
 
 ### Pendiente
 - App móvil (Expo) y panel web (Vite).
-- Despliegue de `develop` en Railway.
+- Despliegue de `develop` en Render.

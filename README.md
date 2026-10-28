@@ -31,7 +31,7 @@ Detalle en [`CHANGELOG.md`](CHANGELOG.md).
 - **Backend**: Java 21, Spring Boot 3, PostgreSQL 16, Flyway, JWT, WebSocket/STOMP, springdoc-openapi.
 - **Móvil**: React Native + Expo.
 - **Web**: React + Vite, Leaflet + OpenStreetMap.
-- **Infra**: Docker Compose; despliegue de `develop` en Railway.
+- **Infra**: Docker Compose; despliegue de `develop` en Render ([guía](backend/README.md#despliegue-en-render)).
 
 ## Flujo de ramas
 
