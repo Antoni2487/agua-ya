@@ -40,7 +40,7 @@ class AguayaApplicationTests {
                 "persona", "vecino", "conductor", "administrador",
                 "codigo_otp", "refresh_token", "dispositivo_push",
                 "sector", "institucion_critica", "punto_llenado", "punto_entrega", "cisterna",
-                "ruta", "viaje", "parada", "monitoreo_gps",
+                "ruta", "viaje", "parada", "monitoreo_gps", "intento_geocerca",
                 "incidencia", "calificacion_servicio");
     }
 

@@ -29,7 +29,11 @@ public record AguayaProperties(
     public record Cors(@NotEmpty List<String> origins) {
     }
 
-    public record Geocerca(@Positive int radioMetros) {
+    /**
+     * @param radioMetros               distancia máxima a la parada para marcarla como atendida
+     * @param vigenciaPosicionSegundos  antigüedad máxima de la última posición GPS para validar la geocerca
+     */
+    public record Geocerca(@Positive int radioMetros, @Positive int vigenciaPosicionSegundos) {
     }
 
     /**

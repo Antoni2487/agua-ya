@@ -35,7 +35,7 @@ class ProveedorOtpTwilioTest {
     private static AguayaProperties properties(String sid, String token, String verifySid) {
         return new AguayaProperties(ZoneId.of("America/Lima"),
                 new AguayaProperties.Cors(List.of("http://localhost")),
-                new AguayaProperties.Geocerca(50),
+                new AguayaProperties.Geocerca(50, 120),
                 new AguayaProperties.Jwt("x".repeat(32), 15, 30),
                 new AguayaProperties.Otp("twilio", false, 5, 3, 3),
                 new AguayaProperties.Twilio(sid, token, verifySid));

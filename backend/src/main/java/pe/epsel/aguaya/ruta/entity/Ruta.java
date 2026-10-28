@@ -28,6 +28,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import pe.epsel.aguaya.cisterna.entity.Cisterna;
 import pe.epsel.aguaya.common.dominio.Turno;
+import pe.epsel.aguaya.common.exception.NegocioException;
 import pe.epsel.aguaya.persona.entity.Administrador;
 import pe.epsel.aguaya.persona.entity.Conductor;
 import pe.epsel.aguaya.puntollenado.entity.PuntoLlenado;
@@ -105,5 +106,35 @@ public class Ruta {
     public void agregarParada(Parada parada) {
         parada.setRuta(this);
         paradas.add(parada);
+    }
+
+    /** Regla 5: PROGRAMADA -> EN_CURSO cuando el conductor inicia. */
+    public void iniciar(OffsetDateTime ahora) {
+        exigirEstado(EstadoRuta.PROGRAMADA, "iniciar");
+        this.estado = EstadoRuta.EN_CURSO;
+        this.inicio = ahora;
+    }
+
+    /** Regla 5: EN_CURSO -> COMPLETADA solo con todas las paradas en estado final. */
+    public void completar(OffsetDateTime ahora) {
+        exigirEstado(EstadoRuta.EN_CURSO, "finalizar");
+        long pendientes = paradas.stream().filter(p -> !p.enEstadoFinal()).count();
+        if (pendientes > 0) {
+            throw NegocioException.conflicto("RUTA_CON_PARADAS_PENDIENTES",
+                    "Quedan " + pendientes + " paradas pendientes; márquelas como atendidas o no atendidas");
+        }
+        this.estado = EstadoRuta.COMPLETADA;
+        this.fin = ahora;
+    }
+
+    public void exigirEnCurso() {
+        exigirEstado(EstadoRuta.EN_CURSO, "operar");
+    }
+
+    private void exigirEstado(EstadoRuta esperado, String accion) {
+        if (estado != esperado) {
+            throw NegocioException.conflicto("TRANSICION_INVALIDA",
+                    "No se puede " + accion + " una ruta en estado " + estado);
+        }
     }
 }
