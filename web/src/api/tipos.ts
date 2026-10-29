@@ -63,3 +63,53 @@ export interface Capacidad {
   hayDeficit: boolean;
   flota: { total: number; disponibles: number; noOperativas: number; autorizacionVencida: number };
 }
+
+// ---- Transparencia (RF09): público, solo agregados ----
+
+export type TipoEntrega = 'DOMICILIO' | 'PUNTO_ENTREGA';
+
+export interface ResumenTransparencia {
+  desde: string;
+  hasta: string;
+  sectoresActivos: number;
+  sectoresAtendidos: number;
+  distritos: number;
+  rutas: { total: number; programadas: number; enCurso: number; completadas: number; interrumpidas: number };
+  paradas: { total: number; atendidas: number; noAtendidas: number; sinAtender: number; cumplimientoPorcentaje: number | null };
+  litrosDistribuidos: number;
+  calificacion: { promedio: number | null; total: number };
+  incidencias: { reportadas: number; resueltas: number };
+  flota: { total: number; disponiblesHoy: number };
+}
+
+export interface SectorTransparencia {
+  sectorId: number;
+  nombre: string;
+  distrito: string;
+  modalidad: 'PERMANENTE' | 'CONTINGENCIA';
+  esZonaAlta: boolean;
+  tipoEntrega: TipoEntrega;
+  unidadesUso: number;
+  frecuenciaDias: number;
+  latCentro: number;
+  lngCentro: number;
+  ultimaAtencion: string | null;
+  proximaAtencion: { fecha: string; turno: Turno; estado: EstadoRuta } | null;
+  paradasAtendidas: number;
+  cumplimientoPorcentaje: number | null;
+  calificacionPromedio: number | null;
+}
+
+export interface CronogramaItem {
+  rutaId: number;
+  fecha: string;
+  turno: Turno;
+  estado: EstadoRuta;
+  sectorId: number;
+  sectorNombre: string;
+  distrito: string;
+  tipoEntrega: TipoEntrega;
+  cisternaPlaca: string | null;
+  totalParadas: number;
+  paradasAtendidas: number;
+}
