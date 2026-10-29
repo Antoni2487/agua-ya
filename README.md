@@ -1,6 +1,7 @@
 # AguaYa
 
 [![Backend](https://github.com/Antoni2487/agua-ya/actions/workflows/backend.yml/badge.svg?branch=develop)](https://github.com/Antoni2487/agua-ya/actions/workflows/backend.yml)
+[![Web](https://github.com/Antoni2487/agua-ya/actions/workflows/web.yml/badge.svg?branch=develop)](https://github.com/Antoni2487/agua-ya/actions/workflows/web.yml)
 
 Sistema de gestión logística del abastecimiento de agua potable mediante camiones cisterna para **EPSEL S.A.** (Lambayeque, Perú).
 
