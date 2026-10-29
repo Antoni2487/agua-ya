@@ -44,6 +44,8 @@ src/
 | `/transparencia` | Público | Cronograma de los próximos 7 días, mapa de sectores coloreado por cumplimiento, última y próxima atención por sector e indicadores del periodo (RF09). Solo datos agregados. |
 | `/login` | Público | Ingreso del administrador por DNI. |
 | `/admin` | ADMIN | Resumen del día: alerta de capacidad y rutas de hoy. |
+| `/admin/rutas` | ADMIN | Rutas por fecha, estado y sector (filtros en la URL, paginado) y formulario para programar (RF01). |
+| `/admin/rutas/:id` | ADMIN | Detalle: asignación de cisterna y conductor con sugerencias (RF03), mapa del recorrido con paradas numeradas por estado, viajes y eliminación si aún no inició. |
 
 El mapa usa Leaflet + OpenStreetMap (sin API key) y se carga aparte para que los datos aparezcan primero.
 

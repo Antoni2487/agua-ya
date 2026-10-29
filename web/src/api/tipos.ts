@@ -113,3 +113,76 @@ export interface CronogramaItem {
   totalParadas: number;
   paradasAtendidas: number;
 }
+
+// ---- Rutas (RF01 + RF03) ----
+
+export type TipoParada = 'HOGAR' | 'INSTITUCION' | 'PUNTO_ENTREGA';
+export type EstadoParada = 'PENDIENTE' | 'ATENDIDA' | 'NO_ATENDIDA' | 'REASIGNADA';
+
+export interface Parada {
+  id: number;
+  orden: number;
+  tipo: TipoParada;
+  prioridad: 'CRITICA' | 'NORMAL';
+  estado: EstadoParada;
+  nombre: string;
+  referencia: string | null;
+  latitud: number;
+  longitud: number;
+  viajeId: number | null;
+}
+
+export interface Viaje {
+  id: number;
+  rutaId: number;
+  nroViaje: number;
+  estado: 'EN_CARGA' | 'EN_REPARTO' | 'FINALIZADO';
+  puntoLlenadoId: number;
+  puntoLlenadoNombre: string;
+  volumenCargadoLitros: number | null;
+  salida: string | null;
+  retorno: string | null;
+  paradasAtendidas: number;
+}
+
+export interface RutaDetalle {
+  ruta: RutaResumen;
+  puntoLlenadoId: number | null;
+  puntoLlenadoNombre: string | null;
+  viajes: Viaje[];
+  paradas: Parada[];
+}
+
+export interface SugerenciasAsignacion {
+  rutaId: number;
+  litrosPorVisita: number;
+  maxViajesDiarios: number;
+  cisternas: { id: number; placa: string; capacidadLitros: number; viajesNecesarios: number; excedeMaximoDiario: boolean }[];
+  conductores: { id: number; nombres: string; apellidos: string; turno: Turno; mismoTurno: boolean; distanciaKm: number | null }[];
+}
+
+export interface Sector {
+  id: number;
+  nombre: string;
+  distrito: string;
+  modalidad: 'PERMANENTE' | 'CONTINGENCIA';
+  esZonaAlta: boolean;
+  unidadesUso: number;
+  dotacionLitros: number;
+  frecuenciaDias: number;
+  maxViajesDiarios: number;
+  latCentro: number;
+  lngCentro: number;
+  tipoEntrega: TipoEntrega;
+  activo: boolean;
+}
+
+export interface PuntoLlenado {
+  id: number;
+  nombre: string;
+  tipo: 'PLANTA' | 'SURTIDOR' | 'POZO';
+  direccion: string | null;
+  latitud: number;
+  longitud: number;
+  activo: boolean;
+}
