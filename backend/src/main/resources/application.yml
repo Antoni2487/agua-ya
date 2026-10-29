@@ -37,6 +37,12 @@ spring:
         # Payloads pequeños para celulares de gama baja (RNF04)
         default-page-size: 20
         max-page-size: 100
+  cache:
+    type: caffeine
+    cache-names: transparencia-resumen,transparencia-sectores,transparencia-cronograma
+    # Datos agregados del panel público: un desfase de minutos es aceptable (CACHE_SEGUNDOS)
+    caffeine:
+      spec: maximumSize=500,expireAfterWrite=${CACHE_SEGUNDOS:120}s
   jackson:
     time-zone: America/Lima
     serialization:
