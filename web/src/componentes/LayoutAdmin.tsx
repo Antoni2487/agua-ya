@@ -3,7 +3,10 @@ import { NavLink, Outlet } from 'react-router-dom';
 import { useSesion } from '../auth/ContextoSesion';
 
 /** Secciones del panel; se agregan a medida que se implementan (ver CLAUDE.md, sección 4). */
-const SECCIONES: { ruta: string; etiqueta: string }[] = [{ ruta: '/admin', etiqueta: 'Inicio' }];
+const SECCIONES: { ruta: string; etiqueta: string; exacta?: boolean }[] = [
+  { ruta: '/admin', etiqueta: 'Inicio', exacta: true },
+  { ruta: '/admin/rutas', etiqueta: 'Rutas' },
+];
 
 export function LayoutAdmin() {
   const { usuario, cerrarSesion } = useSesion();
@@ -25,7 +28,7 @@ export function LayoutAdmin() {
       </header>
       <nav className="menu" aria-label="Secciones del panel">
         {SECCIONES.map((s) => (
-          <NavLink key={s.ruta} to={s.ruta} end>
+          <NavLink key={s.ruta} to={s.ruta} end={s.exacta}>
             {s.etiqueta}
           </NavLink>
         ))}

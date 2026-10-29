@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
 
 import { api } from '../../api/cliente';
 import type { Capacidad, Pagina, RutaResumen } from '../../api/tipos';
@@ -63,7 +64,9 @@ export function Inicio() {
             <tbody>
               {rutas.data.contenido.map((r) => (
                 <tr key={r.id}>
-                  <td>{r.sectorNombre}</td>
+                  <td>
+                    <Link to={`/admin/rutas/${r.id}`}>{r.sectorNombre}</Link>
+                  </td>
                   <td>{TURNOS[r.turno]}</td>
                   <td>
                     <span className={`etiqueta etiqueta-${r.estado.toLowerCase()}`}>{ESTADOS_RUTA[r.estado]}</span>
