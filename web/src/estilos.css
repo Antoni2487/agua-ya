@@ -210,3 +210,37 @@ input:focus, select:focus, textarea:focus, .boton:focus-visible { outline: 2px s
   .monitoreo { grid-template-columns: minmax(0, 1fr); }
   .monitoreo .mapa { height: 380px; }
 }
+
+/* Incidencias */
+.etiqueta-incidencia-abierta { background: var(--rojo-claro); color: var(--rojo); }
+.etiqueta-incidencia-reasignada { background: var(--azul-claro); color: var(--azul-oscuro); }
+.etiqueta-incidencia-cerrada { background: var(--verde-claro); color: var(--verde); }
+.tabla .etiqueta-interrumpida { margin-left: 0.4rem; }
+.ficha { display: grid; grid-template-columns: max-content 1fr; gap: 0.4rem 1rem; margin: 0 0 1.25rem; }
+.ficha dt { color: var(--suave); }
+.ficha dd { margin: 0; }
+.candidatas { border: 0; padding: 0; margin: 0; display: grid; gap: 0.5rem; }
+.candidata { display: flex; gap: 0.6rem; align-items: start; font-weight: 400; padding: 0.6rem 0.75rem; border: 1px solid var(--borde); border-radius: var(--radio); cursor: pointer; }
+.candidata.elegida { border-color: var(--azul); background: var(--azul-claro); }
+.candidata input { margin-top: 0.25rem; }
+.resultado { margin-bottom: 1rem; }
+.acciones-incidencia { display: grid; justify-items: start; gap: 0.5rem; margin-top: 1rem; }
+
+/* Capacidad y calificaciones */
+.filtros-acciones { display: flex; gap: 0.5rem; align-items: end; }
+.capacidad-indicadores { margin-top: 0.75rem; }
+.calificaciones-resumen { display: grid; grid-template-columns: minmax(150px, 1fr) minmax(220px, 2fr) minmax(260px, 3fr); gap: 0.75rem; align-items: start; }
+.distribucion { display: grid; gap: 0.4rem; }
+.fila-distribucion { display: grid; grid-template-columns: 2.5rem 1fr 2.5rem; align-items: center; gap: 0.5rem; font-size: 0.88rem; }
+.fila-distribucion .barra-avance { height: 8px; }
+.titulo-tarjeta { margin: 0 0 0.5rem; font-size: 1rem; }
+.tabla-compacta td { padding: 0.35rem 0.5rem; }
+.comentarios { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; }
+.comentarios p { margin: 0.4rem 0; }
+.comentario-cabecera { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem; }
+.estrellas { color: #c58a00; letter-spacing: 1px; }
+
+@media (max-width: 800px) {
+  .calificaciones-resumen { grid-template-columns: minmax(0, 1fr); }
+}
+.enlace-titulo { font-size: 0.85rem; font-weight: 400; margin-left: 0.5rem; }
