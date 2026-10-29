@@ -348,6 +348,8 @@ Respuestas paginadas con `page`, `size`, `totalElements`. Swagger documenta todo
 
 **PRs**: descripción con qué hace, RF relacionado, cómo probar. Debe compilar y pasar tests.
 
+**CI** (`.github/workflows/backend.yml`, GitHub Actions): en cada push y PR que toque `backend/` corre `./mvnw verify` (Testcontainers con Postgres real) y construye la imagen Docker de Render. No se mergea a `develop` ni a `main` con el CI en rojo. Si fallan tests, los reportes quedan como artefacto `surefire-reports` de la corrida.
+
 ### Reglas para Claude Code
 - Antes de empezar una tarea: verifica la rama actual. Si estás en `main` o `develop`, **crea la rama `feature/*` correspondiente** desde `develop` actualizado.
 - Nunca hagas `push --force` sobre `main`/`develop`, nunca hagas merge a `main` sin que el usuario lo pida explícitamente.
