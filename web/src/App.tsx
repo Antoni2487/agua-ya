@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { LayoutAdmin } from './componentes/LayoutAdmin';
 import { RutaProtegida } from './componentes/RutaProtegida';
 import { Inicio } from './paginas/admin/Inicio';
+import { Monitoreo } from './paginas/admin/Monitoreo';
 import { RutaDetalle } from './paginas/admin/RutaDetalle';
 import { Rutas } from './paginas/admin/Rutas';
 import { Login } from './paginas/Login';
@@ -24,6 +25,7 @@ export function App() {
         }
       >
         <Route index element={<Inicio />} />
+        <Route path="monitoreo" element={<Monitoreo />} />
         <Route path="rutas" element={<Rutas />} />
         <Route path="rutas/:id" element={<RutaDetalle />} />
       </Route>

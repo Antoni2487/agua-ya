@@ -4,8 +4,8 @@ import { latLngBounds } from 'leaflet';
 import { useEffect } from 'react';
 import { CircleMarker, MapContainer, Polyline, Popup, TileLayer, Tooltip, useMap } from 'react-leaflet';
 
-import type { EstadoParada, Parada, PuntoLlenado } from '../api/tipos';
-import { ESTADOS_PARADA, TIPOS_PARADA } from '../utilidades';
+import type { EstadoParada, Parada, Posicion, PuntoLlenado, Recorrido } from '../api/tipos';
+import { ESTADOS_PARADA, hora, TIPOS_PARADA } from '../utilidades';
 
 const COLOR_ESTADO: Record<EstadoParada, string> = {
   PENDIENTE: '#0b6aa8',
@@ -26,10 +26,17 @@ function Encuadre({ puntos }: { puntos: [number, number][] }) {
 }
 
 /**
- * Recorrido planificado: punto de llenado (cuadro azul oscuro) y paradas numeradas en orden, coloreadas por estado.
- * Solo lo ve el administrador.
+ * Recorrido planificado (paradas numeradas por estado, desde el punto de llenado) y, si la ruta ya inició, el
+ * recorrido real del GPS con la última posición y los intentos de atender fuera de la geocerca. Solo para el admin.
  */
-export function MapaParadas({ paradas, puntoLlenado }: { paradas: Parada[]; puntoLlenado?: PuntoLlenado }) {
+export function MapaParadas({ paradas, puntoLlenado, posiciones = [], intentos = [] }: {
+  paradas: Parada[];
+  puntoLlenado?: PuntoLlenado;
+  posiciones?: Posicion[];
+  intentos?: Recorrido['intentosFallidos'];
+}) {
+  const real = posiciones.map((p) => [Number(p.latitud), Number(p.longitud)] as [number, number]);
+  const ultima = posiciones.at(-1);
   const recorrido: [number, number][] = [
     ...(puntoLlenado ? [[Number(puntoLlenado.latitud), Number(puntoLlenado.longitud)] as [number, number]] : []),
     ...paradas.map((p) => [Number(p.latitud), Number(p.longitud)] as [number, number]),
@@ -43,6 +50,29 @@ export function MapaParadas({ paradas, puntoLlenado }: { paradas: Parada[]; punt
       {/* Encuadra las paradas; la planta suele estar lejos y las amontonaría (la línea indica hacia dónde queda). */}
       <Encuadre puntos={paradas.length ? recorrido.slice(puntoLlenado ? 1 : 0) : recorrido} />
       <Polyline positions={recorrido} pathOptions={{ color: '#0b6aa8', weight: 2, opacity: 0.5, dashArray: '6 6' }} />
+      {real.length > 1 && <Polyline positions={real} pathOptions={{ color: '#c58a00', weight: 4, opacity: 0.85 }} />}
+      {intentos.filter((i) => i.latitud !== null && i.longitud !== null).map((i) => (
+        <CircleMarker
+          key={`${i.paradaId}-${i.registradoEn}`}
+          center={[Number(i.latitud), Number(i.longitud)]}
+          radius={6}
+          pathOptions={{ color: '#b42318', weight: 2, fillColor: '#fff', fillOpacity: 1, dashArray: '2 2' }}
+        >
+          <Tooltip>
+            Intento fuera de geocerca · parada {i.ordenParada} · {i.distanciaMetros !== null ? `${Math.round(Number(i.distanciaMetros))} m` : '—'} ·{' '}
+            {hora(i.registradoEn)}
+          </Tooltip>
+        </CircleMarker>
+      ))}
+      {ultima && (
+        <CircleMarker
+          center={real.at(-1)!}
+          radius={10}
+          pathOptions={{ color: '#fff', weight: 3, fillColor: '#c58a00', fillOpacity: 1 }}
+        >
+          <Tooltip>Cisterna · {hora(ultima.registradoEn)}</Tooltip>
+        </CircleMarker>
+      )}
       {puntoLlenado && (
         <CircleMarker
           center={recorrido[0]!}

@@ -186,3 +186,59 @@ export interface PuntoLlenado {
   longitud: number;
   activo: boolean;
 }
+
+// ---- Tiempo real (RF04, RF06) ----
+
+export interface Posicion {
+  rutaId: number;
+  latitud: number;
+  longitud: number;
+  registradoEn: string;
+}
+
+export interface Recorrido {
+  rutaId: number;
+  posiciones: Posicion[];
+  intentosFallidos: {
+    paradaId: number;
+    ordenParada: number;
+    latitud: number | null;
+    longitud: number | null;
+    distanciaMetros: number | null;
+    registradoEn: string;
+  }[];
+}
+
+export type TipoEventoRuta =
+  | 'RUTA_INICIADA' | 'PARADA_ATENDIDA' | 'PARADA_NO_ATENDIDA' | 'VIAJE_INICIADO' | 'VIAJE_FINALIZADO'
+  | 'RUTA_COMPLETADA' | 'RUTA_INTERRUMPIDA' | 'PARADAS_REASIGNADAS';
+
+export interface EventoRuta {
+  tipo: TipoEventoRuta;
+  rutaId: number;
+  paradaId: number | null;
+  viajeId: number | null;
+  registradoEn: string;
+}
+
+export type TipoIncidencia =
+  | 'AVERIA' | 'ACCESO_BLOQUEADO' | 'AGUA_AGOTADA' | 'NO_LLEGO' | 'LLEGO_TARDE' | 'YA_PASO' | 'VOLUMEN_INSUFICIENTE' | 'OTRO';
+
+export interface Incidencia {
+  id: number;
+  rutaId: number;
+  sectorNombre: string;
+  estadoRuta: EstadoRuta;
+  paradaId: number | null;
+  ordenParada: number | null;
+  tipo: TipoIncidencia;
+  descripcion: string | null;
+  estado: 'ABIERTA' | 'REASIGNADA' | 'CERRADA';
+  rutaDestinoId: number | null;
+  reportadoPorId: number;
+  reportadoPorNombre: string;
+  reportadoPorRol: Rol;
+  creadoEn: string;
+  resueltaPorNombre: string | null;
+  resueltoEn: string | null;
+}
