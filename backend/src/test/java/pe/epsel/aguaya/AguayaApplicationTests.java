@@ -45,6 +45,16 @@ class AguayaApplicationTests {
     }
 
     @Test
+    void lasClavesForaneasConsultadasTienenIndice() {
+        List<String> indices = jdbcTemplate.queryForList(
+                "SELECT indexname FROM pg_indexes WHERE schemaname = 'public'", String.class);
+
+        assertThat(indices).contains("ix_incidencia_reportado_ruta", "ix_incidencia_creado", "ix_parada_viaje",
+                "ix_parada_punto_entrega", "ix_parada_institucion", "ix_ruta_punto_llenado", "ix_viaje_punto_llenado",
+                "ix_monitoreo_ruta_registrado", "ix_parada_ruta_orden");
+    }
+
+    @Test
     void healthEsPublicoYReportaBaseDeDatos() throws Exception {
         mockMvc.perform(get("/api/health"))
                 .andExpect(status().isOk())
