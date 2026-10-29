@@ -107,3 +107,38 @@ input:focus, select:focus, textarea:focus, .boton:focus-visible { outline: 2px s
   .barra-usuario span { display: none; }
   .contenido { padding: 1rem 0.75rem 2rem; }
 }
+
+/* Panel público de transparencia */
+.publico { min-height: 100vh; display: grid; grid-template-rows: auto 1fr; grid-template-columns: minmax(0, 1fr); }
+.enlace-barra { color: var(--blanco); font-size: 0.9rem; }
+.intro { margin-top: -0.5rem; max-width: 60ch; }
+.filtros { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0 0.5rem; }
+.filtros label { min-width: 200px; }
+.cronograma { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.75rem; }
+.dia h3 { margin: 0 0 0.5rem; font-size: 1rem; text-transform: capitalize; }
+.dia ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; }
+.dia li { display: grid; gap: 0.25rem; padding-top: 0.6rem; border-top: 1px solid var(--borde); }
+.dia li:first-child { border-top: 0; padding-top: 0; }
+.dia-detalle { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; font-size: 0.88rem; }
+.placa {
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace; font-size: 0.8rem; font-weight: 700;
+  padding: 0.05rem 0.4rem; border: 1px solid var(--texto); border-radius: 4px; background: #fffbea;
+}
+.sectores { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 1rem; align-items: start; }
+.mapa { height: 420px; width: 100%; border-radius: var(--radio); border: 1px solid var(--borde); z-index: 0; }
+.mapa-cargando { display: grid; place-items: center; background: var(--blanco); }
+.lista-sectores { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; max-height: 420px; overflow-y: auto; }
+.sector-titulo { display: grid; margin-bottom: 0.4rem; }
+.lista-sectores dl { display: grid; grid-template-columns: auto 1fr; gap: 0.15rem 0.75rem; margin: 0; font-size: 0.88rem; }
+.lista-sectores dt { color: var(--suave); }
+.lista-sectores dd { margin: 0; }
+.pie { margin-top: 2.5rem; font-size: 0.82rem; max-width: 80ch; }
+
+@media (max-width: 800px) {
+  .sectores { grid-template-columns: minmax(0, 1fr); }
+  .mapa { height: 300px; }
+  .lista-sectores { max-height: none; }
+}
+.mapa-figura { margin: 0; display: grid; gap: 0.5rem; }
+.leyenda { display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; font-size: 0.82rem; }
+.leyenda i { display: inline-block; width: 0.75rem; height: 0.75rem; border-radius: 50%; vertical-align: -1px; }
