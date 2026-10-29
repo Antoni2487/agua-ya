@@ -25,6 +25,9 @@ services:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
       # La instancia free tiene 512 MB: la JVM usa como máximo el 75 %
+      # Swagger encendido para las demos; poner "false" si la URL se comparte fuera del equipo
+      - key: SWAGGER_ENABLED
+        value: "true"
       - key: JAVA_TOOL_OPTIONS
         value: -XX:MaxRAMPercentage=75 -XX:+UseSerialGC
 
