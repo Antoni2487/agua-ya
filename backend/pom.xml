@@ -13,7 +13,7 @@
 
     <groupId>pe.epsel</groupId>
     <artifactId>aguaya</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
     <name>aguaya</name>
     <description>AguaYa - gestión logística del abastecimiento de agua con cisternas (EPSEL)</description>
 
@@ -43,6 +43,15 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+        <!-- Caché en memoria de consultas públicas (versión gestionada por Spring Boot) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
         </dependency>
 
         <dependency>

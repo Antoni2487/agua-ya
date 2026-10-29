@@ -15,8 +15,22 @@ Proyecto académico del curso **Sistemas de Información Empresarial** — Unive
 
 ## Estado
 
-**v0.1.0 (Avance 1)**: backend REST completo del MVP (RF01–RF09). Pendientes: app móvil y panel web.
+**v0.2.0 (Avance 2)**: backend REST completo del MVP (RF01–RF09), desplegado en Render y optimizado
+(sin N+1, índices, caché del panel público y avisos asíncronos). Pendientes: app móvil y panel web.
 Detalle en [`CHANGELOG.md`](CHANGELOG.md).
+
+## API desplegada (rama `develop`)
+
+| | URL |
+|---|---|
+| Base de la API | `https://aguaya-backend.onrender.com` |
+| Swagger (documentación interactiva) | https://aguaya-backend.onrender.com/swagger-ui.html |
+| Health check | https://aguaya-backend.onrender.com/api/health |
+| WebSocket (STOMP) | `wss://aguaya-backend.onrender.com/ws` |
+
+Plan free de Render: si no recibe tráfico en 15 min se duerme y la primera petición puede tardar 2–3 min.
+Abrir `/api/health` antes de una demo. Cuentas de prueba en [`backend/README.md`](backend/README.md#datos-de-prueba-referenciales).
+Para el panel web en otro dominio, agregarlo a `CORS_ORIGINS` en Render.
 
 ## Clientes
 
@@ -31,7 +45,7 @@ Detalle en [`CHANGELOG.md`](CHANGELOG.md).
 - **Backend**: Java 21, Spring Boot 3, PostgreSQL 16, Flyway, JWT, WebSocket/STOMP, springdoc-openapi.
 - **Móvil**: React Native + Expo.
 - **Web**: React + Vite, Leaflet + OpenStreetMap.
-- **Infra**: Docker Compose; despliegue de `develop` en Railway.
+- **Infra**: Docker Compose; despliegue de `develop` en Render ([guía](backend/README.md#despliegue-en-render)).
 
 ## Flujo de ramas
 

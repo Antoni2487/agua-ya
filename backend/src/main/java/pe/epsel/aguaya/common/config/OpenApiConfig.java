@@ -18,7 +18,7 @@ public class OpenApiConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("AguaYa API")
-                        .version("0.1.0")
+                        .version("0.2.0")
                         .description("Gestión logística del abastecimiento de agua potable con cisternas - EPSEL S.A."))
                 .components(new Components()
                         .addSecuritySchemes(ESQUEMA_JWT, new SecurityScheme()

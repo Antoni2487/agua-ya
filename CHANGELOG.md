@@ -3,6 +3,30 @@
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); versiones con
 [SemVer](https://semver.org/lang/es/).
 
+## [0.2.0] - 2026-10-29 · Avance 2 (SIE)
+
+Backend desplegado en Render y optimizado. Sin cambios en las reglas de negocio.
+
+### Añadido
+- `GET /api/vecino/me` (estaba en la API pero respondía 404).
+- `SWAGGER_ENABLED`, `DB_POOL_MAX` y `CACHE_SEGUNDOS`.
+- Guarda contra N+1 (`ConsultasPorPeticionTest`).
+
+### Rendimiento
+- Carga por lotes de Hibernate, detalle de ruta en 3 consultas (antes 7) y GPS con una consulta menos.
+- V8: índices para FK consultadas y filtros frecuentes.
+- Caché Caffeine del panel público.
+- Avisos push totalmente asíncronos y aviso de cercanía sin duplicados.
+- Respuestas JSON comprimidas (gzip).
+
+### Despliegue
+- Blueprint de Render (`render.yaml`): backend Docker + PostgreSQL 16, despliegue automático de `develop`.
+  En línea en https://aguaya-backend.onrender.com.
+- El perfil `prod` acepta `DB_HOST`, `DB_PORT` y `DB_NAME` además de `DB_URL`.
+
+### Pendiente
+- App móvil (Expo) y panel web (Vite).
+
 ## [0.1.0] - 2026-10-28 · Avance 1 (SIE)
 
 Backend REST completo del MVP (RF01–RF09). Datos referenciales, no oficiales de EPSEL.
@@ -34,4 +58,4 @@ Backend REST completo del MVP (RF01–RF09). Datos referenciales, no oficiales d
 
 ### Pendiente
 - App móvil (Expo) y panel web (Vite).
-- Despliegue de `develop` en Railway.
+- Despliegue de `develop` en Render.

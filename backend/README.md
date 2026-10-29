@@ -147,6 +147,40 @@ Cuentas de prueba (login con DNI + contraseña, **solo para desarrollo y demos**
 
 > Estas cuentas también se crean en el despliegue: cambiar o desactivar sus contraseñas si el backend queda público.
 
+## Despliegue en Render
+
+El archivo [`render.yaml`](../render.yaml) (Blueprint) crea el backend (Docker) y un PostgreSQL 16 en la región
+Virginia, y despliega la rama `develop` en cada push.
+
+Desplegado en **https://aguaya-backend.onrender.com** (Swagger en `/swagger-ui.html`, WebSocket en `wss://…/ws`).
+
+1. En [render.com](https://render.com): **New → Blueprint**, conectar GitHub y elegir `Antoni2487/agua-ya`.
+2. Render lee `render.yaml` y pide las variables marcadas `sync: false` (Twilio y Expo). Se pueden dejar
+   vacías para la demo: con `OTP_PROVIDER=log` el código OTP aparece en los **Logs** del servicio.
+3. **Apply**. El primer build tarda unos minutos; Flyway crea el esquema y los datos referenciales.
+4. Verificar `https://<servicio>.onrender.com/api/health` y Swagger en `/swagger-ui.html`.
+
+`JWT_SECRET` lo genera Render. Para usar SMS reales: completar `TWILIO_*` y cambiar `OTP_PROVIDER` a `twilio`.
+Cuando el panel web esté publicado, agregar su URL a `CORS_ORIGINS` (separadas por coma).
+
+Limitaciones del plan free: el servicio se duerme tras 15 min sin tráfico (la primera petición tarda ~1 min;
+abrirlo antes de una demo) y la base de datos free vence a los 30 días. La app móvil y el WebSocket usan
+`https://` y `wss://` del mismo dominio.
+
+> Las cuentas de prueba de V3 también se crean en Render: cambiar sus contraseñas o desactivarlas si se comparte
+> la URL fuera del equipo.
+
+## Rendimiento
+
+- **Consultas**: los listados y detalles cargan sus relaciones con `@EntityGraph`; `ConsultasPorPeticionTest`
+  falla si un endpoint de lectura empieza a hacer N+1. Hibernate carga por lotes de 50 lo que quede lazy.
+- **Índices**: V8 indexa las FK consultadas o borradas desde catálogos y los filtros de incidencias.
+- **Caché**: el panel público (`/api/public/transparencia/*`) se cachea `CACHE_SEGUNDOS` (120 s) con Caffeine.
+- **Asíncrono**: los avisos push (destinatarios + Expo) corren después del commit en un pool propio; el GPS
+  del conductor solo guarda la posición y la publica.
+- **Red**: respuestas JSON de más de 1 KB comprimidas con gzip; pool de BD configurable con `DB_POOL_MAX`.
+- `SWAGGER_ENABLED=false` oculta Swagger si la URL se hace pública.
+
 ## Base de datos
 
 - Esquema gestionado solo por Flyway (`src/main/resources/db/migration`); Hibernate en modo `validate`.

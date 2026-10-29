@@ -82,7 +82,7 @@ public class GeocercaService {
 
         parada.marcarAtendida(ahora, r != null ? r.volumenEntregadoLitros() : null);
         publicador.eventoRuta(new EventoRuta(EventoRuta.Tipo.PARADA_ATENDIDA, parada.getRuta().getId(), paradaId, ahora));
-        notificacionService.paradaAtendida(parada);
+        notificacionService.paradaAtendida(paradaId);
         return RutaMapper.aParada(parada);
     }
 
