@@ -187,6 +187,55 @@ export interface PuntoLlenado {
   activo: boolean;
 }
 
+export interface Institucion {
+  id: number;
+  nombre: string;
+  tipo: 'SALUD' | 'BOMBEROS' | 'EDUCACION' | 'OTRO';
+  sectorId: number;
+  sectorNombre: string;
+  latitud: number;
+  longitud: number;
+  activo: boolean;
+}
+
+export interface PuntoEntrega {
+  id: number;
+  sectorId: number;
+  sectorNombre: string;
+  nombre: string;
+  referencia: string | null;
+  latitud: number;
+  longitud: number;
+  activo: boolean;
+}
+
+export type EstadoVehiculo = 'OPERATIVA' | 'MANTENIMIENTO' | 'AVERIADA';
+
+export interface Cisterna {
+  id: number;
+  placa: string;
+  capacidadLitros: number;
+  estadoVehiculo: EstadoVehiculo;
+  nroAutorizacionSanitaria: string | null;
+  venceAutorizacion: string | null;
+  autorizacionVigente: boolean;
+}
+
+export type EstadoDisponibilidad = 'DISPONIBLE' | 'EN_RUTA' | 'INACTIVO';
+
+export interface Conductor {
+  id: number;
+  dni: string;
+  nombres: string;
+  apellidos: string;
+  telefono: string;
+  email: string | null;
+  licencia: string;
+  estadoDisponibilidad: EstadoDisponibilidad;
+  turno: Turno | null;
+  activo: boolean;
+}
+
 // ---- Tiempo real (RF04, RF06) ----
 
 export interface Posicion {

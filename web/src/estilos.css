@@ -85,7 +85,7 @@ input:focus, select:focus, textarea:focus, .boton:focus-visible { outline: 2px s
 .indicador-malo { border-color: var(--rojo); background: var(--rojo-claro); }
 .indicador-malo strong { color: var(--rojo); }
 
-.tabla-contenedor { overflow-x: auto; background: var(--blanco); border: 1px solid var(--borde); border-radius: var(--radio); }
+.tabla-contenedor { position: relative; overflow-x: auto; background: var(--blanco); border: 1px solid var(--borde); border-radius: var(--radio); }
 .tabla { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
 .tabla th, .tabla td { padding: 0.6rem 0.75rem; text-align: left; border-bottom: 1px solid var(--borde); white-space: nowrap; }
 .tabla th { background: var(--fondo); color: var(--suave); font-weight: 600; }
@@ -244,3 +244,27 @@ input:focus, select:focus, textarea:focus, .boton:focus-visible { outline: 2px s
   .calificaciones-resumen { grid-template-columns: minmax(0, 1fr); }
 }
 .enlace-titulo { font-size: 0.85rem; font-weight: 400; margin-left: 0.5rem; }
+
+/* Catálogos */
+.solo-lector { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.pestanas { display: flex; flex-wrap: wrap; gap: 0.25rem; border-bottom: 1px solid var(--borde); margin-bottom: 1rem; }
+.pestanas a { padding: 0.5rem 0.8rem; color: var(--suave); text-decoration: none; border-bottom: 3px solid transparent; margin-bottom: -1px; }
+.pestanas a.active { color: var(--azul); border-bottom-color: var(--azul); font-weight: 600; }
+.encabezado-catalogo { align-items: start; }
+.encabezado-catalogo p { margin: 0; max-width: 70ch; }
+.casilla { display: flex; align-items: center; gap: 0.5rem; font-weight: 400; align-self: end; padding-bottom: 0.5rem; }
+.casilla input { width: auto; }
+.mapa-selector { height: 300px; cursor: crosshair; }
+/* Las acciones quedan fijas a la derecha aunque la tabla se desplace en pantallas angostas. */
+.tabla .acciones-fila { position: sticky; right: 0; background: var(--blanco); box-shadow: -6px 0 6px -6px rgb(0 0 0 / 0.2); }
+.tabla th.acciones-fila { background: var(--fondo); }
+.acciones-fila > div { display: flex; gap: 0.4rem; justify-content: flex-end; }
+.acciones-fila .boton { padding: 0.3rem 0.65rem; font-size: 0.85rem; }
+.fila-inactiva td:not(.acciones-fila) { color: var(--suave); }
+.etiqueta-activo, .etiqueta-vehiculo-operativa, .etiqueta-disponibilidad-disponible { background: var(--verde-claro); color: var(--verde); }
+.etiqueta-inactivo, .etiqueta-vehiculo-averiada, .etiqueta-disponibilidad-inactivo { background: var(--rojo-claro); color: var(--rojo); }
+.etiqueta-vehiculo-mantenimiento, .etiqueta-disponibilidad-en_ruta { background: var(--ambar-claro); color: var(--ambar); }
+.etiqueta-zona-alta { margin-left: 0.4rem; background: var(--azul-claro); color: var(--azul-oscuro); }
+.etiqueta-vencida { margin-left: 0.4rem; }
+.campos label { align-content: start; }
+.campos input:not([type=checkbox]), .campos select { width: 100%; min-width: 0; box-sizing: border-box; }

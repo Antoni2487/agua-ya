@@ -51,6 +51,7 @@ src/
 | `/admin/incidencias/:id` | ADMIN | Ficha de la incidencia: reasignación manual de las paradas pendientes a otra ruta del sector, con candidatas sugeridas (RF07), o cierre. |
 | `/admin/capacidad` | ADMIN | Planificación de capacidad (RF02): viajes y cisternas necesarios por sector frente a la flota disponible, déficit y simulación con otra capacidad de cisterna. |
 | `/admin/calificaciones` | ADMIN | Calificaciones de los vecinos (RF08): promedio, distribución por estrellas, promedio por conductor y comentarios, filtrables por sector. |
+| `/admin/catalogos/:tipo` | ADMIN | Catálogos: sectores, instituciones críticas, puntos de entrega y de llenado, cisternas y conductores. Alta, edición (ubicación con clic en el mapa), baja lógica o eliminación (cisternas sin rutas), filtros en la URL. |
 
 **Tiempo real**: el panel abre una conexión STOMP a `wss://<backend>/ws` con el token en el CONNECT, se reconecta
 sola cada 5 s (renovando el token si venció) y muestra su estado en la barra (“En vivo”). Las incidencias (RF06)
