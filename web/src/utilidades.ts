@@ -1,4 +1,4 @@
-import type { EstadoParada, EstadoRuta, TipoParada, Turno } from './api/tipos';
+import type { EstadoParada, EstadoRuta, TipoEventoRuta, TipoIncidencia, TipoParada, Turno } from './api/tipos';
 
 /** Fecha de hoy en Lima (zona del negocio), como yyyy-MM-dd. */
 export function hoyEnLima(ahora: Date = new Date()): string {
@@ -73,4 +73,34 @@ export function hora(iso: string | null): string {
   if (!iso) return '—';
   return new Intl.DateTimeFormat('es-PE', { hour: '2-digit', minute: '2-digit', timeZone: 'America/Lima', hour12: false })
     .format(new Date(iso));
+}
+
+export const TIPOS_INCIDENCIA: Record<TipoIncidencia, string> = {
+  AVERIA: 'Avería',
+  ACCESO_BLOQUEADO: 'Acceso bloqueado',
+  AGUA_AGOTADA: 'Agua agotada',
+  NO_LLEGO: 'No llegó',
+  LLEGO_TARDE: 'Llegó tarde',
+  YA_PASO: 'Ya pasó',
+  VOLUMEN_INSUFICIENTE: 'Volumen insuficiente',
+  OTRO: 'Otro',
+};
+
+export const EVENTOS_RUTA: Record<TipoEventoRuta, string> = {
+  RUTA_INICIADA: 'inició su recorrido',
+  PARADA_ATENDIDA: 'atendió una parada',
+  PARADA_NO_ATENDIDA: 'marcó una parada como no atendida',
+  VIAJE_INICIADO: 'salió cargada en un nuevo viaje',
+  VIAJE_FINALIZADO: 'terminó un viaje',
+  RUTA_COMPLETADA: 'completó la ruta',
+  RUTA_INTERRUMPIDA: 'se interrumpió',
+  PARADAS_REASIGNADAS: 'recibió paradas reasignadas',
+};
+
+/** "hace 40 s", "hace 3 min", "hace 2 h" respecto de ahora. */
+export function hace(iso: string, ahora: number = Date.now()): string {
+  const segundos = Math.max(0, Math.round((ahora - new Date(iso).getTime()) / 1000));
+  if (segundos < 60) return `hace ${segundos} s`;
+  if (segundos < 3600) return `hace ${Math.floor(segundos / 60)} min`;
+  return `hace ${Math.floor(segundos / 3600)} h`;
 }
