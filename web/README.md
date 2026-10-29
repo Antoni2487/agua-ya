@@ -47,6 +47,10 @@ src/
 | `/admin/monitoreo` | ADMIN | Mapa en vivo (RF04): cisternas en ruta con su estela, avance y aviso "sin señal" si no envían GPS en 2 min; eventos de las rutas en tiempo real. |
 | `/admin/rutas` | ADMIN | Rutas por fecha, estado y sector (filtros en la URL, paginado) y formulario para programar (RF01). |
 | `/admin/rutas/:id` | ADMIN | Detalle: asignación de cisterna y conductor con sugerencias (RF03), mapa con paradas numeradas por estado y el recorrido GPS real (en vivo si está en curso), intentos fuera de geocerca (evidencia ante desvíos), viajes y eliminación si aún no inició. |
+| `/admin/incidencias` | ADMIN | Incidencias por estado, tipo y ruta (filtros en la URL, paginado); las nuevas llegan como alerta en tiempo real (RF06). |
+| `/admin/incidencias/:id` | ADMIN | Ficha de la incidencia: reasignación manual de las paradas pendientes a otra ruta del sector, con candidatas sugeridas (RF07), o cierre. |
+| `/admin/capacidad` | ADMIN | Planificación de capacidad (RF02): viajes y cisternas necesarios por sector frente a la flota disponible, déficit y simulación con otra capacidad de cisterna. |
+| `/admin/calificaciones` | ADMIN | Calificaciones de los vecinos (RF08): promedio, distribución por estrellas, promedio por conductor y comentarios, filtrables por sector. |
 
 **Tiempo real**: el panel abre una conexión STOMP a `wss://<backend>/ws` con el token en el CONNECT, se reconecta
 sola cada 5 s (renovando el token si venció) y muestra su estado en la barra (“En vivo”). Las incidencias (RF06)

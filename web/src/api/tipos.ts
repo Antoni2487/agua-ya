@@ -242,3 +242,72 @@ export interface Incidencia {
   resueltaPorNombre: string | null;
   resueltoEn: string | null;
 }
+
+// ---- Reasignación (RF07), capacidad (RF02) y calificaciones (RF08) ----
+
+export interface SugerenciasReasignacion {
+  incidenciaId: number;
+  rutaOrigenId: number;
+  paradasPendientes: number;
+  rutas: {
+    rutaId: number;
+    fecha: string;
+    turno: Turno;
+    estado: EstadoRuta;
+    cisternaPlaca: string | null;
+    capacidadLitros: number | null;
+    conductorNombre: string | null;
+    distanciaKm: number | null;
+    paradasPendientes: number;
+  }[];
+}
+
+export interface Reasignacion {
+  incidencia: Incidencia;
+  rutaOrigenId: number;
+  rutaDestinoId: number;
+  paradasReasignadas: number;
+  paradasYaEnDestino: number;
+}
+
+export interface SectorCapacidad {
+  sectorId: number;
+  nombre: string;
+  distrito: string;
+  esZonaAlta: boolean;
+  unidadesUso: number;
+  dotacionLitros: number;
+  frecuenciaDias: number;
+  litrosPorVisita: number;
+  viajesNecesarios: number;
+  maxViajesDiarios: number;
+  cisternasNecesarias: number;
+  deficit: number;
+}
+
+export interface CapacidadDetalle extends Capacidad {
+  sectores: SectorCapacidad[];
+}
+
+export interface Calificacion {
+  id: number;
+  paradaId: number;
+  rutaId: number;
+  fecha: string;
+  turno: Turno;
+  sectorId: number;
+  sectorNombre: string;
+  conductorNombre: string | null;
+  cisternaPlaca: string | null;
+  vecinoNombre: string;
+  estrellas: number;
+  comentario: string | null;
+  creadoEn: string;
+}
+
+export interface ResumenCalificaciones {
+  total: number;
+  promedio: number | null;
+  distribucion: Record<string, number>;
+  conductores: { conductorId: number; nombre: string; promedio: number; total: number }[];
+}

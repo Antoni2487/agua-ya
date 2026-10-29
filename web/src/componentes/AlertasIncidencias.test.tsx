@@ -19,7 +19,7 @@ const incidencia: Incidencia = {
 describe('alertas de incidencias', () => {
   beforeEach(() => suscripciones.clear());
 
-  it('muestra cada incidencia al instante con enlace a la ruta y se puede cerrar', async () => {
+  it('muestra cada incidencia al instante con enlace para atenderla y se puede cerrar', async () => {
     renderizar(<AlertasIncidencias />);
 
     act(() => emitir('/topic/admin/incidencias', incidencia));
@@ -28,7 +28,7 @@ describe('alertas de incidencias', () => {
     expect(alerta).toHaveTextContent('Avería · Cerropón');
     expect(alerta).toHaveTextContent('Conductor · ruta interrumpida');
     expect(alerta).toHaveTextContent('“Llanta pinchada”');
-    expect(screen.getByRole('link', { name: 'Ver ruta' })).toHaveAttribute('href', '/admin/rutas/7');
+    expect(screen.getByRole('link', { name: 'Atender incidencia' })).toHaveAttribute('href', '/admin/incidencias/3');
 
     await userEvent.click(screen.getByRole('button', { name: 'Cerrar alerta' }));
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();

@@ -1,4 +1,6 @@
-import type { EstadoParada, EstadoRuta, TipoEventoRuta, TipoIncidencia, TipoParada, Turno } from './api/tipos';
+import type {
+  EstadoParada, EstadoRuta, Incidencia, Rol, TipoEventoRuta, TipoIncidencia, TipoParada, Turno,
+} from './api/tipos';
 
 /** Fecha de hoy en Lima (zona del negocio), como yyyy-MM-dd. */
 export function hoyEnLima(ahora: Date = new Date()): string {
@@ -103,4 +105,21 @@ export function hace(iso: string, ahora: number = Date.now()): string {
   if (segundos < 60) return `hace ${segundos} s`;
   if (segundos < 3600) return `hace ${Math.floor(segundos / 60)} min`;
   return `hace ${Math.floor(segundos / 3600)} h`;
+}
+
+export const ESTADOS_INCIDENCIA: Record<Incidencia['estado'], string> = {
+  ABIERTA: 'Abierta',
+  REASIGNADA: 'Reasignada',
+  CERRADA: 'Cerrada',
+};
+
+export const ROLES: Record<Rol, string> = { ADMIN: 'Administrador', CONDUCTOR: 'Conductor', VECINO: 'Vecino' };
+
+/** "29/10/2026 08:35" en hora de Lima. */
+export function fechaHora(iso: string): string {
+  const partes = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/Lima', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false,
+  }).formatToParts(new Date(iso));
+  const p = (tipo: string) => partes.find((x) => x.type === tipo)?.value ?? '';
+  return `${p('day')}/${p('month')}/${p('year')} ${p('hour')}:${p('minute')}`;
 }
