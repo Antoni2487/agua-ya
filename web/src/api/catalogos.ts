@@ -25,3 +25,13 @@ export function usePuntosLlenadoActivos() {
     staleTime: CINCO_MINUTOS,
   });
 }
+
+/** Todos los sectores, también los inactivos: para filtrar y editar catálogos que dependen de un sector. */
+export function useSectores() {
+  return useQuery({
+    queryKey: ['catalogo', 'sectores', 'todos'],
+    queryFn: ({ signal }) =>
+      api<Pagina<Sector>>('/api/admin/sectores', { parametros: { size: 100, sort: 'nombre' }, signal }).then((p) => p.contenido),
+    staleTime: CINCO_MINUTOS,
+  });
+}
