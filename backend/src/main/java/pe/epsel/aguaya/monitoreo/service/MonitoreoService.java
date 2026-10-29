@@ -59,7 +59,7 @@ public class MonitoreoService {
 
         PosicionResponse posicion = new PosicionResponse(rutaId, latitud, longitud, ahora);
         publicador.posicion(posicion);
-        notificacionService.posicionCisterna(ruta, latitud.doubleValue(), longitud.doubleValue(), ahora);
+        notificacionService.posicionCisterna(rutaId, latitud.doubleValue(), longitud.doubleValue(), ahora);
         return posicion;
     }
 

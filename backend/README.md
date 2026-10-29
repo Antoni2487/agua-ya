@@ -170,6 +170,17 @@ abrirlo antes de una demo) y la base de datos free vence a los 30 días. La app 
 > Las cuentas de prueba de V3 también se crean en Render: cambiar sus contraseñas o desactivarlas si se comparte
 > la URL fuera del equipo.
 
+## Rendimiento
+
+- **Consultas**: los listados y detalles cargan sus relaciones con `@EntityGraph`; `ConsultasPorPeticionTest`
+  falla si un endpoint de lectura empieza a hacer N+1. Hibernate carga por lotes de 50 lo que quede lazy.
+- **Índices**: V8 indexa las FK consultadas o borradas desde catálogos y los filtros de incidencias.
+- **Caché**: el panel público (`/api/public/transparencia/*`) se cachea `CACHE_SEGUNDOS` (120 s) con Caffeine.
+- **Asíncrono**: los avisos push (destinatarios + Expo) corren después del commit en un pool propio; el GPS
+  del conductor solo guarda la posición y la publica.
+- **Red**: respuestas JSON de más de 1 KB comprimidas con gzip; pool de BD configurable con `DB_POOL_MAX`.
+- `SWAGGER_ENABLED=false` oculta Swagger si la URL se hace pública.
+
 ## Base de datos
 
 - Esquema gestionado solo por Flyway (`src/main/resources/db/migration`); Hibernate en modo `validate`.
