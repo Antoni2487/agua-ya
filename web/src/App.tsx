@@ -4,6 +4,7 @@ import { LayoutAdmin } from './componentes/LayoutAdmin';
 import { RutaProtegida } from './componentes/RutaProtegida';
 import { Calificaciones } from './paginas/admin/Calificaciones';
 import { Capacidad } from './paginas/admin/Capacidad';
+import { Catalogos } from './paginas/admin/Catalogos';
 import { IncidenciaDetalle } from './paginas/admin/IncidenciaDetalle';
 import { Incidencias } from './paginas/admin/Incidencias';
 import { Inicio } from './paginas/admin/Inicio';
@@ -36,6 +37,8 @@ export function App() {
         <Route path="incidencias/:id" element={<IncidenciaDetalle />} />
         <Route path="capacidad" element={<Capacidad />} />
         <Route path="calificaciones" element={<Calificaciones />} />
+        <Route path="catalogos" element={<Catalogos />} />
+        <Route path="catalogos/:tipo" element={<Catalogos />} />
       </Route>
       <Route path="*" element={<NoEncontrada />} />
     </Routes>

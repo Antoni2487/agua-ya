@@ -12,6 +12,7 @@ const SECCIONES: { ruta: string; etiqueta: string; exacta?: boolean }[] = [
   { ruta: '/admin/incidencias', etiqueta: 'Incidencias' },
   { ruta: '/admin/capacidad', etiqueta: 'Capacidad' },
   { ruta: '/admin/calificaciones', etiqueta: 'Calificaciones' },
+  { ruta: '/admin/catalogos', etiqueta: 'Catálogos' },
 ];
 
 export function LayoutAdmin() {
