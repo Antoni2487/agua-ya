@@ -59,7 +59,7 @@ public class ConductorRutaService {
         ruta.iniciar(ahora);
         ruta.getConductor().setEstadoDisponibilidad(EstadoDisponibilidad.EN_RUTA);
         publicador.eventoRuta(new EventoRuta(EventoRuta.Tipo.RUTA_INICIADA, rutaId, null, ahora));
-        notificacionService.rutaIniciada(ruta);
+        notificacionService.rutaIniciada(rutaId);
         return RutaMapper.aDetalle(ruta, paradaRepository.findDetalleByRutaId(rutaId));
     }
 
@@ -75,7 +75,7 @@ public class ConductorRutaService {
 
     /** Una ruta ajena se reporta como inexistente para no revelar rutas de otros conductores. */
     public Ruta rutaDelConductor(Long rutaId, Long conductorId) {
-        return rutaRepository.findById(rutaId)
+        return rutaRepository.findConConductorById(rutaId)
                 .filter(r -> r.getConductor() != null && r.getConductor().getId().equals(conductorId))
                 .orElseThrow(() -> NegocioException.noEncontrado("Ruta", rutaId));
     }

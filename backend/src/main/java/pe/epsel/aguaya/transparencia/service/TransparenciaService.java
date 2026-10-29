@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pe.epsel.aguaya.cisterna.entity.EstadoVehiculo;
 import pe.epsel.aguaya.cisterna.repository.CisternaRepository;
 import pe.epsel.aguaya.common.config.AguayaProperties;
+import pe.epsel.aguaya.common.config.CacheConfig;
 import pe.epsel.aguaya.common.exception.NegocioException;
 import pe.epsel.aguaya.incidencia.entity.EstadoIncidencia;
 import pe.epsel.aguaya.ruta.entity.EstadoParada;
@@ -46,7 +48,8 @@ import pe.epsel.aguaya.transparencia.repository.TransparenciaRepository;
 
 /**
  * Panel público de transparencia (RF09). Sin autenticación: solo datos agregados por distrito y sector,
- * nunca nombres, teléfonos ni coordenadas de viviendas (regla 9).
+ * nunca nombres, teléfonos ni coordenadas de viviendas (regla 9). Las respuestas se cachean unos minutos
+ * ({@code CACHE_SEGUNDOS}) porque el panel lo consulta cualquiera y los agregados no cambian al segundo.
  */
 @Service
 @RequiredArgsConstructor
@@ -69,6 +72,7 @@ public class TransparenciaService {
     private final AguayaProperties properties;
     private final Clock clock;
 
+    @Cacheable(CacheConfig.TRANSPARENCIA_RESUMEN)
     @Transactional(readOnly = true)
     public ResumenTransparenciaResponse resumen(LocalDate desde, LocalDate hasta) {
         Periodo p = indicadores(desde, hasta);
@@ -115,6 +119,7 @@ public class TransparenciaService {
                 new Flota(flota.size(), disponibles));
     }
 
+    @Cacheable(CacheConfig.TRANSPARENCIA_SECTORES)
     @Transactional(readOnly = true)
     public List<SectorTransparenciaResponse> sectores(String distrito, LocalDate desde, LocalDate hasta) {
         Periodo p = indicadores(desde, hasta);
@@ -144,6 +149,7 @@ public class TransparenciaService {
         }).toList();
     }
 
+    @Cacheable(CacheConfig.TRANSPARENCIA_CRONOGRAMA)
     @Transactional(readOnly = true)
     public List<CronogramaResponse> cronograma(String distrito, LocalDate desde, LocalDate hasta) {
         LocalDate inicio = desde != null ? desde : LocalDate.now(clock);

@@ -147,6 +147,13 @@ Cada módulo: `controller/`, `service/`, `repository/`, `entity/`, `dto/`, `mapp
 - Coordenadas como `numeric(9,6)` / `BigDecimal` o `double`; distancia con Haversine en `common/util`. La API acepta más decimales (GPS, mapas) y los redondea a 6 con `Coordenada.normalizar`.
 - Lógica de negocio en `service`, nunca en controladores.
 
+### Rendimiento (obligatorio)
+- **Sin N+1**: toda lectura que el mapper recorra por relaciones usa `@EntityGraph` (o una proyección). `hibernate.default_batch_fetch_size=50` es la red de seguridad, no la solución. `ConsultasPorPeticionTest` fija cuántas sentencias SQL ejecuta cada endpoint de lectura: si agregas uno o tocas un mapper, agrégalo/ajústalo ahí.
+- **Paginación** en todo listado que crezca (`Pageable`, por defecto 20, máx. 100); nunca `JOIN FETCH` de colecciones con paginación (Hibernate falla a propósito).
+- **Índices**: toda FK que se consulte o cuyo padre se borre lleva índice; filtros frecuentes también. Siempre en una migración nueva.
+- **Caché** (Caffeine, `spring.cache.*`): solo DTO de consultas agregadas o públicas, con TTL (`CACHE_SEGUNDOS`); nunca entidades JPA ni datos de una persona. En tests está apagada (`spring.cache.type=none`).
+- **Asíncrono**: lo que no debe demorar la respuesta (push, cálculo de destinatarios) va después del commit en `PushConfig.EJECUTOR_PUSH` con transacción propia, recibiendo ids (no entidades). La geocerca y el GPS se quedan síncronos porque son la regla de negocio.
+
 ---
 
 ## 7. Modelo de datos
@@ -357,7 +364,7 @@ Respuestas paginadas con `page`, `size`, `totalElements`. Swagger documenta todo
 
 - Perfiles: `dev` (local, docker-compose) y `prod` (Render, Blueprint `render.yaml`). En `prod` la BD se configura con `DB_URL` o con `DB_HOST`, `DB_PORT` y `DB_NAME` (como las entrega Render).
 - Variables de entorno (nunca commitear secretos; usar `.env` en `.gitignore` y un `.env.example`):
-  `DB_URL`, `DB_USER`, `DB_PASSWORD`, `JWT_SECRET`, `JWT_ACCESS_MINUTOS`, `JWT_REFRESH_DIAS`, `OTP_PROVIDER` (log|twilio), `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_VERIFY_SID`, `PUSH_PROVIDER` (log|expo), `EXPO_ACCESS_TOKEN`, `PUSH_RADIO_CERCANIA_METROS`, `GEOCERCA_RADIO_METROS`, `GEOCERCA_VIGENCIA_POSICION_SEGUNDOS`, `CORS_ORIGINS`.
+  `DB_URL`, `DB_USER`, `DB_PASSWORD`, `JWT_SECRET`, `JWT_ACCESS_MINUTOS`, `JWT_REFRESH_DIAS`, `OTP_PROVIDER` (log|twilio), `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_VERIFY_SID`, `PUSH_PROVIDER` (log|expo), `EXPO_ACCESS_TOKEN`, `PUSH_RADIO_CERCANIA_METROS`, `SWAGGER_ENABLED`, `DB_POOL_MAX`, `CACHE_SEGUNDOS`, `GEOCERCA_RADIO_METROS`, `GEOCERCA_VIGENCIA_POSICION_SEGUNDOS`, `CORS_ORIGINS`.
 - CORS: permitir el origen del panel web y del panel público.
 - Para probar GPS desde el celular el backend debe ser accesible por red: Render (rama `develop`) o `ngrok` en local.
 

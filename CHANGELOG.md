@@ -6,6 +6,18 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- `GET /api/vecino/me` (estaba en la API pero respondía 404).
+- `SWAGGER_ENABLED`, `DB_POOL_MAX` y `CACHE_SEGUNDOS`.
+- Guarda contra N+1 (`ConsultasPorPeticionTest`).
+
+### Rendimiento
+- Carga por lotes de Hibernate, detalle de ruta en 3 consultas (antes 7) y GPS con una consulta menos.
+- V8: índices para FK consultadas y filtros frecuentes.
+- Caché Caffeine del panel público.
+- Avisos push totalmente asíncronos y aviso de cercanía sin duplicados.
+- Respuestas JSON comprimidas (gzip).
+
+### Añadido (despliegue)
 - Blueprint de Render (`render.yaml`): backend Docker + PostgreSQL 16, despliegue automático de `develop`.
 - El perfil `prod` acepta `DB_HOST`, `DB_PORT` y `DB_NAME` además de `DB_URL`.
 
