@@ -23,6 +23,11 @@ public interface RutaRepository extends JpaRepository<Ruta, Long> {
             + "AND (:estado IS NULL OR r.estado = :estado) AND (:sectorId IS NULL OR r.sector.id = :sectorId)")
     Page<Ruta> buscar(LocalDate fecha, EstadoRuta estado, Long sectorId, Pageable pageable);
 
+    /** Operación del conductor (GPS cada ~15 s, viajes, inicio): ruta y conductor en una consulta. */
+    @EntityGraph(attributePaths = "conductor")
+    @Query("SELECT r FROM Ruta r WHERE r.id = :id")
+    Optional<Ruta> findConConductorById(Long id);
+
     /** Detalle: la ruta con sus relaciones en una sola consulta (paradas y viajes van aparte). */
     @EntityGraph(attributePaths = {"sector", "cisterna", "conductor", "puntoLlenado"})
     @Query("SELECT r FROM Ruta r WHERE r.id = :id")

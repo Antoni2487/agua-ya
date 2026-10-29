@@ -137,7 +137,7 @@ public class ReasignacionService {
         OffsetDateTime ahora = OffsetDateTime.now(clock);
         incidencia.reasignar(destino, personaRepository.getReferenceById(adminId), ahora);
         publicador.eventoRuta(new EventoRuta(EventoRuta.Tipo.PARADAS_REASIGNADAS, destino.getId(), null, ahora));
-        notificacionService.paradasReasignadas(destino, copias);
+        notificacionService.paradasReasignadas(destino.getId(), copias.stream().map(Parada::getId).toList());
         return new ReasignacionResponse(IncidenciaMapper.aResponse(incidencia), origen.getId(), destino.getId(),
                 copias.size(), pendientes.size() - copias.size());
     }
