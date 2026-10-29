@@ -60,10 +60,13 @@ server:
     include-stacktrace: never
 
 springdoc:
+  # SWAGGER_ENABLED=false apaga Swagger UI y /v3/api-docs (p. ej. si la URL de prod se hace pública)
   swagger-ui:
     path: /swagger-ui.html
+    enabled: ${SWAGGER_ENABLED:true}
   api-docs:
     path: /v3/api-docs
+    enabled: ${SWAGGER_ENABLED:true}
 
 aguaya:
   zona-horaria: America/Lima
