@@ -18,6 +18,19 @@ Proyecto académico del curso **Sistemas de Información Empresarial** — Unive
 **v0.1.0 (Avance 1)**: backend REST completo del MVP (RF01–RF09). Pendientes: app móvil y panel web.
 Detalle en [`CHANGELOG.md`](CHANGELOG.md).
 
+## API desplegada (rama `develop`)
+
+| | URL |
+|---|---|
+| Base de la API | `https://aguaya-backend.onrender.com` |
+| Swagger (documentación interactiva) | https://aguaya-backend.onrender.com/swagger-ui.html |
+| Health check | https://aguaya-backend.onrender.com/api/health |
+| WebSocket (STOMP) | `wss://aguaya-backend.onrender.com/ws` |
+
+Plan free de Render: si no recibe tráfico en 15 min se duerme y la primera petición puede tardar 2–3 min.
+Abrir `/api/health` antes de una demo. Cuentas de prueba en [`backend/README.md`](backend/README.md#datos-de-prueba-referenciales).
+Para el panel web en otro dominio, agregarlo a `CORS_ORIGINS` en Render.
+
 ## Clientes
 
 | Cliente | Usuarios | Carpeta |
