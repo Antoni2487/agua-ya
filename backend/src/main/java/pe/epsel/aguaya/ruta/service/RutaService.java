@@ -103,7 +103,7 @@ public class RutaService {
 
     @Transactional(readOnly = true)
     public RutaDetalleResponse obtener(Long id) {
-        Ruta ruta = buscar(id);
+        Ruta ruta = rutaRepository.findDetalleById(id).orElseThrow(() -> NegocioException.noEncontrado("Ruta", id));
         return RutaMapper.aDetalle(ruta, paradaRepository.findDetalleByRutaId(id));
     }
 
