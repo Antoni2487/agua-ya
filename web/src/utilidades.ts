@@ -1,4 +1,4 @@
-import type { EstadoRuta, Turno } from './api/tipos';
+import type { EstadoParada, EstadoRuta, TipoParada, Turno } from './api/tipos';
 
 /** Fecha de hoy en Lima (zona del negocio), como yyyy-MM-dd. */
 export function hoyEnLima(ahora: Date = new Date()): string {
@@ -52,4 +52,25 @@ export function contar(cantidad: number, singular: string, plural: string): stri
 
 export function porcentaje(valor: number | null): string {
   return valor === null ? '—' : `${valor.toLocaleString('es-PE', { maximumFractionDigits: 1 })} %`;
+}
+
+
+export const TIPOS_PARADA: Record<TipoParada, string> = {
+  HOGAR: 'Hogar',
+  INSTITUCION: 'Institución',
+  PUNTO_ENTREGA: 'Punto de entrega',
+};
+
+export const ESTADOS_PARADA: Record<EstadoParada, string> = {
+  PENDIENTE: 'Pendiente',
+  ATENDIDA: 'Atendida',
+  NO_ATENDIDA: 'No atendida',
+  REASIGNADA: 'Reasignada',
+};
+
+/** Hora local de Lima de un instante ISO: "08:35". */
+export function hora(iso: string | null): string {
+  if (!iso) return '—';
+  return new Intl.DateTimeFormat('es-PE', { hour: '2-digit', minute: '2-digit', timeZone: 'America/Lima', hour12: false })
+    .format(new Date(iso));
 }

@@ -142,3 +142,37 @@ input:focus, select:focus, textarea:focus, .boton:focus-visible { outline: 2px s
 .mapa-figura { margin: 0; display: grid; gap: 0.5rem; }
 .leyenda { display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; font-size: 0.82rem; }
 .leyenda i { display: inline-block; width: 0.75rem; height: 0.75rem; border-radius: 50%; vertical-align: -1px; }
+
+/* Rutas */
+.encabezado { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem; margin-bottom: 1rem; }
+.encabezado h1 { margin: 0; }
+.volver { display: inline-block; margin-bottom: 0.5rem; font-size: 0.9rem; }
+.formulario { display: grid; gap: 0.75rem; margin: 0 0 1.25rem; }
+.formulario h2 { margin: 0; }
+.formulario p { margin: 0; }
+.campos { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; }
+.acciones { display: flex; justify-content: flex-end; gap: 0.5rem; }
+.alerta-aviso { background: var(--ambar-claro); color: var(--ambar); }
+.alerta-exito { background: var(--verde-claro); color: var(--verde); }
+.resumen-ruta { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 0.75rem; margin-bottom: 1.25rem; }
+.dato-texto { font-size: 1.05rem !important; }
+.recorrido { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1rem; align-items: start; }
+.tabla-paradas { max-height: 420px; overflow-y: auto; }
+.tabla-paradas td:nth-child(2) { white-space: normal; min-width: 180px; }
+.celda-secundaria { font-size: 0.82rem; white-space: normal; }
+.etiqueta-critica { margin-left: 0.4rem; background: var(--rojo-claro); color: var(--rojo); }
+.etiqueta-parada-pendiente { background: var(--azul-claro); color: var(--azul-oscuro); }
+.etiqueta-parada-atendida { background: var(--verde-claro); color: var(--verde); }
+.etiqueta-parada-no_atendida { background: var(--rojo-claro); color: var(--rojo); }
+.etiqueta-parada-reasignada { background: var(--fondo); color: var(--suave); }
+/* Más específico que .leaflet-tooltip, cuya hoja de estilos se carga después (con el mapa) */
+.leaflet-tooltip.numero-parada { background: transparent; border: 0; box-shadow: none; color: #fff; font-weight: 700; font-size: 0.75rem; padding: 0; }
+.leaflet-tooltip.numero-parada::before { display: none; }
+.zona-peligro { margin-top: 2rem; display: grid; justify-items: start; gap: 0.5rem; }
+.boton-peligro { background: var(--blanco); color: var(--rojo); border-color: var(--rojo); }
+.boton-peligro:hover:not(:disabled) { background: var(--rojo-claro); }
+.paginacion { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+
+@media (max-width: 800px) {
+  .recorrido { grid-template-columns: minmax(0, 1fr); }
+}
