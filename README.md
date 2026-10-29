@@ -15,7 +15,8 @@ Proyecto académico del curso **Sistemas de Información Empresarial** — Unive
 
 ## Estado
 
-**v0.1.0 (Avance 1)**: backend REST completo del MVP (RF01–RF09). Pendientes: app móvil y panel web.
+**v0.2.0 (Avance 2)**: backend REST completo del MVP (RF01–RF09), desplegado en Render y optimizado
+(sin N+1, índices, caché del panel público y avisos asíncronos). Pendientes: app móvil y panel web.
 Detalle en [`CHANGELOG.md`](CHANGELOG.md).
 
 ## API desplegada (rama `develop`)
