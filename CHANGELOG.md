@@ -3,7 +3,9 @@
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); versiones con
 [SemVer](https://semver.org/lang/es/).
 
-## [Sin publicar]
+## [0.2.0] - 2026-10-29 · Avance 2 (SIE)
+
+Backend desplegado en Render y optimizado. Sin cambios en las reglas de negocio.
 
 ### Añadido
 - `GET /api/vecino/me` (estaba en la API pero respondía 404).
@@ -17,9 +19,13 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 - Avisos push totalmente asíncronos y aviso de cercanía sin duplicados.
 - Respuestas JSON comprimidas (gzip).
 
-### Añadido (despliegue)
+### Despliegue
 - Blueprint de Render (`render.yaml`): backend Docker + PostgreSQL 16, despliegue automático de `develop`.
+  En línea en https://aguaya-backend.onrender.com.
 - El perfil `prod` acepta `DB_HOST`, `DB_PORT` y `DB_NAME` además de `DB_URL`.
+
+### Pendiente
+- App móvil (Expo) y panel web (Vite).
 
 ## [0.1.0] - 2026-10-28 · Avance 1 (SIE)
 
