@@ -152,6 +152,8 @@ Cuentas de prueba (login con DNI + contraseña, **solo para desarrollo y demos**
 El archivo [`render.yaml`](../render.yaml) (Blueprint) crea el backend (Docker) y un PostgreSQL 16 en la región
 Virginia, y despliega la rama `develop` en cada push.
 
+Desplegado en **https://aguaya-backend.onrender.com** (Swagger en `/swagger-ui.html`, WebSocket en `wss://…/ws`).
+
 1. En [render.com](https://render.com): **New → Blueprint**, conectar GitHub y elegir `Antoni2487/agua-ya`.
 2. Render lee `render.yaml` y pide las variables marcadas `sync: false` (Twilio y Expo). Se pueden dejar
    vacías para la demo: con `OTP_PROVIDER=log` el código OTP aparece en los **Logs** del servicio.
