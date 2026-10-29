@@ -9,6 +9,9 @@ const SECCIONES: { ruta: string; etiqueta: string; exacta?: boolean }[] = [
   { ruta: '/admin', etiqueta: 'Inicio', exacta: true },
   { ruta: '/admin/monitoreo', etiqueta: 'Mapa en vivo' },
   { ruta: '/admin/rutas', etiqueta: 'Rutas' },
+  { ruta: '/admin/incidencias', etiqueta: 'Incidencias' },
+  { ruta: '/admin/capacidad', etiqueta: 'Capacidad' },
+  { ruta: '/admin/calificaciones', etiqueta: 'Calificaciones' },
 ];
 
 export function LayoutAdmin() {

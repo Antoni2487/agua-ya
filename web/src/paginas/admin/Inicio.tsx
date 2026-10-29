@@ -24,7 +24,9 @@ export function Inicio() {
     <section>
       <h1>Hoy · {fechaCorta(hoy)}</h1>
 
-      <h2>Capacidad</h2>
+      <h2>
+        Capacidad <Link to="/admin/capacidad" className="enlace-titulo">ver detalle</Link>
+      </h2>
       {capacidad.isPending && <Cargando />}
       {capacidad.isError && <MensajeError error={capacidad.error} reintentar={() => void capacidad.refetch()} />}
       {capacidad.data && (

@@ -42,8 +42,8 @@ export function AlertasIncidencias() {
               {a.estadoRuta === 'INTERRUMPIDA' && ' · ruta interrumpida'}
             </span>
             {a.descripcion && <span className="texto-suave">“{a.descripcion}”</span>}
-            <Link to={`/admin/rutas/${a.rutaId}`} onClick={() => cerrar(a.id)}>
-              Ver ruta
+            <Link to={`/admin/incidencias/${a.id}`} onClick={() => cerrar(a.id)}>
+              Atender incidencia
             </Link>
           </div>
           <button type="button" aria-label="Cerrar alerta" onClick={() => cerrar(a.id)}>
