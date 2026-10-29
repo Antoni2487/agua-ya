@@ -44,8 +44,13 @@ src/
 | `/transparencia` | Público | Cronograma de los próximos 7 días, mapa de sectores coloreado por cumplimiento, última y próxima atención por sector e indicadores del periodo (RF09). Solo datos agregados. |
 | `/login` | Público | Ingreso del administrador por DNI. |
 | `/admin` | ADMIN | Resumen del día: alerta de capacidad y rutas de hoy. |
+| `/admin/monitoreo` | ADMIN | Mapa en vivo (RF04): cisternas en ruta con su estela, avance y aviso "sin señal" si no envían GPS en 2 min; eventos de las rutas en tiempo real. |
 | `/admin/rutas` | ADMIN | Rutas por fecha, estado y sector (filtros en la URL, paginado) y formulario para programar (RF01). |
-| `/admin/rutas/:id` | ADMIN | Detalle: asignación de cisterna y conductor con sugerencias (RF03), mapa del recorrido con paradas numeradas por estado, viajes y eliminación si aún no inició. |
+| `/admin/rutas/:id` | ADMIN | Detalle: asignación de cisterna y conductor con sugerencias (RF03), mapa con paradas numeradas por estado y el recorrido GPS real (en vivo si está en curso), intentos fuera de geocerca (evidencia ante desvíos), viajes y eliminación si aún no inició. |
+
+**Tiempo real**: el panel abre una conexión STOMP a `wss://<backend>/ws` con el token en el CONNECT, se reconecta
+sola cada 5 s (renovando el token si venció) y muestra su estado en la barra (“En vivo”). Las incidencias (RF06)
+aparecen como alerta en cualquier pantalla. El origen del panel debe estar en `CORS_ORIGINS` (también aplica al WebSocket).
 
 El mapa usa Leaflet + OpenStreetMap (sin API key) y se carga aparte para que los datos aparezcan primero.
 

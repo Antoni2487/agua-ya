@@ -1,10 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { lazy, Suspense, useState, type FormEvent } from 'react';
+import { lazy, Suspense, useCallback, useState, type FormEvent } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { usePuntosLlenadoActivos } from '../../api/catalogos';
 import { api } from '../../api/cliente';
-import type { RutaDetalle as Detalle, SugerenciasAsignacion } from '../../api/tipos';
+import { useSuscripcion } from '../../api/tiempoReal';
+import type { Posicion, Recorrido, RutaDetalle as Detalle, SugerenciasAsignacion } from '../../api/tipos';
 import { Cargando, MensajeError } from '../../componentes/Estado';
 import {
   contar, ESTADOS_PARADA, ESTADOS_RUTA, fechaCorta, hora, numero, TIPOS_PARADA, TURNOS, volumen,
@@ -20,6 +21,19 @@ export function RutaDetalle() {
     refetchInterval: (q) => (q.state.data?.ruta.estado === 'EN_CURSO' ? 15_000 : false),
   });
   const puntos = usePuntosLlenadoActivos();
+  const estado = detalle.data?.ruta.estado;
+  const recorrido = useQuery({
+    queryKey: ['recorrido', id],
+    queryFn: ({ signal }) => api<Recorrido>(`/api/admin/rutas/${id}/recorrido`, { signal }),
+    enabled: estado !== undefined && estado !== 'PROGRAMADA',
+    // Siempre fresco al abrir (el mapa en vivo comparte esta caché) y, en curso, cada 30 s: los intentos fuera de
+    // geocerca no llegan por WebSocket; las posiciones sí.
+    refetchOnMount: 'always',
+    refetchInterval: estado === 'EN_CURSO' ? 30_000 : false,
+  });
+  const [enVivo, setEnVivo] = useState<Posicion[]>([]);
+  const agregar = useCallback((p: Posicion) => setEnVivo((actual) => [...actual, p]), []);
+  useSuscripcion<Posicion>(estado === 'EN_CURSO' ? `/topic/rutas/${id}/posicion` : null, agregar);
 
   if (detalle.isPending) return <Cargando />;
   if (detalle.isError) return <MensajeError error={detalle.error} reintentar={() => void detalle.refetch()} />;
@@ -27,6 +41,10 @@ export function RutaDetalle() {
   const { ruta, paradas, viajes } = detalle.data;
   const puntoLlenado = puntos.data?.find((p) => p.id === detalle.data.puntoLlenadoId);
   const criticas = paradas.filter((p) => p.prioridad === 'CRITICA').length;
+  const historicas = recorrido.data?.posiciones ?? [];
+  const ultimaHistorica = historicas.at(-1)?.registradoEn ?? '';
+  const posiciones = [...historicas, ...enVivo.filter((p) => p.registradoEn > ultimaHistorica)];
+  const intentos = recorrido.data?.intentosFallidos ?? [];
 
   return (
     <section>
@@ -53,7 +71,7 @@ export function RutaDetalle() {
       <h2>Recorrido</h2>
       <div className="recorrido">
         <Suspense fallback={<div className="mapa mapa-cargando"><Cargando texto="Cargando mapa…" /></div>}>
-          <MapaParadas paradas={paradas} puntoLlenado={puntoLlenado} />
+          <MapaParadas paradas={paradas} puntoLlenado={puntoLlenado} posiciones={posiciones} intentos={intentos} />
         </Suspense>
         <div className="tabla-contenedor tabla-paradas">
           <table className="tabla">
@@ -86,6 +104,40 @@ export function RutaDetalle() {
           </table>
         </div>
       </div>
+
+      {intentos.length > 0 && (
+        <>
+          <h2>Intentos fuera de geocerca ({intentos.length})</h2>
+          <p className="texto-suave">
+            El conductor intentó marcar estas paradas como atendidas lejos de ellas o sin GPS reciente. Quedan como evidencia
+            ante posibles desvíos.
+          </p>
+          <div className="tabla-contenedor">
+            <table className="tabla">
+              <thead>
+                <tr>
+                  <th>Hora</th>
+                  <th>Parada</th>
+                  <th>Distancia</th>
+                </tr>
+              </thead>
+              <tbody>
+                {intentos.map((i) => (
+                  <tr key={`${i.paradaId}-${i.registradoEn}`}>
+                    <td>{hora(i.registradoEn)}</td>
+                    <td>
+                      {i.ordenParada}. {paradas.find((p) => p.id === i.paradaId)?.nombre}
+                    </td>
+                    <td className="intento-fuera">
+                      {i.distanciaMetros !== null ? `${numero(Math.round(Number(i.distanciaMetros)))} m` : 'Sin GPS reciente'}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
 
       {viajes.length > 0 && (
         <>
