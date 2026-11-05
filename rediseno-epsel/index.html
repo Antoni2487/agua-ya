@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="es-PE">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EPSEL · Agua potable en Lambayeque (propuesta de rediseño)</title>
+  <meta name="description" content="Propuesta académica de rediseño del sitio de EPSEL: consulta si hoy hay corte o pasa la cisterna en tu zona, paga tu recibo y haz tu reclamo.">
+  <meta name="theme-color" content="#0b2545">
+  <link rel="icon" href="assets/gota.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilos.css">
+  <script>document.documentElement.classList.add('js');</script>
+  <script src="sitio.js" defer></script>
+</head>
+<body>
+  <a class="saltar" href="#contenido">Ir al contenido principal</a>
+
+  <header class="cabecera">
+    <p class="aviso-propuesta">Propuesta académica de rediseño (UTP). No es el sitio oficial de EPSEL.</p>
+    <div class="cabecera-fila">
+      <a class="marca" href="index.html" aria-label="EPSEL, página de inicio">
+        <svg class="marca-gota" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M16 2C10 10 5 15.5 5 21a11 11 0 0 0 22 0C27 15.5 22 10 16 2z"/></svg>
+        <span class="marca-nombre">EPSEL</span>
+        <span class="marca-detalle">Agua potable y alcantarillado de Lambayeque</span>
+      </a>
+
+      <button class="boton-menu" type="button" aria-expanded="false" aria-controls="navegacion">
+        <span class="boton-menu-icono" aria-hidden="true"></span>Menú
+      </button>
+
+      <nav id="navegacion" class="navegacion" aria-label="Principal">
+        <ul class="menu">
+          <li class="menu-item">
+            <button class="menu-boton" type="button" aria-expanded="false" aria-controls="sub-agua">Agua en tu zona</button>
+            <ul class="submenu" id="sub-agua">
+              <li><a href="#avisos">Cortes y avisos de hoy</a></li>
+              <li><a href="#buscar">¿Pasa hoy la cisterna?</a></li>
+              <li><a href="#horarios">Horarios de abastecimiento</a></li>
+              <li><a href="#recorrido">De dónde viene tu agua</a></li>
+              <li><a href="#limpieza">Cómo limpiamos el agua</a></li>
+            </ul>
+          </li>
+          <li class="menu-item">
+            <button class="menu-boton" type="button" aria-expanded="false" aria-controls="sub-pagos">Pagos y trámites</button>
+            <ul class="submenu" id="sub-pagos">
+              <li><a href="#donde-pagar">Dónde pagar tu recibo</a></li>
+              <li><a href="#oficina-virtual">Oficina virtual</a></li>
+              <li><a href="#tramites">Trámites: nueva conexión y otros</a></li>
+              <li><a href="#vma">Para empresas: desagüe no doméstico (VMA)</a></li>
+            </ul>
+          </li>
+          <li class="menu-item">
+            <button class="menu-boton" type="button" aria-expanded="false" aria-controls="sub-atencion">Atención y reclamos</button>
+            <ul class="submenu" id="sub-atencion">
+              <li><a href="#reclamo">Cómo hacer un reclamo</a></li>
+              <li><a href="#oficinas">Oficinas y horarios</a></li>
+              <li><a href="#escribenos">Escríbenos por WhatsApp</a></li>
+              <li><a href="#denuncias">Denuncias y sugerencias</a></li>
+            </ul>
+          </li>
+          <li class="menu-item">
+            <button class="menu-boton" type="button" aria-expanded="false" aria-controls="sub-informacion">Información pública</button>
+            <ul class="submenu" id="sub-informacion">
+              <li><a href="#metas">Metas y resultados</a></li>
+              <li><a href="#rendicion">Rendición de cuentas</a></li>
+              <li><a href="#pedir-informacion">Pedir información pública</a></li>
+              <li><a href="#gestion">Cómo se gestiona EPSEL</a></li>
+              <li><a href="#integridad">Integridad y denuncias de corrupción</a></li>
+            </ul>
+          </li>
+          <li class="menu-item">
+            <button class="menu-boton" type="button" aria-expanded="false" aria-controls="sub-nosotros">Nosotros</button>
+            <ul class="submenu" id="sub-nosotros">
+              <li><a href="#quienes-somos">Quiénes somos</a></li>
+              <li><a href="#directivos">Directivos y organización</a></li>
+              <li><a href="#cobertura">Dónde damos servicio</a></li>
+              <li><a href="#noticias">Noticias</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+
+      <a class="boton boton-cisterna" href="#buscar">¿Pasa hoy la cisterna?</a>
+    </div>
+  </header>
+
+  <main id="contenido" tabindex="-1">
+
+    <!-- Portada: la pregunta del vecino y las cinco carpetas del menú -->
+    <section class="portada" aria-labelledby="titulo-portada">
+      <div class="portada-texto">
+        <h1 id="titulo-portada">¿Hay agua hoy en tu zona?</h1>
+        <p class="portada-bajada">EPSEL lleva el agua potable a Chiclayo, Lambayeque y Ferreñafe. Escribe tu zona y te decimos si hoy hay corte o si pasa la cisterna.</p>
+      </div>
+
+      <div class="carpetas">
+        <a class="carpeta carpeta-1" href="#nosotros"><span class="pestana">Nosotros</span></a>
+        <a class="carpeta carpeta-2" href="#informacion"><span class="pestana">Información pública</span></a>
+        <a class="carpeta carpeta-3" href="#atencion"><span class="pestana">Atención y reclamos</span></a>
+        <a class="carpeta carpeta-4" href="#pagos"><span class="pestana">Pagos y trámites</span></a>
+
+        <div class="carpeta carpeta-frente" id="buscar">
+          <h2 class="pestana">Agua en tu zona</h2>
+          <form class="buscador" action="#horarios" role="search" aria-label="Buscar mi zona" novalidate>
+            <label for="zona" class="buscador-etiqueta">Escribe tu zona, barrio o distrito</label>
+            <p id="zona-ayuda" class="buscador-ayuda">Por ejemplo: Cerropón, Atusparias o Monsefú.</p>
+            <div class="buscador-fila">
+              <input id="zona" name="zona" type="search" list="lista-zonas" autocomplete="off"
+                     spellcheck="false" aria-describedby="zona-ayuda zona-error">
+              <button class="boton boton-grande" type="submit">Buscar mi zona</button>
+            </div>
+            <p id="zona-error" class="buscador-error" hidden></p>
+            <datalist id="lista-zonas"></datalist>
+          </form>
+          <div class="resultado" id="resultado" role="status" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Agua en tu zona: avisos y horarios -->
+    <section class="seccion avisos" id="avisos" aria-labelledby="titulo-avisos">
+      <div class="avisos-columna">
+        <div class="avisos-cabeza">
+          <h2 id="titulo-avisos">Cortes y avisos de hoy</h2>
+          <p class="avisos-fecha" data-hoy>Hoy</p>
+        </div>
+        <ul class="lista-gotas" id="lista-avisos">
+          <li class="aviso" data-distrito="José Leonardo Ortiz">
+            <span class="gota-vineta gota-corte" aria-hidden="true"></span>
+            <div>
+              <p class="aviso-titulo"><strong>Corte de agua</strong> <span>José Leonardo Ortiz</span></p>
+              <p>De 8:00 a.m. a 4:00 p.m. en el P.J. Urrunaga y alrededores, por cambio de tubería. En la tarde pasa una cisterna.</p>
+            </div>
+          </li>
+          <li class="aviso" data-distrito="Chiclayo">
+            <span class="gota-vineta gota-baja" aria-hidden="true"></span>
+            <div>
+              <p class="aviso-titulo"><strong>Poca presión</strong> <span>Chiclayo</span></p>
+              <p>De 2:00 p.m. a 8:00 p.m. en las partes altas de Cerropón, por limpieza del reservorio. Guarda agua en la mañana.</p>
+            </div>
+          </li>
+          <li class="aviso" data-distrito="Monsefú">
+            <span class="gota-vineta gota-cisterna" aria-hidden="true"></span>
+            <div>
+              <p class="aviso-titulo"><strong>Cisterna de apoyo</strong> <span>Monsefú</span></p>
+              <p>Valle Hermoso recibe cisterna mientras se repara el pozo. Revisa el día y el turno en la lista de al lado.</p>
+            </div>
+          </li>
+          <li class="aviso" data-distrito="Lambayeque">
+            <span class="gota-vineta gota-normal" aria-hidden="true"></span>
+            <div>
+              <p class="aviso-titulo"><strong>Servicio normal</strong> <span>Lambayeque y Ferreñafe</span></p>
+              <p>No hay cortes programados para hoy.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="avisos-columna" id="horarios">
+        <div class="avisos-cabeza">
+          <h2 id="titulo-horarios">La cisterna esta semana</h2>
+          <p class="avisos-fecha" id="horarios-cuenta"></p>
+        </div>
+        <ul class="lista-gotas" id="lista-horarios">
+          <li class="aviso"><span class="gota-vineta gota-cisterna" aria-hidden="true"></span>
+            <div><p>Cargando los horarios de cada zona…</p></div></li>
+        </ul>
+        <p class="nota-datos" id="nota-datos" hidden></p>
+      </div>
+    </section>
+
+    <!-- De dónde viene tu agua: recorrido en acordeón -->
+    <section class="seccion recorrido" id="recorrido" aria-labelledby="titulo-recorrido">
+      <div class="recorrido-intro">
+        <h2 id="titulo-recorrido">De dónde viene tu agua</h2>
+        <p>El agua que sale de tu caño hace un viaje largo: baja de la sierra por el río Chancay, se guarda en Tinajones, reposa en las lagunas Boró y se limpia en la planta antes de llegar a tu casa.</p>
+      </div>
+
+      <div class="acordeon" data-acordeon>
+        <div class="etapa etapa-1 abierta">
+          <h3 class="etapa-cabeza"><button type="button" aria-expanded="true" aria-controls="etapa-1">Tinajones</button></h3>
+          <div class="etapa-cuerpo" id="etapa-1">
+            <p>El reservorio Tinajones guarda hasta <strong>320 millones de metros cúbicos</strong> de agua del río Chancay. Su espejo de agua mide 20 km², como unas 2800 canchas de fútbol.</p>
+            <img class="foto-gota" src="assets/tinajones.webp" width="1100" height="735" loading="lazy"
+                 alt="El reservorio Tinajones entre cerros, con el agua azul y ramas secas en la orilla.">
+          </div>
+        </div>
+        <div class="etapa etapa-2">
+          <h3 class="etapa-cabeza"><button type="button" aria-expanded="false" aria-controls="etapa-2">Río y canales</button></h3>
+          <div class="etapa-cuerpo" id="etapa-2" hidden>
+            <p>Desde Tinajones el agua vuelve al río Chancay y se reparte en el canal Taymi. En la toma Bola de Oro se separa el agua para la ciudad de la que va al campo.</p>
+            <img class="foto-gota" src="assets/tinajones-orilla.webp" width="1100" height="825" loading="lazy"
+                 alt="Orilla del reservorio Tinajones con plantas acuáticas y cerros al fondo en un día nublado.">
+          </div>
+        </div>
+        <div class="etapa etapa-3">
+          <h3 class="etapa-cabeza"><button type="button" aria-expanded="false" aria-controls="etapa-3">Lagunas Boró</button></h3>
+          <div class="etapa-cuerpo" id="etapa-3" hidden>
+            <p>Las lagunas Boró I y Boró II dejan que la tierra del agua se asiente. Boró II guarda un millón y medio de metros cúbicos: es la reserva de la ciudad cuando el río baja.</p>
+            <svg class="dibujo" viewBox="0 0 320 200" role="img" aria-labelledby="dibujo-boro">
+              <title id="dibujo-boro">Dibujo: el agua entra a la laguna con tierra y sale clara porque la tierra se queda en el fondo.</title>
+              <rect x="0" y="70" width="320" height="130" fill="#a9d2f0"/>
+              <rect x="0" y="170" width="320" height="30" fill="#7a5b3a"/>
+              <circle cx="40" cy="120" r="6" fill="#7a5b3a"/><circle cx="70" cy="140" r="5" fill="#7a5b3a"/>
+              <circle cx="110" cy="155" r="5" fill="#7a5b3a"/><circle cx="150" cy="165" r="4" fill="#7a5b3a"/>
+              <path d="M0 70h320" stroke="#0b2545" stroke-width="4"/>
+            </svg>
+          </div>
+        </div>
+        <div class="etapa etapa-4" id="limpieza">
+          <h3 class="etapa-cabeza"><button type="button" aria-expanded="false" aria-controls="etapa-4">La planta</button></h3>
+          <div class="etapa-cuerpo" id="etapa-4" hidden>
+            <p>La Planta N.º 1 limpia hasta <strong>700 litros por segundo</strong> en cinco pasos:</p>
+            <ol class="pasos">
+              <li><strong>Coagulación:</strong> se agrega sulfato de aluminio para que la tierra se junte.</li>
+              <li><strong>Floculación:</strong> el agua se mueve despacio y la tierra forma grumos.</li>
+              <li><strong>Decantación:</strong> los grumos pesan y caen al fondo.</li>
+              <li><strong>Filtración:</strong> el agua pasa por capas de arena.</li>
+              <li><strong>Desinfección:</strong> se agrega cloro para eliminar los microbios.</li>
+            </ol>
+          </div>
+        </div>
+        <div class="etapa etapa-5">
+          <h3 class="etapa-cabeza"><button type="button" aria-expanded="false" aria-controls="etapa-5">Tu casa</button></h3>
+          <div class="etapa-cuerpo" id="etapa-5" hidden>
+            <p>El agua limpia baja por las tuberías hasta tu caño. Donde la red no llega, como en los cerros y laderas, EPSEL la lleva en camiones cisterna.</p>
+            <img class="foto-gota" src="assets/cano.webp" width="1100" height="820" loading="lazy"
+                 alt="Una vecina junto a la caja de agua de su casa en un cerro, con una manguera y un balde.">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- El agua en números -->
+    <section class="seccion numeros" aria-labelledby="titulo-numeros">
+      <div class="numero numero-grande">
+        <p class="numero-cifra">320 millones</p>
+        <p class="numero-texto">de metros cúbicos de agua puede guardar el reservorio Tinajones.</p>
+        <img class="foto-gota numero-foto" src="assets/tinajones.webp" width="1100" height="735" loading="lazy"
+             alt="Vista del reservorio Tinajones.">
+      </div>
+      <div class="numeros-derecha">
+        <h2 id="titulo-numeros">El agua en números</h2>
+        <div class="numeros-par">
+          <div class="numero numero-oscuro">
+            <p class="numero-cifra">700 l/s</p>
+            <p class="numero-texto">limpia la Planta N.º 1 de Chiclayo.</p>
+          </div>
+          <div class="numero numero-claro">
+            <p class="numero-cifra">80 litros</p>
+            <p class="numero-texto">por casa al día, como mínimo, cuando llega la cisterna.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pagos y trámites -->
+    <div class="campo-color" style="--fondo-seccion: var(--c4); --tinta-seccion: var(--tinta)">
+    <section class="seccion pagos" id="pagos" aria-labelledby="titulo-pagos">
+      <div class="pagos-texto">
+        <h2 id="titulo-pagos">Pagos y trámites</h2>
+        <p class="enunciado">Paga tu recibo cerca de tu casa, pide una conexión nueva o revisa tu deuda sin hacer cola.</p>
+        <p>Ten a la mano tu <strong>número de suministro</strong>: está arriba, a la derecha, en tu recibo.</p>
+      </div>
+      <div class="pagos-lista">
+        <details id="donde-pagar" class="desplegable">
+          <summary>Dónde pagar tu recibo</summary>
+          <ul class="lista-gotas lista-simple">
+            <li><span class="gota-vineta" aria-hidden="true"></span>Agentes y bodegas autorizadas de tu barrio.</li>
+            <li><span class="gota-vineta" aria-hidden="true"></span>Bancos y cajas: dando tu número de suministro.</li>
+            <li><span class="gota-vineta" aria-hidden="true"></span>Desde el celular, con la app de pagos de tu banco.</li>
+            <li><span class="gota-vineta" aria-hidden="true"></span>En las oficinas de EPSEL (mira <a href="#oficinas">oficinas y horarios</a>).</li>
+          </ul>
+        </details>
+        <details id="oficina-virtual" class="desplegable">
+          <summary>Oficina virtual</summary>
+          <p>Mira tus recibos, tu deuda y tu consumo con tu número de suministro, sin ir a una oficina.</p>
+        </details>
+        <details id="tramites" class="desplegable">
+          <summary>Trámites: nueva conexión y otros</summary>
+          <p>Para una conexión nueva de agua o desagüe lleva tu DNI y un documento de tu casa (título, constancia de posesión o contrato). También puedes pedir cambio de nombre o cierre del servicio.</p>
+        </details>
+        <details id="vma" class="desplegable">
+          <summary>Para empresas: desagüe no doméstico (VMA)</summary>
+          <p>Los negocios e industrias que echan agua usada a la red deben cumplir los Valores Máximos Admisibles (VMA). Aquí verás qué se mide y cómo se cobra si se pasan.</p>
+        </details>
+      </div>
+    </section>
+    </div>
+
+    <!-- Atención y reclamos: cupón -->
+    <div class="campo-color oscuro" style="--fondo-seccion: var(--c3); --tinta-seccion: var(--blanco)">
+    <section class="seccion atencion" id="atencion" aria-labelledby="titulo-atencion">
+      <div class="cupon">
+        <div class="cupon-izquierda" id="reclamo">
+          <h2 id="titulo-atencion">Atención y reclamos</h2>
+          <p class="cupon-subtitulo">Cómo hacer un reclamo</p>
+          <ol class="pasos pasos-claros">
+            <li>Ten tu recibo y tu DNI.</li>
+            <li>Cuéntanos qué pasó: cobro alto, fuga, falta de agua u otro.</li>
+            <li>Te damos un número de reclamo para seguirlo.</li>
+            <li>EPSEL te responde por escrito en el plazo que fija SUNASS.</li>
+          </ol>
+        </div>
+        <form class="cupon-derecha" id="escribenos" action="#" data-formulario-reclamo novalidate>
+          <h3 class="cupon-form-titulo">Escríbenos por WhatsApp</h3>
+          <p class="cupon-form-ayuda">Llena esto y se abrirá WhatsApp con tu mensaje listo. Los campos con * son obligatorios.</p>
+          <div class="campo">
+            <label for="r-nombre">Tu nombre *</label>
+            <input id="r-nombre" name="nombre" autocomplete="name" required aria-describedby="r-nombre-error">
+            <p class="campo-error" id="r-nombre-error" hidden></p>
+          </div>
+          <div class="campo">
+            <label for="r-suministro">Número de suministro (si lo tienes)</label>
+            <input id="r-suministro" name="suministro" inputmode="numeric" autocomplete="off">
+          </div>
+          <div class="campo">
+            <label for="r-motivo">¿Qué pasó? *</label>
+            <select id="r-motivo" name="motivo" required aria-describedby="r-motivo-error">
+              <option value="">Elige una opción</option>
+              <option>No llega el agua</option>
+              <option>Recibo muy alto</option>
+              <option>Fuga o tubería rota</option>
+              <option>Desagüe atorado</option>
+              <option>La cisterna no pasó</option>
+              <option>Otro</option>
+            </select>
+            <p class="campo-error" id="r-motivo-error" hidden></p>
+          </div>
+          <div class="campo">
+            <label for="r-mensaje">Cuéntanos más</label>
+            <textarea id="r-mensaje" name="mensaje" rows="3"></textarea>
+          </div>
+          <button class="boton boton-grande boton-ancho" type="submit">Abrir WhatsApp con mi mensaje</button>
+        </form>
+      </div>
+
+      <div class="atencion-extra">
+        <div id="oficinas">
+          <h3>Oficinas y horarios</h3>
+          <p>Lunes a viernes de 8:00 a.m. a 4:30 p.m. Oficinas en Chiclayo, Lambayeque y Ferreñafe.</p>
+          <p class="dato-pendiente">Teléfono y direcciones: por confirmar con EPSEL.</p>
+        </div>
+        <div id="denuncias">
+          <h3>Denuncias y sugerencias</h3>
+          <p>¿Viste una conexión clandestina o una cisterna desviada? Cuéntanos. Puedes hacerlo sin dar tu nombre.</p>
+          <a class="enlace-flecha" href="#escribenos">Enviar una denuncia</a>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- Información pública: índice con vista previa -->
+    <div class="campo-color oscuro" style="--fondo-seccion: var(--c2); --tinta-seccion: var(--blanco)">
+    <section class="seccion informacion" id="informacion" aria-labelledby="titulo-informacion">
+      <div class="informacion-cabeza">
+        <h2 id="titulo-informacion">Información pública</h2>
+        <p>Lo que EPSEL hace con el dinero de todos, sus metas y cómo pedir cualquier documento.</p>
+      </div>
+      <div class="indice" data-indice>
+        <ul class="indice-lista">
+          <li id="metas"><a href="#metas" data-vista="v-metas"><span class="indice-nombre">Metas y resultados</span><span class="indice-texto">Cuántas casas tienen agua y desagüe, y cuántas horas al día.</span></a></li>
+          <li id="rendicion"><a href="#rendicion" data-vista="v-rendicion"><span class="indice-nombre">Rendición de cuentas</span><span class="indice-texto">En qué se gastó el presupuesto de cada año.</span></a></li>
+          <li id="pedir-informacion"><a href="#pedir-informacion" data-vista="v-pedir"><span class="indice-nombre">Pedir información pública</span><span class="indice-texto">Pide cualquier documento; la ley da 10 días hábiles para responder.</span></a></li>
+          <li id="gestion"><a href="#gestion" data-vista="v-gestion"><span class="indice-nombre">Cómo se gestiona EPSEL</span><span class="indice-texto">Planes, directorio y decisiones de la empresa.</span></a></li>
+          <li id="integridad"><a href="#integridad" data-vista="v-integridad"><span class="indice-nombre">Integridad y denuncias de corrupción</span><span class="indice-texto">Denuncia un acto de corrupción de forma segura.</span></a></li>
+        </ul>
+        <div class="indice-vista" aria-hidden="true">
+          <div class="vista activa" id="v-metas"><p class="vista-cifra">Agua y desagüe</p><p>Cobertura por distrito y horas de servicio al día.</p></div>
+          <div class="vista" id="v-rendicion"><p class="vista-cifra">Presupuesto</p><p>Ingresos, gastos y obras de cada año.</p></div>
+          <div class="vista" id="v-pedir"><p class="vista-cifra">10 días hábiles</p><p>Plazo para responder tu pedido de información.</p></div>
+          <div class="vista" id="v-gestion"><p class="vista-cifra">Planes</p><p>El plan de la empresa y lo que avanzó.</p></div>
+          <div class="vista" id="v-integridad"><p class="vista-cifra">Denuncia segura</p><p>Tu identidad se protege.</p></div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- Nosotros -->
+    <div class="campo-color oscuro" style="--fondo-seccion: var(--c1); --tinta-seccion: var(--blanco)">
+    <section class="seccion nosotros" id="nosotros" aria-labelledby="titulo-nosotros">
+      <div class="nosotros-texto" id="quienes-somos">
+        <h2 id="titulo-nosotros">Nosotros</h2>
+        <p class="enunciado">Llevamos el agua potable y el desagüe a las casas de Lambayeque.</p>
+        <div id="cobertura">
+          <h3>Dónde damos servicio</h3>
+          <p>Chiclayo, José Leonardo Ortiz, La Victoria, Pimentel, Monsefú, Reque, Lambayeque, Ferreñafe y otros distritos de la región.</p>
+        </div>
+        <div class="nosotros-enlaces">
+          <a class="enlace-flecha" id="directivos" href="#gestion">Directivos y organización</a>
+          <a class="enlace-flecha" id="noticias" href="#avisos">Noticias y avisos</a>
+        </div>
+      </div>
+      <div class="nosotros-fotos">
+        <figure>
+          <img class="foto-gota" src="assets/chiclayo-plaza.webp" width="1100" height="619" loading="lazy"
+               alt="Jardín de la Plaza de Armas de Chiclayo con el nombre de la ciudad escrito con piedras.">
+          <figcaption>Chiclayo</figcaption>
+        </figure>
+        <figure>
+          <img class="foto-gota" src="assets/monsefu-plaza.webp" width="1100" height="825" loading="lazy"
+               alt="Plaza de Armas de Monsefú al atardecer, con familias paseando y la iglesia al fondo.">
+          <figcaption>Monsefú</figcaption>
+        </figure>
+      </div>
+    </section>
+    </div>
+  </main>
+
+  <footer class="pie">
+    <svg class="pie-marca" viewBox="0 0 1001 360" role="img" aria-labelledby="pie-marca-titulo" preserveAspectRatio="xMidYMax meet"><title id="pie-marca-titulo">EPSEL</title><rect x="0" y="0" width="196" height="360" rx="44" fill="var(--c1)"/><rect x="0" y="316" width="44" height="44" fill="var(--c1)"/><text x="98.0" y="336" text-anchor="middle" fill="#f4f8fb" font-size="232" font-weight="800" font-family="Schibsted Grotesk, system-ui, sans-serif">E</text><rect x="201" y="64" width="196" height="296" rx="44" fill="var(--c2)"/><rect x="201" y="316" width="44" height="44" fill="var(--c2)"/><text x="299.0" y="336" text-anchor="middle" fill="#f4f8fb" font-size="232" font-weight="800" font-family="Schibsted Grotesk, system-ui, sans-serif">P</text><rect x="402" y="28" width="196" height="332" rx="44" fill="var(--c3)"/><rect x="402" y="316" width="44" height="44" fill="var(--c3)"/><text x="500.0" y="336" text-anchor="middle" fill="#f4f8fb" font-size="232" font-weight="800" font-family="Schibsted Grotesk, system-ui, sans-serif">S</text><rect x="603" y="108" width="196" height="252" rx="44" fill="var(--c2)"/><rect x="603" y="316" width="44" height="44" fill="var(--c2)"/><text x="701.0" y="336" text-anchor="middle" fill="#f4f8fb" font-size="232" font-weight="800" font-family="Schibsted Grotesk, system-ui, sans-serif">E</text><rect x="804" y="50" width="196" height="310" rx="44" fill="var(--c1)"/><rect x="804" y="316" width="44" height="44" fill="var(--c1)"/><text x="902.0" y="336" text-anchor="middle" fill="#f4f8fb" font-size="232" font-weight="800" font-family="Schibsted Grotesk, system-ui, sans-serif">L</text></svg>
+    <div class="pie-columnas">
+      <nav aria-label="Pie de página">
+        <ul class="pie-enlaces">
+          <li><a href="#avisos">Cortes y avisos</a></li>
+          <li><a href="#buscar">¿Pasa hoy la cisterna?</a></li>
+          <li><a href="#donde-pagar">Dónde pagar</a></li>
+          <li><a href="#reclamo">Hacer un reclamo</a></li>
+          <li><a href="#informacion">Información pública</a></li>
+          <li><a href="#nosotros">Nosotros</a></li>
+        </ul>
+      </nav>
+      <div class="pie-contacto">
+        <p><strong>EPSEL S.A.</strong> Empresa Prestadora de Servicios de Saneamiento de Lambayeque.</p>
+        <p>Supervisada por SUNASS.</p>
+      </div>
+    </div>
+    <div class="pie-final">
+      <p>Propuesta académica de rediseño, curso Interacción Humano-Computador, UTP Chiclayo. No es el sitio oficial de EPSEL. Avisos y horarios de ejemplo.</p>
+      <a class="boton boton-pie" href="#">Acceso del personal</a>
+    </div>
+    <p class="creditos">Fotos: «Reservorio Tinajones», EdsonFuentesMera, CC BY-SA 4.0 · «Reservorio de Tinajones», Josefito123, CC BY-SA 4.0 · «Zapallal: water tap», SuSanA Secretariat, CC BY 2.0 · «Chiclayo, Plaza de Armas», Burkhard Mücke, CC BY-SA 4.0 · «Plaza de Armas de Monsefú», LLs, CC BY-SA 4.0. Todas vía Wikimedia Commons.</p>
+  </footer>
+</body>
+</html>
