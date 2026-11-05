@@ -1,0 +1,93 @@
+{
+  "title": "Tercera tirada",
+  "question": "Mano nueva desde otros ángulos del mundo del vecino. La tirada asignó «Almanaque de bodega». Cada boceto también está abierto completo en su propia pestaña.",
+  "options": [
+    {
+      "id": "r3-almanaque",
+      "kind": "assigned",
+      "kicker": "THE ROLL",
+      "label": "Almanaque de bodega",
+      "lineage": "El almanaque de hojas arrancables que regala la bodega del barrio",
+      "thesis": "Tu próxima atención es la hoja de arriba del almanaque: el día en número gigante, el turno debajo, y las siguientes fechas asoman detrás.",
+      "palette": ["#0E2A5C", "#FFFFFF", "#1B8FD2", "#F3F6FA", "#C2410C", "#5CC6F2"],
+      "materials": ["papel de almanaque", "perforado de hoja", "número de calendario"],
+      "viewport": "Cabecera de marca; hoja de almanaque con «NOVIEMBRE», un «4» enorme, «MIÉRCOLES · HOY · TURNO MAÑANA»; franja de avance «Faltan 3 paradas antes de la tuya»; hojas siguientes asomando (Vie 6); botones Ver en el mapa y Reportar.",
+      "risk": "Si la hoja se recarga de adornos de almanaque (santoral, publicidad) se vuelve kitsch.",
+      "raised": [
+        {"from": "emigre-bitmap-specimen", "raise": "Un solo número en varias escalas: la parada 13 es el mismo dígito en la hoja, en la lista y en el mapa."},
+        {"from": "pop-culture-shelf-doujin-event-catalog", "raise": "La lista y el mapa comparten el número de parada: tocas el 13 en la lista y el mapa salta a tu casa."},
+        {"from": "rw-lexicon-shoulder-and-plate", "raise": "Palabras guía: la cabecera de la lista dice qué tramo ves («Paradas 9 a 15»)."},
+        {"from": "ikeda-datamatics", "raise": "Con prefers-reduced-motion la hoja no se arranca: cambia sin animación."}
+      ],
+      "html": ".impeccable/mocks/decision/r3-almanaque.html",
+      "htmlFrame": "390x844"
+    },
+    {
+      "id": "r3-ticket",
+      "kind": "pick",
+      "kicker": "IMPECCABLE’S PICK",
+      "label": "Ticket de turno",
+      "lineage": "La ticketera de turnos de EsSalud, el banco o la municipalidad",
+      "thesis": "Como en la cola del banco: la pantalla dice «Atendiendo 09» y tu ticket dice «Su número 13».",
+      "palette": ["#0E2A5C", "#FFFFFF", "#5CC6F2", "#F6F4EF", "#1B8FD2"],
+      "materials": ["pantalla de turnos LED", "ticket térmico con corte dentado"],
+      "viewport": "Pantalla azul noche con «ATENDIENDO 09» en dígitos de turno; debajo, tu ticket blanco con «SU NÚMERO 13», el turno, la cisterna y el borde dentado; botones estándar.",
+      "risk": "Es la metáfora más directa para «falta poco» y la que más runs elegirían; la cola puede sonar a espera burocrática.",
+      "html": ".impeccable/mocks/decision/r3-ticket.html",
+      "htmlFrame": "390x844"
+    },
+    {
+      "id": "r3-transit",
+      "kind": "challenger",
+      "catalogId": "wayfinding-cartography-signage-midnight-transit-diagram",
+      "label": "Diagrama de línea",
+      "verdict": "competitive",
+      "lineage": "Diagramas de metro esmaltados",
+      "thesis": "La ruta como una línea de metro: estaciones en orden, no geografía, y tu casa como estación destacada.",
+      "palette": ["#0B1E40", "#FFFFFF", "#1B8FD2", "#F2A900", "#2BB673"],
+      "materials": ["esmalte azul noche", "línea a 90°"],
+      "viewport": "Línea vertical azul con estaciones blancas; la cisterna entre la 9 y la 10; tu estación 13 con anillo; estado y botones abajo.",
+      "case": "Muy clara para el orden de paradas, pero Chiclayo no tiene metro y el vecino lo conoce poco.",
+      "risk": "Fondo oscuro y mucha línea en pantallas pequeñas.",
+      "hero": "https://impeccable.style/worlds/cards/wayfinding-cartography-signage-midnight-transit-diagram-hero.webp",
+      "html": ".impeccable/mocks/decision/r3-transit.html",
+      "htmlFrame": "390x844"
+    },
+    {
+      "id": "r3-pass",
+      "kind": "challenger",
+      "catalogId": "vernacular-ephemera-boarding-pass-and-gate-board",
+      "label": "Pase de abordar",
+      "verdict": "competitive",
+      "lineage": "Pases de abordar y pantallas de puertas",
+      "thesis": "Tu atención como un pase segmentado (fecha, turno, parada, cisterna) y un tablero que reordena cuando algo cambia.",
+      "palette": ["#FFFFFF", "#0E2A5C", "#E8EEF5", "#D97706"],
+      "materials": ["pase segmentado", "cifras tabulares"],
+      "viewport": "Pase con segmentos etiquetados y un bloque de estado; tablero de paradas debajo, el cambio en ámbar.",
+      "case": "Ordena muy bien los datos, pero el vecino de Cerropón rara vez vuela; se siente ajeno.",
+      "risk": "Mucho dato en letra chica.",
+      "hero": "https://impeccable.style/worlds/cards/vernacular-ephemera-boarding-pass-and-gate-board-hero.webp",
+      "html": ".impeccable/mocks/decision/r3-pass.html",
+      "htmlFrame": "390x844"
+    },
+    {"id": "r3-emigre", "kind": "challenger", "catalogId": "emigre-bitmap-specimen", "label": "Espécimen bitmap", "verdict": "declined", "lineage": "Emigre", "palette": ["#FFFFFF", "#111111", "#FF3B00"], "materials": ["píxel"], "thesis": "Letras de píxel a gran escala.", "viewport": "Titular pixelado.", "case": "Pierde en los dos ejes: legibilidad.", "kept": "Un mismo número en varias escalas.", "risk": "Ilegible."},
+    {"id": "r3-doujin", "kind": "challenger", "catalogId": "pop-culture-shelf-doujin-event-catalog", "label": "Catálogo de convención", "verdict": "declined", "lineage": "Catálogos de doujin", "palette": ["#EDEBE4", "#111111", "#E4007F"], "materials": ["papel periódico"], "thesis": "Grilla y mapa son el mismo espacio.", "viewport": "Grilla densa.", "case": "Pierde en los dos ejes: densidad extrema.", "kept": "Lista y mapa comparten el número de parada.", "risk": "Saturado."},
+    {"id": "r3-lexicon", "kind": "challenger", "catalogId": "rw-lexicon-shoulder-and-plate", "label": "Léxico", "verdict": "declined", "lineage": "Diccionarios del siglo XIX", "palette": ["#F4EEDF", "#111111", "#C1272D"], "materials": ["papel crema"], "thesis": "Palabras guía del tramo visible.", "viewport": "Columna de texto.", "case": "Pierde en los dos ejes: es para leer, no para consultar rápido.", "kept": "Palabras guía con el tramo de paradas visible.", "risk": "Libresco."},
+    {"id": "r3-ikeda", "kind": "challenger", "catalogId": "ikeda-datamatics", "label": "Datamatics", "verdict": "declined", "lineage": "Ryoji Ikeda", "palette": ["#000000", "#FFFFFF"], "materials": ["código de barras"], "thesis": "Campos de datos estroboscópicos.", "viewport": "Barras parpadeantes.", "case": "Pierde en los dos ejes y el parpadeo es un riesgo de accesibilidad.", "kept": "Disciplina de movimiento reducido.", "risk": "Riesgo de fotosensibilidad."}
+  ],
+  "reroll": {"registers": ["safer", "bolder"]},
+  "buildPath": {"value": "code"},
+  "canon": true,
+  "canonCard": {
+    "kind": "canon",
+    "label": "El estándar de la categoría",
+    "thesis": "Una app de seguimiento de pedidos: mapa arriba, hoja inferior con estado y barra de progreso.",
+    "palette": ["#FFFFFF", "#111827", "#2563EB"],
+    "materials": ["mapa a pantalla", "bottom sheet"],
+    "viewport": "Mapa con el camión y hoja blanca con «Tu agua está en camino».",
+    "risk": "Igual a cualquier app de delivery, por diseño.",
+    "html": ".impeccable/mocks/decision/r3-canon.html",
+    "htmlFrame": "390x844"
+  },
+  "steer": true
+}
