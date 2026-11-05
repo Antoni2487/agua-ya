@@ -71,7 +71,23 @@ services:
       - key: TWILIO_VERIFY_SID
         sync: false
 
-      # Push al vecino por Expo
+      # Nombres del vecino a partir del DNI (miapi.cloud); el token se carga en el panel de Render
+      - key: DNI_PROVIDER
+        value: miapi
+      - key: DNI_API_TOKEN
+        sync: false
+
+      # Web Push a la web del vecino; el par de claves VAPID se carga en el panel de Render
+      - key: WEB_PUSH_PROVIDER
+        value: vapid
+      - key: WEB_PUSH_CLAVE_PUBLICA
+        sync: false
+      - key: WEB_PUSH_CLAVE_PRIVADA
+        sync: false
+      - key: WEB_PUSH_SUJETO
+        sync: false
+
+      # Push a la app (Expo)
       - key: PUSH_PROVIDER
         value: expo
       - key: EXPO_ACCESS_TOKEN

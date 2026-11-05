@@ -53,7 +53,7 @@ Las **averías mecánicas en ruta NO son un problema recurrente documentado**. P
 
 ### Incluye
 - Gestión y autenticación de usuarios: Administrador, Conductor, Vecino.
-- Registro de vecino con verificación del teléfono por SMS (OTP), contraseña y ubicación de su vivienda en mapa.
+- Registro de vecino sin contraseña: DNI (nombres y apellidos se obtienen del DNI), verificación del teléfono por SMS (OTP) y ubicación de su vivienda tomada del GPS del celular.
 - Gestión de sectores, puntos de llenado, cisternas, conductores e instituciones críticas.
 - Programación de rutas por sector y turno, con paradas priorizadas.
 - Planificación de capacidad (cálculo de viajes y cisternas necesarios vs. disponibles).
@@ -71,7 +71,7 @@ Las **averías mecánicas en ruta NO son un problema recurrente documentado**. P
 - Integración con ERP o sistemas comerciales de EPSEL (AguaYa es un sistema satélite independiente).
 - Zonas fuera de la jurisdicción de EPSEL.
 - Algoritmo automático de optimización/reasignación de rutas (VRP, etc.).
-- SMS para notificaciones (solo para el OTP del registro).
+- SMS para notificaciones (solo para el código de registro e ingreso del vecino).
 
 ---
 
@@ -96,7 +96,8 @@ Las **averías mecánicas en ruta NO son un problema recurrente documentado**. P
 | Docs API | springdoc-openapi (Swagger UI en `/swagger-ui.html`) |
 | Tiempo real | WebSocket + STOMP |
 | OTP | Interfaz `ProveedorOtp`: impl `ProveedorOtpLocal` (dev, código en log) e impl `ProveedorOtpTwilio` (prod, Twilio Verify por API REST) |
-| Push | Expo Push API (HTTP) desde el backend |
+| DNI | Interfaz `ProveedorDni`: impl `ProveedorDniLocal` (dev/tests, nombres de prueba; `00000000` simula DNI inexistente) e impl `ProveedorDniMiApi` (prod, miapi.cloud por API REST) |
+| Push | Web Push estándar (VAPID + cifrado RFC 8291 con la JDK, sin librerías) para la web del vecino; Expo Push API (HTTP) para la app |
 | Tests | JUnit 5, Spring Boot Test, Testcontainers (Postgres) |
 | Móvil | React Native + Expo, `expo-location`, `react-native-maps`, `expo-notifications` |
 | Web | React + Vite, Leaflet + OpenStreetMap (sin API key) |
@@ -130,7 +131,7 @@ pe.epsel.aguaya
 ├── monitoreo/      # GPS, geocerca, WebSocket
 ├── incidencia/     # reportes y reasignación manual
 ├── calificacion/
-├── notificacion/   # push Expo, dispositivos
+├── notificacion/   # Web Push (vecino), push Expo (app), suscripciones y dispositivos
 ├── transparencia/  # endpoints públicos agregados
 └── common/         # config, seguridad, excepciones, utils (Haversine)
 ```
@@ -159,17 +160,18 @@ Cada módulo: `controller/`, `service/`, `repository/`, `entity/`, `dto/`, `mapp
 
 ## 7. Modelo de datos
 
-`Persona` es la clase padre de `Vecino`, `Conductor` y `Administrador`: tabla base `persona` + tablas por subtipo (herencia **JOINED**). Todas las personas ingresan con DNI + contraseña.
+`Persona` es la clase padre de `Vecino`, `Conductor` y `Administrador`: tabla base `persona` + tablas por subtipo (herencia **JOINED**). Administrador y conductor ingresan con DNI + contraseña; el vecino con DNI + código SMS (`password_hash` nulo; las cuentas de prueba de V3 conservan contraseña).
 
 | Tabla | Columnas |
 |---|---|
-| `persona` | id, dni (único, 8 díg.), nombres, apellidos, telefono (único), email (null), password_hash, rol, activo, creado_en |
+| `persona` | id, dni (único, 8 díg.), nombres, apellidos, telefono (único), email (null), password_hash (null solo para VECINO, V9), rol, activo, creado_en |
 | `vecino` | persona_id (PK/FK), direccion_referencia (texto libre), latitud, longitud, sector_id |
 | `conductor` | persona_id, licencia, estado_disponibilidad (DISPONIBLE / EN_RUTA / INACTIVO), turno, lat_actual, lng_actual, ubicacion_actualizada_en |
 | `administrador` | persona_id, cargo, nivel_acceso |
 | `codigo_otp` | id, telefono, codigo_hash, expira_en, intentos, usado, creado_en (solo proveedor OTP local; con Twilio el código lo guarda Twilio) |
 | `refresh_token` | id, persona_id, token_hash, expira_en, revocado |
-| `dispositivo_push` | id, persona_id, expo_token (único), plataforma, actualizado_en |
+| `dispositivo_push` | id, persona_id, expo_token (único), plataforma, actualizado_en (app Expo) |
+| `suscripcion_web_push` | id, persona_id, endpoint (único), p256dh, auth, actualizado_en (navegador del vecino, V10) |
 | `sector` | id, nombre, distrito, modalidad (PERMANENTE / CONTINGENCIA), es_zona_alta, unidades_uso, dotacion_litros (def. 80), frecuencia_dias, max_viajes_diarios, lat_centro, lng_centro, tipo_entrega (DOMICILIO / PUNTO_ENTREGA), activo |
 | `institucion_critica` | id, nombre, tipo (SALUD / BOMBEROS / EDUCACION / OTRO), sector_id, latitud, longitud, activo |
 | `punto_entrega` | id, sector_id, nombre, referencia, latitud, longitud, activo (lugar fijo donde se detiene la cisterna en sectores PUNTO_ENTREGA) |
@@ -209,7 +211,7 @@ Cada módulo: `controller/`, `service/`, `repository/`, `entity/`, `dto/`, `mapp
    - Si la destino ya tiene pendiente el mismo hogar, institución o punto, no se duplica (igual queda REASIGNADA en el origen). Las copias CRITICA van tras las CRITICA de la destino y las NORMAL al final, encadenadas desde el punto de llenado; la destino se renumera. Resuelve la incidencia (`resuelta_por`, `resuelto_en`), publica `PARADAS_REASIGNADAS` y avisa por push a los vecinos de las paradas copiadas.
    - `GET /api/admin/incidencias/{id}/sugerencias-reasignacion`: rutas candidatas del sector; primero las EN_CURSO por distancia de su conductor a la primera parada pendiente, luego por fecha y turno.
 7. **Calificación (RF08)**: solo el vecino dueño de la parada (su hogar o el punto de entrega más cercano; si no, 404), solo si está ATENDIDA (409 `PARADA_NO_ATENDIDA`), una vez por parada y vecino (409 `CALIFICACION_DUPLICADA`). 1–5 estrellas y comentario opcional (≤ 500). La próxima atención del vecino incluye `miCalificacion`. El Admin lista (`?sectorId=`, paginado) y ve el resumen: promedio, distribución por estrellas y promedio por conductor (del peor al mejor).
-8. **Registro de vecino**: el OTP confirma que el teléfono es suyo; el sector se asigna automáticamente al más cercano (por centro) y el vecino queda **activo de inmediato** (sin validación del Admin) y con sesión iniciada. El Admin solo puede desactivar cuentas (`persona.activo`).
+8. **Registro de vecino**: el OTP confirma que el teléfono es suyo; los nombres y apellidos salen del DNI (solo se guardan esos dos datos; dirección, género y fecha de nacimiento del proveedor se descartan) y un DNI inexistente se rechaza (400 `DNI_NO_ENCONTRADO`); el sector se asigna automáticamente al más cercano (por centro) y el vecino queda **activo de inmediato** (sin validación del Admin) y con sesión iniciada. El Admin solo puede desactivar cuentas (`persona.activo`).
 9. **Privacidad**: el panel público nunca expone datos personales ni coordenadas de viviendas. La ubicación del conductor solo se expone a vecinos/admin mientras la ruta está EN_CURSO. La próxima atención del vecino solo incluye su propia parada (su hogar o el punto de entrega más cercano).
 10. **Incidencias (RF06)**: el conductor reporta sobre su ruta (AVERIA, ACCESO_BLOQUEADO, AGUA_AGOTADA, OTRO) y el vecino sobre una ruta de su sector (NO_LLEGO, LLEGO_TARDE, YA_PASO, VOLUMEN_INSUFICIENTE, OTRO); otro tipo → 400 `TIPO_NO_PERMITIDO`. La parada, si se indica, debe ser de la ruta (y el vecino no puede indicar el hogar de otro). No se repite una incidencia ABIERTA de la misma persona, ruta y tipo (409). Cada reporte alerta al admin por `/topic/admin/incidencias`; el admin la cierra (CERRADA, `resuelta_por`, `resuelto_en`).
 11. **Viajes**: el conductor registra cada viaje al salir cargado (`POST /rutas/{id}/viajes`, ruta EN_CURSO): queda EN_REPARTO con `salida`, `nro_viaje` correlativo, punto de llenado de la ruta por defecto (otro activo si lo indica) y `volumen_cargado_litros` ≤ capacidad de la cisterna (400 `VOLUMEN_EXCEDE_CAPACIDAD`). Solo un viaje abierto por ruta (409 `VIAJE_EN_CURSO`); al finalizarlo pasa a FINALIZADO con `retorno`. Una parada atendida con un viaje abierto queda asociada a él (`parada.viaje_id`); sin viaje abierto, `viaje_id` queda null. La ruta no se completa con un viaje abierto (409 `VIAJE_SIN_FINALIZAR`); si se interrumpe, el viaje abierto se cierra. `viajes_planificados` es referencial: no limita los viajes. EN_CARGA no se usa en el MVP.
@@ -245,20 +247,24 @@ Fase 0 (base): repo, setup backend, auth + OTP, datos semilla.
 
 ## 10. Flujos clave
 
-### Registro del vecino (OTP solo aquí)
-1. App: teléfono (+ DNI opcional para avisar si ya está registrado) → `POST /api/auth/otp/solicitar`.
+### Registro del vecino
+1. Web: DNI + celular → `POST /api/auth/otp/solicitar` (avisa antes del SMS si el DNI o el teléfono ya tienen cuenta).
 2. El proveedor OTP envía el código por SMS. En dev (`ProveedorOtpLocal`): 6 dígitos, hash en BD, vence en 5 min, máx. 3 intentos y 3 envíos/hora por teléfono. En prod (Twilio Verify) Twilio genera, envía y valida el código con sus propios límites.
-3. App: código → `POST /api/auth/registro/vecino` con nombres, apellidos, DNI, teléfono, código, **contraseña** (8–72 caracteres), `direccion_referencia` (texto) + latitud/longitud. Responde con la sesión abierta.
-4. Ubicación: la app pide permiso con `expo-location` y centra el mapa en la ubicación actual; el usuario puede **arrastrar el pin** o elegir manualmente si niega el permiso. El texto de dirección puede prellenarse con `reverseGeocodeAsync` y el usuario lo corrige. **El dato que manda es el pin** (en asentamientos las direcciones son informales: "Mz. B Lt. 12, AA.HH. X").
+3. Web: código → `POST /api/auth/registro/vecino` con DNI, teléfono, código, latitud/longitud y `direccion_referencia` opcional. El backend verifica el código, consulta el DNI (`ProveedorDni`, fuera de la transacción porque puede tardar) y responde con la sesión abierta.
+4. Ubicación: la web la toma sola del GPS del celular (Geolocation API), sin que el vecino marque el mapa. Si niega el permiso o la precisión es peor que el radio de la geocerca, se le muestra el mapa con el pin para corregirlo (alternativa obligatoria por accesibilidad). **El dato que manda es el pin** (en asentamientos las direcciones son informales: "Mz. B Lt. 12, AA.HH. X").
 
-### Login (todos los roles)
-- `POST /api/auth/login` con DNI + contraseña (BCrypt) para vecino, conductor y admin. Las cuentas de conductor las crea el Admin.
+### Login
+- Vecino: `POST /api/auth/login/codigo/solicitar` con su DNI (el código llega al celular registrado; la respuesta lo muestra enmascarado `*** *** 789`) y `POST /api/auth/login/codigo` con DNI + código. Errores: 404 `DNI_NO_REGISTRADO`, 409 `INGRESO_CON_PASSWORD` (admin/conductor), 403 `CUENTA_INACTIVA`.
+- Admin y conductor: `POST /api/auth/login` con DNI + contraseña (BCrypt). Las cuentas de conductor las crea el Admin.
 - Se entregan access token JWT (15 min) + refresh token (30 días, se rota en cada uso).
 
 ### OTP
 - Interfaz `ProveedorOtp` (`enviar` + `verificar`), elegida con `OTP_PROVIDER`.
 - `log` → `ProveedorOtpLocal`: imprime el código en el log; lo devuelve en la respuesta si `aguaya.otp.exponer-codigo=true` (**solo dev**, prohibido en `prod`).
 - `twilio` → `ProveedorOtpTwilio`: Twilio Verify vía API REST (requiere `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_VERIFY_SID`).
+
+### DNI
+- Interfaz `ProveedorDni`, elegida con `DNI_PROVIDER`: `local` (nombres de prueba) o `miapi` (`GET https://miapi.cloud/v1/dni/{dni}` con `Authorization: Bearer DNI_API_TOKEN`; 404 → `DNI_NO_ENCONTRADO`, 401/429/5xx/timeout → 502 `DNI_PROVEEDOR_ERROR`). Los nombres llegan en mayúsculas y se guardan capitalizados.
 
 ### GPS en tiempo real
 - Conductor envía `POST /api/conductor/rutas/{id}/posicion` cada ~15 s (no socket abierto desde el móvil, ahorra batería/datos).
@@ -267,8 +273,11 @@ Fase 0 (base): repo, setup backend, auth + OTP, datos semilla.
 - Tópicos: `/topic/rutas/{id}/posicion`, `/topic/admin/incidencias`, `/topic/admin/rutas` (eventos RUTA_INICIADA, VIAJE_INICIADO, VIAJE_FINALIZADO, PARADA_ATENDIDA, PARADA_NO_ATENDIDA, RUTA_COMPLETADA, RUTA_INTERRUMPIDA, PARADAS_REASIGNADAS).
 
 ### Notificaciones
-- Vecino: push vía Expo (ruta iniciada, cisterna cerca, parada atendida, reasignación). La app registra su token con `POST /api/dispositivos` (VECINO o CONDUCTOR; un token es de una sola persona, si otra lo registra pasa a ella) y lo da de baja con `DELETE /api/dispositivos` al cerrar sesión.
+- Vecino: avisos de ruta iniciada, cisterna cerca, parada atendida y reasignación. Salen por **Web Push** a la web del vecino y, si hay app registrada, por Expo.
+- Web Push: la web pide la clave VAPID pública a `GET /api/public/web-push/clave-publica`, suscribe el navegador y la registra con `POST /api/vecino/web-push` (cuerpo = `PushSubscription.toJSON()`); la da de baja con `DELETE /api/vecino/web-push` al cerrar sesión. Una suscripción es de una sola persona (si otra la registra pasa a ella). Solo se aceptan endpoints `https` de los servicios de push de los navegadores (`fcm.googleapis.com`, `push.services.mozilla.com`, `notify.windows.com`, `push.apple.com`; 400 `SUSCRIPCION_INVALIDA`): el backend les hace POST, así se evita SSRF. En iPhone solo funciona con la web agregada a la pantalla de inicio (iOS 16.4+).
+- Expo (app): la app registra su token con `POST /api/dispositivos` (VECINO o CONDUCTOR; un token es de una sola persona, si otra lo registra pasa a ella) y lo da de baja con `DELETE /api/dispositivos` al cerrar sesión.
 - Destinatarios: solo vecinos activos, cada uno por su parada (su hogar o el punto de entrega más cercano; regla 9). **Ruta iniciada**: vecinos con parada pendiente. **Cisterna cerca**: cuando una posición GPS queda a ≤ `aguaya.push.radio-cercania-metros` (def. 500 m) de una parada pendiente; una sola vez por parada (`parada.aviso_cercania_en`). **Entrega registrada**: al atender la parada (invita a calificar). **Reasignación** (RF07): a los vecinos de las paradas copiadas, con la nueva fecha y turno.
+- Interfaz `ProveedorWebPush` elegida con `WEB_PUSH_PROVIDER`: `log` (dev) o `vapid` (cifra cada aviso para el navegador y lo envía con JWT VAPID ES256; requiere `WEB_PUSH_CLAVE_PUBLICA` y `WEB_PUSH_CLAVE_PRIVADA`, generadas con `npx web-push generate-vapid-keys`). Las suscripciones que responden 404/410 se eliminan.
 - Interfaz `ProveedorPush` elegida con `PUSH_PROVIDER`: `log` (dev, solo log) o `expo` (Expo Push API por HTTP, lotes de 100, `EXPO_ACCESS_TOKEN` opcional; por defecto en `prod`). Envío después del commit en un pool propio (no demora al conductor); un fallo de Expo no afecta la operación y los tokens `DeviceNotRegistered` se eliminan.
 - Admin: alertas por WebSocket en el panel web.
 
@@ -280,7 +289,9 @@ Fase 0 (base): repo, setup backend, auth + OTP, datos semilla.
 # Auth
 POST /api/auth/otp/solicitar
 POST /api/auth/registro/vecino
-POST /api/auth/login                   (DNI + password: todos los roles)
+POST /api/auth/login                   (DNI + password: admin y conductor)
+POST /api/auth/login/codigo/solicitar  (vecino: envía el código SMS)
+POST /api/auth/login/codigo            (vecino: DNI + código)
 POST /api/auth/refresh
 POST /api/auth/logout
 
@@ -324,6 +335,8 @@ GET  /api/vecino/rutas/{id}/posicion
 POST /api/vecino/calificaciones                      (RF08)
 POST /api/incidencias                                (RF06, conductor o vecino)
 GET  /api/incidencias                                (las que reportó la persona autenticada)
+POST /api/vecino/web-push                            (suscripción Web Push del navegador)
+DELETE /api/vecino/web-push                          (baja de la suscripción)
 POST /api/dispositivos                               (registrar expo_token; vecino o conductor)
 DELETE /api/dispositivos                             (baja del token al cerrar sesión)
 
@@ -331,6 +344,7 @@ DELETE /api/dispositivos                             (baja del token al cerrar s
 GET  /api/public/transparencia/resumen?desde=&hasta=                 (RF09)
 GET  /api/public/transparencia/sectores?distrito=&desde=&hasta=      (última y próxima atención, cumplimiento)
 GET  /api/public/transparencia/cronograma?distrito=&desde=&hasta=
+GET  /api/public/web-push/clave-publica
 ```
 
 Respuestas paginadas con `page`, `size`, `totalElements`. Swagger documenta todo.
@@ -367,7 +381,7 @@ Respuestas paginadas con `page`, `size`, `totalElements`. Swagger documenta todo
 
 - Perfiles: `dev` (local, docker-compose) y `prod` (Render, Blueprint `render.yaml`). En `prod` la BD se configura con `DB_URL` o con `DB_HOST`, `DB_PORT` y `DB_NAME` (como las entrega Render).
 - Variables de entorno (nunca commitear secretos; usar `.env` en `.gitignore` y un `.env.example`):
-  `DB_URL`, `DB_USER`, `DB_PASSWORD`, `JWT_SECRET`, `JWT_ACCESS_MINUTOS`, `JWT_REFRESH_DIAS`, `OTP_PROVIDER` (log|twilio), `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_VERIFY_SID`, `PUSH_PROVIDER` (log|expo), `EXPO_ACCESS_TOKEN`, `PUSH_RADIO_CERCANIA_METROS`, `SWAGGER_ENABLED`, `DB_POOL_MAX`, `CACHE_SEGUNDOS`, `GEOCERCA_RADIO_METROS`, `GEOCERCA_VIGENCIA_POSICION_SEGUNDOS`, `CORS_ORIGINS`.
+  `DB_URL`, `DB_USER`, `DB_PASSWORD`, `JWT_SECRET`, `JWT_ACCESS_MINUTOS`, `JWT_REFRESH_DIAS`, `OTP_PROVIDER` (log|twilio), `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_VERIFY_SID`, `DNI_PROVIDER` (local|miapi), `DNI_API_URL`, `DNI_API_TOKEN`, `DNI_TIMEOUT_SEGUNDOS`, `PUSH_PROVIDER` (log|expo), `EXPO_ACCESS_TOKEN`, `WEB_PUSH_PROVIDER` (log|vapid), `WEB_PUSH_CLAVE_PUBLICA`, `WEB_PUSH_CLAVE_PRIVADA`, `WEB_PUSH_SUJETO`, `WEB_PUSH_TTL_SEGUNDOS`, `PUSH_RADIO_CERCANIA_METROS`, `SWAGGER_ENABLED`, `DB_POOL_MAX`, `CACHE_SEGUNDOS`, `GEOCERCA_RADIO_METROS`, `GEOCERCA_VIGENCIA_POSICION_SEGUNDOS`, `CORS_ORIGINS`.
 - CORS: permitir el origen del panel web y del panel público.
 - Para probar GPS desde el celular el backend debe ser accesible por red: Render (rama `develop`) o `ngrok` en local.
 
