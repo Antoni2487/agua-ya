@@ -27,14 +27,18 @@ Los tests de integración levantan Postgres con Testcontainers (requiere Docker)
 
 ## Autenticación
 
-- **Registro del vecino**: `POST /api/auth/otp/solicitar` (teléfono) → `POST /api/auth/registro/vecino`
-  (datos + código SMS + contraseña + pin). Queda activo y con sesión iniciada.
-- **Login** (vecino, conductor y admin): `POST /api/auth/login` con DNI + contraseña.
+- **Registro del vecino** (sin contraseña): `POST /api/auth/otp/solicitar` (DNI + teléfono) →
+  `POST /api/auth/registro/vecino` (DNI + teléfono + código SMS + ubicación). Los nombres salen del DNI.
+  Queda activo y con sesión iniciada.
+- **Login del vecino**: `POST /api/auth/login/codigo/solicitar` (DNI) → `POST /api/auth/login/codigo` (DNI + código).
+- **Login de admin y conductor**: `POST /api/auth/login` con DNI + contraseña.
+- DNI: `DNI_PROVIDER=local` en dev (nombres de prueba; `00000000` simula un DNI inexistente).
+  `DNI_PROVIDER=miapi` consulta miapi.cloud con `DNI_API_TOKEN`.
 
 - Respuesta: `accessToken` (JWT, 15 min) + `refreshToken` (opaco, 30 días). Enviar `Authorization: Bearer <accessToken>`.
 - `POST /api/auth/refresh` rota el refresh token; reusar uno ya rotado revoca todas las sesiones del usuario.
 - `POST /api/auth/logout` revoca el refresh token.
-- OTP (solo registro): `OTP_PROVIDER=log` en dev, el código sale en el log y en la respuesta
+- OTP (registro e ingreso del vecino): `OTP_PROVIDER=log` en dev, el código sale en el log y en la respuesta
   (`OTP_EXPONER_CODIGO=true`; prohibido en prod). `OTP_PROVIDER=twilio` usa Twilio Verify con
   `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN` y `TWILIO_VERIFY_SID`.
   - Con una cuenta de prueba de Twilio solo llegan SMS a números verificados en su consola.

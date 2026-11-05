@@ -37,6 +37,12 @@ public class Vecino extends Persona {
     @JoinColumn(name = "sector_id", nullable = false)
     private Sector sector;
 
+    /** Vecino registrado desde la web: ingresa con DNI + código SMS, sin contraseña. */
+    public Vecino(String dni, String nombres, String apellidos, String telefono) {
+        this(dni, nombres, apellidos, telefono, null);
+    }
+
+    /** Con contraseña: solo las cuentas de prueba (V3) y los tests. */
     public Vecino(String dni, String nombres, String apellidos, String telefono, String passwordHash) {
         super(Rol.VECINO, dni, nombres, apellidos, telefono, passwordHash);
     }
