@@ -96,7 +96,7 @@ Las **averías mecánicas en ruta NO son un problema recurrente documentado**. P
 | Tiempo real | WebSocket + STOMP |
 | OTP | Interfaz `ProveedorOtp`: impl `ProveedorOtpLocal` (dev, código en log) e impl `ProveedorOtpTwilio` (prod, Twilio Verify por API REST) |
 | DNI | Interfaz `ProveedorDni`: impl `ProveedorDniLocal` (dev/tests, nombres de prueba; `00000000` simula DNI inexistente) e impl `ProveedorDniMiApi` (prod, miapi.cloud por API REST) |
-| Push | Expo Push API (HTTP) desde el backend |
+| Push | Web Push estándar (VAPID + cifrado RFC 8291 con la JDK, sin librerías) para la web del vecino; Expo Push API (HTTP) para la app |
 | Tests | JUnit 5, Spring Boot Test, Testcontainers (Postgres) |
 | Móvil | React Native + Expo, `expo-location`, `react-native-maps`, `expo-notifications` |
 | Web | React + Vite, Leaflet + OpenStreetMap (sin API key) |
@@ -130,7 +130,7 @@ pe.epsel.aguaya
 ├── monitoreo/      # GPS, geocerca, WebSocket
 ├── incidencia/     # reportes y reasignación manual
 ├── calificacion/
-├── notificacion/   # push Expo, dispositivos
+├── notificacion/   # Web Push (vecino), push Expo (app), suscripciones y dispositivos
 ├── transparencia/  # endpoints públicos agregados
 └── common/         # config, seguridad, excepciones, utils (Haversine)
 ```
@@ -169,7 +169,8 @@ Cada módulo: `controller/`, `service/`, `repository/`, `entity/`, `dto/`, `mapp
 | `administrador` | persona_id, cargo, nivel_acceso |
 | `codigo_otp` | id, telefono, codigo_hash, expira_en, intentos, usado, creado_en (solo proveedor OTP local; con Twilio el código lo guarda Twilio) |
 | `refresh_token` | id, persona_id, token_hash, expira_en, revocado |
-| `dispositivo_push` | id, persona_id, expo_token (único), plataforma, actualizado_en |
+| `dispositivo_push` | id, persona_id, expo_token (único), plataforma, actualizado_en (app Expo) |
+| `suscripcion_web_push` | id, persona_id, endpoint (único), p256dh, auth, actualizado_en (navegador del vecino, V10) |
 | `sector` | id, nombre, distrito, modalidad (PERMANENTE / CONTINGENCIA), es_zona_alta, unidades_uso, dotacion_litros (def. 80), frecuencia_dias, max_viajes_diarios, lat_centro, lng_centro, tipo_entrega (DOMICILIO / PUNTO_ENTREGA), activo |
 | `institucion_critica` | id, nombre, tipo (SALUD / BOMBEROS / EDUCACION / OTRO), sector_id, latitud, longitud, activo |
 | `punto_entrega` | id, sector_id, nombre, referencia, latitud, longitud, activo (lugar fijo donde se detiene la cisterna en sectores PUNTO_ENTREGA) |
@@ -271,8 +272,11 @@ Fase 0 (base): repo, setup backend, auth + OTP, datos semilla.
 - Tópicos: `/topic/rutas/{id}/posicion`, `/topic/admin/incidencias`, `/topic/admin/rutas` (eventos RUTA_INICIADA, VIAJE_INICIADO, VIAJE_FINALIZADO, PARADA_ATENDIDA, PARADA_NO_ATENDIDA, RUTA_COMPLETADA, RUTA_INTERRUMPIDA, PARADAS_REASIGNADAS).
 
 ### Notificaciones
-- Vecino: push vía Expo (ruta iniciada, cisterna cerca, parada atendida, reasignación). La app registra su token con `POST /api/dispositivos` (VECINO o CONDUCTOR; un token es de una sola persona, si otra lo registra pasa a ella) y lo da de baja con `DELETE /api/dispositivos` al cerrar sesión.
+- Vecino: avisos de ruta iniciada, cisterna cerca, parada atendida y reasignación. Salen por **Web Push** a la web del vecino y, si hay app registrada, por Expo.
+- Web Push: la web pide la clave VAPID pública a `GET /api/public/web-push/clave-publica`, suscribe el navegador y la registra con `POST /api/vecino/web-push` (cuerpo = `PushSubscription.toJSON()`); la da de baja con `DELETE /api/vecino/web-push` al cerrar sesión. Una suscripción es de una sola persona (si otra la registra pasa a ella). Solo se aceptan endpoints `https` de los servicios de push de los navegadores (`fcm.googleapis.com`, `push.services.mozilla.com`, `notify.windows.com`, `push.apple.com`; 400 `SUSCRIPCION_INVALIDA`): el backend les hace POST, así se evita SSRF. En iPhone solo funciona con la web agregada a la pantalla de inicio (iOS 16.4+).
+- Expo (app): la app registra su token con `POST /api/dispositivos` (VECINO o CONDUCTOR; un token es de una sola persona, si otra lo registra pasa a ella) y lo da de baja con `DELETE /api/dispositivos` al cerrar sesión.
 - Destinatarios: solo vecinos activos, cada uno por su parada (su hogar o el punto de entrega más cercano; regla 9). **Ruta iniciada**: vecinos con parada pendiente. **Cisterna cerca**: cuando una posición GPS queda a ≤ `aguaya.push.radio-cercania-metros` (def. 500 m) de una parada pendiente; una sola vez por parada (`parada.aviso_cercania_en`). **Entrega registrada**: al atender la parada (invita a calificar). **Reasignación** (RF07): a los vecinos de las paradas copiadas, con la nueva fecha y turno.
+- Interfaz `ProveedorWebPush` elegida con `WEB_PUSH_PROVIDER`: `log` (dev) o `vapid` (cifra cada aviso para el navegador y lo envía con JWT VAPID ES256; requiere `WEB_PUSH_CLAVE_PUBLICA` y `WEB_PUSH_CLAVE_PRIVADA`, generadas con `npx web-push generate-vapid-keys`). Las suscripciones que responden 404/410 se eliminan.
 - Interfaz `ProveedorPush` elegida con `PUSH_PROVIDER`: `log` (dev, solo log) o `expo` (Expo Push API por HTTP, lotes de 100, `EXPO_ACCESS_TOKEN` opcional; por defecto en `prod`). Envío después del commit en un pool propio (no demora al conductor); un fallo de Expo no afecta la operación y los tokens `DeviceNotRegistered` se eliminan.
 - Admin: alertas por WebSocket en el panel web.
 
@@ -330,6 +334,8 @@ GET  /api/vecino/rutas/{id}/posicion
 POST /api/vecino/calificaciones                      (RF08)
 POST /api/incidencias                                (RF06, conductor o vecino)
 GET  /api/incidencias                                (las que reportó la persona autenticada)
+POST /api/vecino/web-push                            (suscripción Web Push del navegador)
+DELETE /api/vecino/web-push                          (baja de la suscripción)
 POST /api/dispositivos                               (registrar expo_token; vecino o conductor)
 DELETE /api/dispositivos                             (baja del token al cerrar sesión)
 
@@ -337,6 +343,7 @@ DELETE /api/dispositivos                             (baja del token al cerrar s
 GET  /api/public/transparencia/resumen?desde=&hasta=                 (RF09)
 GET  /api/public/transparencia/sectores?distrito=&desde=&hasta=      (última y próxima atención, cumplimiento)
 GET  /api/public/transparencia/cronograma?distrito=&desde=&hasta=
+GET  /api/public/web-push/clave-publica
 ```
 
 Respuestas paginadas con `page`, `size`, `totalElements`. Swagger documenta todo.
@@ -373,7 +380,7 @@ Respuestas paginadas con `page`, `size`, `totalElements`. Swagger documenta todo
 
 - Perfiles: `dev` (local, docker-compose) y `prod` (Render, Blueprint `render.yaml`). En `prod` la BD se configura con `DB_URL` o con `DB_HOST`, `DB_PORT` y `DB_NAME` (como las entrega Render).
 - Variables de entorno (nunca commitear secretos; usar `.env` en `.gitignore` y un `.env.example`):
-  `DB_URL`, `DB_USER`, `DB_PASSWORD`, `JWT_SECRET`, `JWT_ACCESS_MINUTOS`, `JWT_REFRESH_DIAS`, `OTP_PROVIDER` (log|twilio), `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_VERIFY_SID`, `DNI_PROVIDER` (local|miapi), `DNI_API_URL`, `DNI_API_TOKEN`, `DNI_TIMEOUT_SEGUNDOS`, `PUSH_PROVIDER` (log|expo), `EXPO_ACCESS_TOKEN`, `PUSH_RADIO_CERCANIA_METROS`, `SWAGGER_ENABLED`, `DB_POOL_MAX`, `CACHE_SEGUNDOS`, `GEOCERCA_RADIO_METROS`, `GEOCERCA_VIGENCIA_POSICION_SEGUNDOS`, `CORS_ORIGINS`.
+  `DB_URL`, `DB_USER`, `DB_PASSWORD`, `JWT_SECRET`, `JWT_ACCESS_MINUTOS`, `JWT_REFRESH_DIAS`, `OTP_PROVIDER` (log|twilio), `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_VERIFY_SID`, `DNI_PROVIDER` (local|miapi), `DNI_API_URL`, `DNI_API_TOKEN`, `DNI_TIMEOUT_SEGUNDOS`, `PUSH_PROVIDER` (log|expo), `EXPO_ACCESS_TOKEN`, `WEB_PUSH_PROVIDER` (log|vapid), `WEB_PUSH_CLAVE_PUBLICA`, `WEB_PUSH_CLAVE_PRIVADA`, `WEB_PUSH_SUJETO`, `WEB_PUSH_TTL_SEGUNDOS`, `PUSH_RADIO_CERCANIA_METROS`, `SWAGGER_ENABLED`, `DB_POOL_MAX`, `CACHE_SEGUNDOS`, `GEOCERCA_RADIO_METROS`, `GEOCERCA_VIGENCIA_POSICION_SEGUNDOS`, `CORS_ORIGINS`.
 - CORS: permitir el origen del panel web y del panel público.
 - Para probar GPS desde el celular el backend debe ser accesible por red: Render (rama `develop`) o `ngrok` en local.
 

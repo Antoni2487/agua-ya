@@ -77,7 +77,17 @@ services:
       - key: DNI_API_TOKEN
         sync: false
 
-      # Push al vecino por Expo
+      # Web Push a la web del vecino; el par de claves VAPID se carga en el panel de Render
+      - key: WEB_PUSH_PROVIDER
+        value: vapid
+      - key: WEB_PUSH_CLAVE_PUBLICA
+        sync: false
+      - key: WEB_PUSH_CLAVE_PRIVADA
+        sync: false
+      - key: WEB_PUSH_SUJETO
+        sync: false
+
+      # Push a la app (Expo)
       - key: PUSH_PROVIDER
         value: expo
       - key: EXPO_ACCESS_TOKEN
