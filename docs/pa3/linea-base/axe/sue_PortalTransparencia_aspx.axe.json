@@ -1,0 +1,338 @@
+{
+  "url": "https://www.epsel.com.pe/sue/PortalTransparencia",
+  "fecha": "2026-11-05T01:55:25.773Z",
+  "axe": "4.10.3",
+  "reglasEvaluadas": {
+    "type": "tag",
+    "values": [
+      "wcag2a",
+      "wcag2aa",
+      "wcag21a",
+      "wcag21aa",
+      "best-practice"
+    ]
+  },
+  "conteo": {
+    "violaciones": 7,
+    "aprobadas": 22,
+    "revisar": 1
+  },
+  "violaciones": [
+    {
+      "id": "color-contrast",
+      "impacto": "serious",
+      "ayuda": "Elements must meet minimum color contrast ratio thresholds",
+      "wcag": [
+        "wcag2aa",
+        "wcag143"
+      ],
+      "enlace": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=playwright",
+      "elementos": [
+        {
+          "selector": "a[href$=\"PortalTransparencia.aspx\"]",
+          "html": "<a class=\"btn btn-danger\" href=\"PortalTransparencia.aspx\"><i class=\"glyphicon glyphicon-zoom-in\">&nbsp;</i>Transparencia</a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 3.96 (foreground color: #ffffff, background color: #d9534f, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".btn-primary",
+          "html": "<a class=\"btn btn-primary\" href=\"https://www.epsel.com.pe/Intranet/WFrmLogueo.aspx\"><i class=\"glyphicon glyphicon-level-up\">&nbsp;</i>Intranet</a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 3.24 (foreground color: #ffffff, background color: #f85a16, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".btn-success",
+          "html": "<a class=\"btn btn-success\" href=\"https://api.whatsapp.com/send/?phone=51942813797&amp;text=Me+interesa+comunicarme+con+Epsel+S.A.+&amp;app_absent=0\">",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 2.48 (foreground color: #ffffff, background color: #5cb85c, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".dropdown:nth-child(1) > .dropdown-toggle[data-toggle=\"dropdown\"][href=\"#\"]",
+          "html": "<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\"><i class=\"glyphicon glyphicon-align-center\">&nbsp;</i>Nosotros<span class=\"caret\"></span></a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 3.2 (foreground color: #ffffff, background color: #0092ff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".dropdown:nth-child(2) > .dropdown-toggle[data-toggle=\"dropdown\"][href=\"#\"]",
+          "html": "<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\"><i class=\"glyphicon glyphicon-book\">&nbsp;</i>Orientación al Cliente<span class=\"caret\"></span></a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 3.2 (foreground color: #ffffff, background color: #0092ff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".dropdown:nth-child(3) > .dropdown-toggle[data-toggle=\"dropdown\"][href=\"#\"]",
+          "html": "<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\"><i class=\"glyphicon glyphicon-briefcase\">&nbsp;</i>Ciclo Operacional<span class=\"caret\"></span></a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 3.2 (foreground color: #ffffff, background color: #0092ff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".dropdown:nth-child(4) > .dropdown-toggle[data-toggle=\"dropdown\"][href=\"#\"]",
+          "html": "<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\"><i class=\"glyphicon glyphicon-globe\">&nbsp;</i>Gobernanza y Gobernabilidad<span class=\"caret\"></span></a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 3.2 (foreground color: #ffffff, background color: #0092ff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".dropdown:nth-child(5) > .dropdown-toggle[data-toggle=\"dropdown\"][href=\"#\"]",
+          "html": "<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\"><i class=\"glyphicon glyphicon-open-file\">&nbsp;</i>VMA<span class=\"caret\"></span></a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 3.2 (foreground color: #ffffff, background color: #0092ff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".dropdown:nth-child(6) > .dropdown-toggle[data-toggle=\"dropdown\"][href=\"#\"]",
+          "html": "<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\"><i class=\"glyphicon glyphicon-info-sign\">&nbsp;</i>Integridad<span class=\"caret\"></span></a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 3.2 (foreground color: #ffffff, background color: #0092ff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": "h3",
+          "html": "<h3 style=\"text-align: justify;\">Empresa Prestadora de Servicios de Saneamiento de Lambayeque</h3>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 2.54 (foreground color: #cce9ff, background color: #0092ff, font size: 11.3pt (15px), font weight: bold). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": "p:nth-child(2)",
+          "html": "<p style=\"text-align: justify;\">Contribuir a mejorar la calidad de vida de la población de Lambayeque, brindando servicios de saneamiento eficientes y de calidad.</p>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.39 (foreground color: #777777, background color: #0092ff, font size: 12.6pt (16.8px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": "p:nth-child(3) > a[href$=\"Logueo.aspx\"]",
+          "html": "<a class=\"btn btn-danger\" href=\"Logueo.aspx\"><i class=\"glyphicon glyphicon-user\">&nbsp;</i>Iniciar Sesión</a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 3.96 (foreground color: #ffffff, background color: #d9534f, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".fh5co-footer-links > li:nth-child(1) > a[href$=\"PortalHistoria.aspx\"]",
+          "html": "<a href=\"PortalHistoria.aspx\">Historia</a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.78 (foreground color: #80c9ff, background color: #0092ff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".fh5co-footer-links > li:nth-child(2) > a[href$=\"PortalMision.aspx\"]",
+          "html": "<a href=\"PortalMision.aspx\">Misión y Visión</a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.78 (foreground color: #80c9ff, background color: #0092ff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".fh5co-footer-links > li:nth-child(3) > a[href$=\"PortalCompromiso.aspx\"]",
+          "html": "<a href=\"PortalCompromiso.aspx\">Nuestro Compromiso</a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.78 (foreground color: #80c9ff, background color: #0092ff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".fh5co-footer-links > li:nth-child(4) > a[href$=\"PortalEmpresarial.aspx\"]",
+          "html": "<a href=\"PortalEmpresarial.aspx\">Valores Empresariales</a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.78 (foreground color: #80c9ff, background color: #0092ff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".fh5co-footer-links > li:nth-child(5) > a[href$=\"PortalDireccion.aspx\"]",
+          "html": "<a href=\"PortalDireccion.aspx\">Alta Dirección</a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.78 (foreground color: #80c9ff, background color: #0092ff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".col-sm-4.col-xs-6.col-md-4:nth-child(2) > .fh5co-footer-links > li:nth-child(1) > a",
+          "html": "<a href=\"PortalTransparenciaPublica.aspx\">Transparencia Pública</a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.78 (foreground color: #80c9ff, background color: #0092ff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".col-sm-4.col-xs-6.col-md-4:nth-child(2) > .fh5co-footer-links > li:nth-child(2) > a",
+          "html": "<a href=\"PortalTransparenciaEstandar.aspx\">Transparencia Estandar</a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.78 (foreground color: #80c9ff, background color: #0092ff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": "li:nth-child(3) > a[href$=\"PortalAtencion.aspx\"]",
+          "html": "<a href=\"PortalAtencion.aspx\">Centros de Atención</a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.78 (foreground color: #80c9ff, background color: #0092ff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": "a[href$=\"PortalRecaudacion.aspx\"]",
+          "html": "<a href=\"PortalRecaudacion.aspx\">Centro de Recaudación</a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.78 (foreground color: #80c9ff, background color: #0092ff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": "li:nth-child(5) > a[href$=\"PortalTramite.aspx\"]",
+          "html": "<a href=\"PortalTramite.aspx\">Requisitos para Trámites</a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.78 (foreground color: #80c9ff, background color: #0092ff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".fh5co-footer-links > li:nth-child(1) > a[href$=\"PortalVMANosotros.aspx\"]",
+          "html": "<a href=\"PortalVMANosotros.aspx\">Nosotros VMA</a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.78 (foreground color: #80c9ff, background color: #0092ff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".fh5co-footer-links > li:nth-child(2) > a[href$=\"PortalVMAControl.aspx\"]",
+          "html": "<a href=\"PortalVMAControl.aspx\">¿Por qué el control VMA?</a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.78 (foreground color: #80c9ff, background color: #0092ff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".fh5co-footer-links > li:nth-child(3) > a[href=\"PortalVMANormatividad.aspx\"]",
+          "html": "<a href=\"PortalVMANormatividad.aspx\">Normatividad</a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.78 (foreground color: #80c9ff, background color: #0092ff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".fh5co-footer-links > li:nth-child(4) > a[href$=\"PortalVMAAplicacion.aspx\"]",
+          "html": "<a href=\"PortalVMAAplicacion.aspx\">¿Como se aplica la Normatividad?</a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.78 (foreground color: #80c9ff, background color: #0092ff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": "li:nth-child(5) > a[href$=\"PortalGeneral.aspx\"]",
+          "html": "<a href=\"PortalGeneral.aspx\">Información General</a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.78 (foreground color: #80c9ff, background color: #0092ff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": "small",
+          "html": "<small class=\"block\">© 2026  | Todos los Derechos Reservados.</small>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.39 (foreground color: #777777, background color: #0092ff, font size: 10.7pt (14.28px), font weight: normal). Expected contrast ratio of 4.5:1"
+        }
+      ]
+    },
+    {
+      "id": "heading-order",
+      "impacto": "moderate",
+      "ayuda": "Heading levels should only increase by one",
+      "wcag": [],
+      "enlace": "https://dequeuniversity.com/rules/axe/4.10/heading-order?application=playwright",
+      "elementos": [
+        {
+          "selector": "h3",
+          "html": "<h3 style=\"text-align: justify;\">Empresa Prestadora de Servicios de Saneamiento de Lambayeque</h3>",
+          "resumen": "Fix any of the following:\n  Heading order invalid"
+        }
+      ]
+    },
+    {
+      "id": "html-has-lang",
+      "impacto": "serious",
+      "ayuda": "<html> element must have a lang attribute",
+      "wcag": [
+        "wcag2a",
+        "wcag311"
+      ],
+      "enlace": "https://dequeuniversity.com/rules/axe/4.10/html-has-lang?application=playwright",
+      "elementos": [
+        {
+          "selector": "html",
+          "html": "<html>",
+          "resumen": "Fix any of the following:\n  The <html> element does not have a lang attribute"
+        }
+      ]
+    },
+    {
+      "id": "image-alt",
+      "impacto": "critical",
+      "ayuda": "Images must have alternative text",
+      "wcag": [
+        "wcag2a",
+        "wcag111"
+      ],
+      "enlace": "https://dequeuniversity.com/rules/axe/4.10/image-alt?application=playwright",
+      "elementos": [
+        {
+          "selector": ".horizontal > img[src$=\"Epsel_350_240.png\"]",
+          "html": "<img src=\"Iconos/Epsel_350_240.png\" style=\"width: 170px; height: 120px; margin-right: 5px;\">",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": ".navbar-brand > img[src$=\"Epsel_350_240.png\"]",
+          "html": "<img style=\"width: 85px; height: 55px; margin-top: -20px;\" src=\"Iconos/Epsel_350_240.png\">",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": ".cabecera-01 > img",
+          "html": "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAA7AAAAOwBeShxvQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAS/SURBVFiFrZZtbFRFFIaf",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": ".col-lg-12:nth-child(2) > .col-lg-6:nth-child(1) > .lnk-01 > .grupo-01 > img",
+          "html": "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABAEAQAAABQ8GUWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAAAGAAAABgAPBr",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": ".lnk-01[target=\"_blank\"] > .grupo-01 > img",
+          "html": "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABAEAQAAABQ8GUWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAAAGAAAABgAPBr",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": ".col-lg-12:nth-child(3) > .col-lg-6:nth-child(1) > .lnk-01 > .grupo-01 > img",
+          "html": "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABAEAQAAABQ8GUWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAAAGAAAABgAPBr",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": ".col-lg-12:nth-child(3) > .col-lg-6:nth-child(2) > .lnk-01 > .grupo-01 > img",
+          "html": "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABAEAQAAABQ8GUWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAAAGAAAABgAPBr",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": ".col-lg-12:nth-child(4) > .col-lg-6:nth-child(1) > .lnk-01 > .grupo-01 > img",
+          "html": "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABAEAQAAABQ8GUWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAAAGAAAABgAPBr",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": ".fh5co-widget > .horizontal > img",
+          "html": "<img style=\"width: 85px; height: 55px; margin-right: 5px;\" src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAACzIAAAidCAYAAADmu+KpAAAKN2lDQ1BzUkdCIElFQzYxOTY2LTIuMQAAeJydlndUU9kWh8+9N71QkhCKlNBraFICSA",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        }
+      ]
+    },
+    {
+      "id": "landmark-one-main",
+      "impacto": "moderate",
+      "ayuda": "Document should have one main landmark",
+      "wcag": [],
+      "enlace": "https://dequeuniversity.com/rules/axe/4.10/landmark-one-main?application=playwright",
+      "elementos": [
+        {
+          "selector": "html",
+          "html": "<html>",
+          "resumen": "Fix all of the following:\n  Document does not have a main landmark"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impacto": "serious",
+      "ayuda": "Links must have discernible text",
+      "wcag": [
+        "wcag2a",
+        "wcag244",
+        "wcag412"
+      ],
+      "enlace": "https://dequeuniversity.com/rules/axe/4.10/link-name?application=playwright",
+      "elementos": [
+        {
+          "selector": ".icon-facebook",
+          "html": "<a href=\"https://www.facebook.com/\" class=\"icon-facebook\" target=\"_blank\"></a>",
+          "resumen": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+        },
+        {
+          "selector": ".icon-google3",
+          "html": "<a href=\"https://www.gmail.com/mail/help/intl/es/about.html?iframe\" class=\"icon-google3\" target=\"_blank\"></a>",
+          "resumen": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+        },
+        {
+          "selector": ".icon-instagram",
+          "html": "<a href=\"https://www.instagram.com/?hl=es\" class=\"icon-instagram\" target=\"_blank\"></a>",
+          "resumen": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+        },
+        {
+          "selector": ".icon-twitter",
+          "html": "<a href=\"https://twitter.com/login\" class=\"icon-twitter\" target=\"_blank\"></a>",
+          "resumen": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+        },
+        {
+          "selector": ".icon-youtube",
+          "html": "<a href=\"https://www.youtube.com/\" class=\"icon-youtube\" target=\"_blank\"></a>",
+          "resumen": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+        },
+        {
+          "selector": ".navbar-brand",
+          "html": "<a href=\"Index.aspx\" class=\"navbar-brand\">\n                            <img style=\"width: 85px; height: 55px; margin-top: -20px;\" src=\"Iconos/Epsel_350_240.png\">\n                        </a>",
+          "resumen": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impacto": "moderate",
+      "ayuda": "All page content should be contained by landmarks",
+      "wcag": [],
+      "enlace": "https://dequeuniversity.com/rules/axe/4.10/region?application=playwright",
+      "elementos": [
+        {
+          "selector": ".content",
+          "html": "<div class=\"content fondo\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": "div:nth-child(8) > .container",
+          "html": "<div class=\"container\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    }
+  ]
+}
