@@ -71,6 +71,12 @@ services:
       - key: TWILIO_VERIFY_SID
         sync: false
 
+      # Nombres del vecino a partir del DNI (miapi.cloud); el token se carga en el panel de Render
+      - key: DNI_PROVIDER
+        value: miapi
+      - key: DNI_API_TOKEN
+        sync: false
+
       # Push al vecino por Expo
       - key: PUSH_PROVIDER
         value: expo
