@@ -145,5 +145,30 @@
     "fecha": "2026-11-05T01:56:05.652Z",
     "axe": "4.10.3",
     "navegador": "156.0.8078.80"
+  },
+  {
+    "url": "https://eps.center/central-virtual/epsel/dana/proceso-monitoreo/programaciones",
+    "nombre": "dana",
+    "reglasVioladas": 8,
+    "nodos": 77,
+    "porImpacto": {
+      "critical": 3,
+      "serious": 2,
+      "moderate": 3,
+      "minor": 0
+    },
+    "reglas": [
+      "critical · button-name (1) · Buttons must have discernible text",
+      "serious · color-contrast (48) · Elements must meet minimum color contrast ratio thresholds",
+      "critical · image-alt (1) · Images must have alternative text",
+      "moderate · landmark-one-main (1) · Document should have one main landmark",
+      "serious · link-name (1) · Links must have discernible text",
+      "critical · meta-viewport (1) · Zooming and scaling must not be disabled",
+      "moderate · page-has-heading-one (1) · Page should contain a level-one heading",
+      "moderate · region (23) · All page content should be contained by landmarks"
+    ],
+    "fecha": "2026-11-05T03:37:32.804Z",
+    "axe": "4.10.3",
+    "navegador": "156.0.8078.80"
   }
 ]
