@@ -38,3 +38,6 @@ mobile/android/
 *.p12
 *.key
 *.mobileprovision
+
+# Capturas del inspector de diseño (se regeneran)
+rediseno-epsel/.taste-skill/
