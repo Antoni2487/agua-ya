@@ -38,7 +38,7 @@ class AguayaApplicationTests {
 
         assertThat(tablas).containsExactlyInAnyOrder(
                 "persona", "vecino", "conductor", "administrador",
-                "codigo_otp", "refresh_token", "dispositivo_push",
+                "codigo_otp", "refresh_token", "dispositivo_push", "suscripcion_web_push",
                 "sector", "institucion_critica", "punto_llenado", "punto_entrega", "cisterna",
                 "ruta", "viaje", "parada", "monitoreo_gps", "intento_geocerca",
                 "incidencia", "calificacion_servicio");
