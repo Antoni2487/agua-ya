@@ -13,9 +13,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.epsel.aguaya.auth.dto.AuthResponse;
+import pe.epsel.aguaya.auth.dto.LoginCodigoRequest;
 import pe.epsel.aguaya.auth.dto.LoginRequest;
 import pe.epsel.aguaya.auth.dto.RefreshRequest;
 import pe.epsel.aguaya.auth.dto.RegistroVecinoRequest;
+import pe.epsel.aguaya.auth.dto.SolicitarCodigoLoginRequest;
+import pe.epsel.aguaya.auth.dto.SolicitarCodigoLoginResponse;
 import pe.epsel.aguaya.auth.dto.SolicitarOtpRequest;
 import pe.epsel.aguaya.auth.dto.SolicitarOtpResponse;
 import pe.epsel.aguaya.auth.service.AuthService;
@@ -34,17 +37,29 @@ public class AuthController {
         return authService.solicitarOtp(request);
     }
 
-    @Operation(summary = "Registra un vecino verificando el código; queda activo y con sesión iniciada")
+    @Operation(summary = "Registra un vecino con DNI, código SMS y ubicación; los nombres salen del DNI y queda con sesión iniciada")
     @PostMapping("/registro/vecino")
     @ResponseStatus(HttpStatus.CREATED)
     public AuthResponse registrarVecino(@Valid @RequestBody RegistroVecinoRequest request) {
         return authService.registrarVecino(request);
     }
 
-    @Operation(summary = "Login con DNI + contraseña (vecino, conductor o administrador)")
+    @Operation(summary = "Login con DNI + contraseña (administrador y conductor)")
     @PostMapping("/login")
     public AuthResponse login(@Valid @RequestBody LoginRequest request) {
         return authService.login(request);
+    }
+
+    @Operation(summary = "Envía al celular registrado el código para que el vecino ingrese")
+    @PostMapping("/login/codigo/solicitar")
+    public SolicitarCodigoLoginResponse solicitarCodigoLogin(@Valid @RequestBody SolicitarCodigoLoginRequest request) {
+        return authService.solicitarCodigoLogin(request);
+    }
+
+    @Operation(summary = "Login del vecino con DNI + código SMS")
+    @PostMapping("/login/codigo")
+    public AuthResponse loginConCodigo(@Valid @RequestBody LoginCodigoRequest request) {
+        return authService.loginConCodigo(request);
     }
 
     @Operation(summary = "Renueva el access token; el refresh token se rota")

@@ -85,6 +85,12 @@ aguaya:
     vigencia-minutos: 5
     max-intentos: 3
     max-envios-hora: 3
+  dni:
+    # local: nombres de prueba (dev y tests) | miapi: miapi.cloud (prod)
+    provider: ${DNI_PROVIDER:local}
+    url: ${DNI_API_URL:https://miapi.cloud/v1/dni/}
+    token: ${DNI_API_TOKEN:}
+    timeout-segundos: ${DNI_TIMEOUT_SEGUNDOS:30}
   twilio:
     account-sid: ${TWILIO_ACCOUNT_SID:}
     auth-token: ${TWILIO_AUTH_TOKEN:}
