@@ -23,7 +23,8 @@ import org.hibernate.type.SqlTypes;
 
 /**
  * Clase padre de vecino, conductor y administrador: tabla base {@code persona}
- * con una tabla por subtipo (herencia JOINED). Todas ingresan con DNI + contraseña.
+ * con una tabla por subtipo (herencia JOINED). Administrador y conductor ingresan con DNI + contraseña;
+ * el vecino con DNI + código SMS (su {@code passwordHash} es nulo, salvo las cuentas de prueba).
  */
 @Entity
 @Table(name = "persona")
@@ -53,7 +54,7 @@ public abstract class Persona {
     @Column(length = 150)
     private String email;
 
-    @Column(name = "password_hash", nullable = false, length = 100)
+    @Column(name = "password_hash", length = 100)
     private String passwordHash;
 
     @Enumerated(EnumType.STRING)

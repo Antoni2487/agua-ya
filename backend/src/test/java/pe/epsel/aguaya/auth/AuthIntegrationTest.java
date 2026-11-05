@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import pe.epsel.aguaya.TestcontainersConfig;
+import pe.epsel.aguaya.auth.service.ProveedorDniLocal;
 import pe.epsel.aguaya.persona.entity.Administrador;
 import pe.epsel.aguaya.persona.entity.Conductor;
 import pe.epsel.aguaya.persona.entity.Vecino;
@@ -76,20 +77,90 @@ class AuthIntegrationTest {
         Vecino vecino = vecinoRepository.findByTelefono("+51" + telefono).orElseThrow();
         assertThat(vecino.getDni()).isEqualTo(dni);
         assertThat(vecino.isActivo()).isTrue();
-        assertThat(passwordEncoder.matches(PASSWORD, vecino.getPasswordHash())).isTrue();
+        // Nombres desde el proveedor de DNI (local en tests); el vecino no tiene contraseña
+        assertThat(vecino.getNombres()).isEqualTo("Vecino");
+        assertThat(vecino.getApellidos()).isEqualTo("De Prueba " + dni.substring(4));
+        assertThat(vecino.getPasswordHash()).isNull();
         assertThat(vecino.getSector().getId()).isEqualTo(sector("Valle Hermoso").getId());
     }
 
     @Test
-    void vecinoRegistradoIngresaConDniYPassword() throws Exception {
+    void vecinoRegistradoIngresaConDniYCodigoSms() throws Exception {
+        String dni = dniNuevo();
+        String telefono = telefonoNuevo();
+        registrar(dni, telefono, solicitarOtp(telefono), "-6.765000", "-79.850000")
+                .andExpect(status().isCreated());
+
+        String body = postJson("/api/auth/login/codigo/solicitar", """
+                {"dni":"%s"}""".formatted(dni))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.telefonoEnmascarado").value("*** *** " + telefono.substring(6)))
+                .andReturn().getResponse().getContentAsString();
+
+        postJson("/api/auth/login/codigo", """
+                {"dni":"%s","codigo":"%s"}""".formatted(dni, JsonPath.read(body, "$.codigo")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.accessToken").isNotEmpty())
+                .andExpect(jsonPath("$.usuario.rol").value("VECINO"));
+    }
+
+    @Test
+    void vecinoSinContrasenaNoIngresaPorLoginConContrasena() throws Exception {
         String dni = dniNuevo();
         String telefono = telefonoNuevo();
         registrar(dni, telefono, solicitarOtp(telefono), "-6.765000", "-79.850000")
                 .andExpect(status().isCreated());
 
         login(dni, PASSWORD)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.usuario.rol").value("VECINO"));
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.codigo").value("CREDENCIALES_INVALIDAS"));
+    }
+
+    @Test
+    void codigoDeIngresoIncorrectoDevuelve400() throws Exception {
+        String dni = dniNuevo();
+        String telefono = telefonoNuevo();
+        registrar(dni, telefono, solicitarOtp(telefono), "-6.765000", "-79.850000")
+                .andExpect(status().isCreated());
+        String codigo = JsonPath.read(postJson("/api/auth/login/codigo/solicitar", """
+                {"dni":"%s"}""".formatted(dni)).andReturn().getResponse().getContentAsString(), "$.codigo");
+
+        postJson("/api/auth/login/codigo", """
+                {"dni":"%s","codigo":"%s"}""".formatted(dni, codigo.equals("000000") ? "111111" : "000000"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.codigo").value("OTP_INCORRECTO"));
+    }
+
+    @Test
+    void codigoDeIngresoParaDniSinCuentaDevuelve404() throws Exception {
+        postJson("/api/auth/login/codigo/solicitar", """
+                {"dni":"%s"}""".formatted(dniNuevo()))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.codigo").value("DNI_NO_REGISTRADO"));
+    }
+
+    @Test
+    void administradorNoIngresaConCodigoSms() throws Exception {
+        postJson("/api/auth/login/codigo/solicitar", """
+                {"dni":"%s"}""".formatted(crearAdmin()))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.codigo").value("INGRESO_CON_PASSWORD"));
+    }
+
+    @Test
+    void vecinoInactivoNoRecibeCodigoDeIngreso() throws Exception {
+        String dni = dniNuevo();
+        String telefono = telefonoNuevo();
+        registrar(dni, telefono, solicitarOtp(telefono), "-6.765000", "-79.850000")
+                .andExpect(status().isCreated());
+        Vecino vecino = vecinoRepository.findByTelefono("+51" + telefono).orElseThrow();
+        vecino.setActivo(false);
+        vecinoRepository.save(vecino);
+
+        postJson("/api/auth/login/codigo/solicitar", """
+                {"dni":"%s"}""".formatted(dni))
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.codigo").value("CUENTA_INACTIVA"));
     }
 
     @Test
@@ -118,14 +189,12 @@ class AuthIntegrationTest {
     }
 
     @Test
-    void passwordCortoEsRechazado() throws Exception {
+    void dniQueNoExisteEnReniecNoSeRegistra() throws Exception {
         String telefono = telefonoNuevo();
-        postJson("/api/auth/registro/vecino", """
-                {"nombres":"María","apellidos":"Chávez","dni":"%s","telefono":"%s","codigo":"%s",
-                 "password":"corta","latitud":-6.765,"longitud":-79.85}"""
-                .formatted(dniNuevo(), telefono, solicitarOtp(telefono)))
+        registrar(ProveedorDniLocal.DNI_INEXISTENTE, telefono, solicitarOtp(telefono), "-6.765000", "-79.850000")
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.detalles[0].campo").value("password"));
+                .andExpect(jsonPath("$.codigo").value("DNI_NO_ENCONTRADO"));
+        assertThat(vecinoRepository.findByTelefono("+51" + telefono)).isEmpty();
     }
 
     @Test
@@ -303,10 +372,9 @@ class AuthIntegrationTest {
     private ResultActions registrar(String dni, String telefono, String codigo, String lat, String lng)
             throws Exception {
         return postJson("/api/auth/registro/vecino", """
-                {"nombres":"María","apellidos":"Chávez","dni":"%s","telefono":"%s","codigo":"%s",
-                 "password":"%s","direccionReferencia":"Mz. B Lt. 12, AA.HH. Prueba",
+                {"dni":"%s","telefono":"%s","codigo":"%s","direccionReferencia":"Mz. B Lt. 12, AA.HH. Prueba",
                  "latitud":%s,"longitud":%s}"""
-                .formatted(dni, telefono, codigo, PASSWORD, lat, lng));
+                .formatted(dni, telefono, codigo, lat, lng));
     }
 
     private ResultActions login(String dni, String password) throws Exception {
