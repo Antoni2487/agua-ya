@@ -1,0 +1,149 @@
+[
+  {
+    "url": "https://www.epsel.com.pe/sue/",
+    "nombre": "sue",
+    "reglasVioladas": 9,
+    "nodos": 100,
+    "porImpacto": {
+      "critical": 1,
+      "serious": 6,
+      "moderate": 2,
+      "minor": 0
+    },
+    "reglas": [
+      "serious · aria-command-name (1) · ARIA commands must have an accessible name",
+      "serious · aria-prohibited-attr (4) · Elements must only use permitted ARIA attributes",
+      "serious · color-contrast (24) · Elements must meet minimum color contrast ratio thresholds",
+      "serious · frame-title (1) · Frames must have an accessible name",
+      "moderate · heading-order (1) · Heading levels should only increase by one",
+      "serious · html-has-lang (1) · <html> element must have a lang attribute",
+      "critical · image-alt (27) · Images must have alternative text",
+      "serious · link-name (9) · Links must have discernible text",
+      "moderate · region (32) · All page content should be contained by landmarks"
+    ],
+    "fecha": "2026-11-05T01:55:16.496Z",
+    "axe": "4.10.3",
+    "navegador": "156.0.8078.80"
+  },
+  {
+    "url": "https://www.epsel.com.pe/sue/PortalTransparencia",
+    "nombre": "sue_PortalTransparencia_aspx",
+    "reglasVioladas": 7,
+    "nodos": 48,
+    "porImpacto": {
+      "critical": 1,
+      "serious": 3,
+      "moderate": 3,
+      "minor": 0
+    },
+    "reglas": [
+      "serious · color-contrast (28) · Elements must meet minimum color contrast ratio thresholds",
+      "moderate · heading-order (1) · Heading levels should only increase by one",
+      "serious · html-has-lang (1) · <html> element must have a lang attribute",
+      "critical · image-alt (9) · Images must have alternative text",
+      "moderate · landmark-one-main (1) · Document should have one main landmark",
+      "serious · link-name (6) · Links must have discernible text",
+      "moderate · region (2) · All page content should be contained by landmarks"
+    ],
+    "fecha": "2026-11-05T01:55:25.773Z",
+    "axe": "4.10.3",
+    "navegador": "156.0.8078.80"
+  },
+  {
+    "url": "https://www.epsel.com.pe/sue/PortalTransparenciaRendicion",
+    "nombre": "sue_PortalTransparenciaRendicion_aspx",
+    "reglasVioladas": 8,
+    "nodos": 46,
+    "porImpacto": {
+      "critical": 2,
+      "serious": 4,
+      "moderate": 2,
+      "minor": 0
+    },
+    "reglas": [
+      "serious · color-contrast (28) · Elements must meet minimum color contrast ratio thresholds",
+      "serious · frame-title (1) · Frames must have an accessible name",
+      "moderate · heading-order (1) · Heading levels should only increase by one",
+      "serious · html-has-lang (1) · <html> element must have a lang attribute",
+      "critical · image-alt (4) · Images must have alternative text",
+      "serious · link-name (6) · Links must have discernible text",
+      "moderate · region (4) · All page content should be contained by landmarks",
+      "critical · select-name (1) · Select element must have an accessible name"
+    ],
+    "fecha": "2026-11-05T01:55:33.020Z",
+    "axe": "4.10.3",
+    "navegador": "156.0.8078.80"
+  },
+  {
+    "url": "https://www.epsel.com.pe/sue/PortalTransparenciaIndicador",
+    "nombre": "sue_PortalTransparenciaIndicador_aspx",
+    "reglasVioladas": 7,
+    "nodos": 46,
+    "porImpacto": {
+      "critical": 1,
+      "serious": 4,
+      "moderate": 2,
+      "minor": 0
+    },
+    "reglas": [
+      "serious · color-contrast (28) · Elements must meet minimum color contrast ratio thresholds",
+      "serious · frame-title (1) · Frames must have an accessible name",
+      "serious · html-has-lang (1) · <html> element must have a lang attribute",
+      "critical · image-alt (4) · Images must have alternative text",
+      "moderate · landmark-one-main (2) · Document should have one main landmark",
+      "serious · link-name (6) · Links must have discernible text",
+      "moderate · region (4) · All page content should be contained by landmarks"
+    ],
+    "fecha": "2026-11-05T01:55:39.709Z",
+    "axe": "4.10.3",
+    "navegador": "156.0.8078.80"
+  },
+  {
+    "url": "https://www.epsel.com.pe/sue/PortalAguaPotable",
+    "nombre": "sue_PortalAguaPotable_aspx",
+    "reglasVioladas": 7,
+    "nodos": 73,
+    "porImpacto": {
+      "critical": 1,
+      "serious": 3,
+      "moderate": 3,
+      "minor": 0
+    },
+    "reglas": [
+      "serious · color-contrast (53) · Elements must meet minimum color contrast ratio thresholds",
+      "moderate · heading-order (1) · Heading levels should only increase by one",
+      "serious · html-has-lang (1) · <html> element must have a lang attribute",
+      "critical · image-alt (9) · Images must have alternative text",
+      "moderate · landmark-one-main (1) · Document should have one main landmark",
+      "serious · link-name (6) · Links must have discernible text",
+      "moderate · region (2) · All page content should be contained by landmarks"
+    ],
+    "fecha": "2026-11-05T01:55:48.295Z",
+    "axe": "4.10.3",
+    "navegador": "156.0.8078.80"
+  },
+  {
+    "url": "https://www.epsel.com.pe/sue/PortalAtencion",
+    "nombre": "sue_PortalAtencion_aspx",
+    "reglasVioladas": 7,
+    "nodos": 65,
+    "porImpacto": {
+      "critical": 1,
+      "serious": 3,
+      "moderate": 3,
+      "minor": 0
+    },
+    "reglas": [
+      "serious · color-contrast (33) · Elements must meet minimum color contrast ratio thresholds",
+      "moderate · heading-order (1) · Heading levels should only increase by one",
+      "serious · html-has-lang (1) · <html> element must have a lang attribute",
+      "critical · image-alt (4) · Images must have alternative text",
+      "moderate · landmark-one-main (1) · Document should have one main landmark",
+      "serious · link-name (6) · Links must have discernible text",
+      "moderate · region (19) · All page content should be contained by landmarks"
+    ],
+    "fecha": "2026-11-05T01:56:05.652Z",
+    "axe": "4.10.3",
+    "navegador": "156.0.8078.80"
+  }
+]
