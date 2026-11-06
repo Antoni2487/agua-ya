@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { api } from '../../api/cliente';
 import type { Capacidad, Pagina, RutaResumen } from '../../api/tipos';
 import { Cargando, MensajeError } from '../../componentes/Estado';
+import { Icono, type NombreIcono } from '../../componentes/Icono';
 import { ESTADOS_RUTA, fechaCorta, hoyEnLima, TURNOS } from '../../utilidades';
 
 /** Resumen del día: alerta de capacidad (RF02) y rutas de hoy con su avance. */
@@ -22,7 +23,10 @@ export function Inicio() {
 
   return (
     <section>
-      <h1>Hoy · {fechaCorta(hoy)}</h1>
+      <header className="cabecera-pagina">
+        <p className="sobretitulo">Resumen del día</p>
+        <h1>Hoy · {fechaCorta(hoy)}</h1>
+      </header>
 
       <h2>
         Capacidad <Link to="/admin/capacidad" className="enlace-titulo">ver detalle</Link>
@@ -31,16 +35,18 @@ export function Inicio() {
       {capacidad.isError && <MensajeError error={capacidad.error} reintentar={() => void capacidad.refetch()} />}
       {capacidad.data && (
         <div className="indicadores">
-          <Indicador titulo="Cisternas necesarias" valor={capacidad.data.cisternasNecesarias} />
-          <Indicador titulo="Cisternas disponibles" valor={capacidad.data.cisternasDisponibles} />
+          <Indicador titulo="Cisternas necesarias" valor={capacidad.data.cisternasNecesarias} icono="capacidad" />
+          <Indicador titulo="Cisternas disponibles" valor={capacidad.data.cisternasDisponibles} icono="cisterna" />
           <Indicador
             titulo="Déficit"
             valor={capacidad.data.deficit}
+            icono={capacidad.data.hayDeficit ? 'alerta' : 'check'}
             tono={capacidad.data.hayDeficit ? 'malo' : 'bueno'}
           />
           <Indicador
             titulo="Fuera de servicio"
             valor={capacidad.data.flota.noOperativas + capacidad.data.flota.autorizacionVencida}
+            icono="incidencias"
             detalle={`${capacidad.data.flota.noOperativas} no operativas · ${capacidad.data.flota.autorizacionVencida} con autorización vencida`}
           />
         </div>
@@ -76,7 +82,12 @@ export function Inicio() {
                   <td>{r.cisternaPlaca ?? <em className="texto-suave">Sin asignar</em>}</td>
                   <td>{r.conductorNombre ?? <em className="texto-suave">Sin asignar</em>}</td>
                   <td>
-                    {r.paradasAtendidas}/{r.totalParadas}
+                    <span className="avance">
+                      <span className="barra-avance" aria-hidden="true">
+                        <span style={{ width: `${r.totalParadas ? (100 * r.paradasAtendidas) / r.totalParadas : 0}%` }} />
+                      </span>
+                      {r.paradasAtendidas}/{r.totalParadas}
+                    </span>
                   </td>
                 </tr>
               ))}
@@ -88,9 +99,12 @@ export function Inicio() {
   );
 }
 
-function Indicador({ titulo, valor, detalle, tono }: { titulo: string; valor: number; detalle?: string; tono?: 'bueno' | 'malo' }) {
+function Indicador({ titulo, valor, detalle, tono, icono }: {
+  titulo: string; valor: number; detalle?: string; tono?: 'bueno' | 'malo'; icono?: NombreIcono;
+}) {
   return (
     <div className={`tarjeta indicador${tono ? ` indicador-${tono}` : ''}`}>
+      {icono && <span className="indicador-icono"><Icono nombre={icono} /></span>}
       <span className="texto-suave">{titulo}</span>
       <strong>{valor}</strong>
       {detalle && <small className="texto-suave">{detalle}</small>}

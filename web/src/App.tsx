@@ -18,7 +18,7 @@ import { Transparencia } from './paginas/publico/Transparencia';
 export function App() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/transparencia" replace />} />
+      <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/transparencia" element={<Transparencia />} />
       <Route path="/login" element={<Login />} />
       <Route
