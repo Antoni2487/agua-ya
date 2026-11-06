@@ -26,7 +26,7 @@ services:
       DB_URL: jdbc:postgresql://postgres:5432/aguaya
       DB_USER: ${DB_USER:-aguaya}
       DB_PASSWORD: ${DB_PASSWORD:-aguaya}
-      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173,http://localhost:5500,http://127.0.0.1:5500}
       GEOCERCA_RADIO_METROS: ${GEOCERCA_RADIO_METROS:-50}
     ports:
       - "8080:8080"
