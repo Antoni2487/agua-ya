@@ -4,7 +4,9 @@
 // los datos de las zonas, los filtros, el acordeón y el movimiento.
 
 // URL del backend de AguaYa (panel público de transparencia). Con ?datos=ejemplo se usan datos de ejemplo.
-const API = window.EPSEL_API ?? 'https://aguaya-backend.onrender.com';
+// Abierta desde la PC (npx serve -l 5500) lee el backend local, para las demos con el simulador de ruta.
+const EN_LOCAL = ['localhost', '127.0.0.1'].includes(location.hostname);
+const API = window.EPSEL_API ?? (EN_LOCAL ? 'http://localhost:8080' : 'https://aguaya-backend.onrender.com');
 const ESPERA_MS = 6000;
 // Enlace de descarga de la app AguaYa (Google Play o APK). Mientras esté vacío, el botón "Descargar AguaYa"
 // no se muestra y queda el aviso "Muy pronto en Google Play".

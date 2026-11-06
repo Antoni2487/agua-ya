@@ -6,7 +6,7 @@ import { AlertasIncidencias } from './AlertasIncidencias';
 import { WEB_PUBLICA_URL } from '../utilidades';
 import { Icono, type NombreIcono } from './Icono';
 
-/** Secciones del panel (ver CLAUDE.md, sección 4). */
+/** Secciones del panel (ver docs/especificacion.md, sección 4). */
 const SECCIONES: { ruta: string; etiqueta: string; icono: NombreIcono; exacta?: boolean }[] = [
   { ruta: '/admin', etiqueta: 'Inicio', icono: 'inicio', exacta: true },
   { ruta: '/admin/monitoreo', etiqueta: 'Mapa en vivo', icono: 'mapa' },

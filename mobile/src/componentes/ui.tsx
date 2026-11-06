@@ -86,7 +86,7 @@ export function Campo({ etiqueta, valor, alCambiar, ayuda, error, teclado, secre
           placeholderTextColor={color.tintaSuave} />
         {secreto ? (
           <Pressable onPress={() => setVisible((v) => !v)} accessibilityRole="button"
-            accessibilityLabel={visible ? 'Ocultar' : 'Mostrar'} accessibilityState={{ selected: visible }} style={estilos.ojo}>
+            accessibilityLabel={visible ? 'Ocultar lo escrito' : 'Mostrar lo escrito'} accessibilityState={{ selected: visible }} style={estilos.ojo}>
             <Icono nombre={visible ? 'ojoTachado' : 'ojo'} color={color.tinta} />
           </Pressable>
         ) : null}
