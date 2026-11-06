@@ -1,0 +1,45 @@
+{
+  "expo": {
+    "name": "AguaYa",
+    "slug": "aguaya",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "pe.epsel.aguaya",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "AguaYa usa tu ubicación para marcar tu casa (vecino) o validar las entregas de agua (conductor)."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0b2545",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "package": "pe.epsel.aguaya",
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-secure-store",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "AguaYa usa tu ubicación para marcar tu casa (vecino) o validar las entregas de agua (conductor)."
+        }
+      ],
+      "expo-notifications"
+    ],
+    "scheme": "aguaya"
+  }
+}
