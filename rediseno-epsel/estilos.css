@@ -82,9 +82,9 @@ h3 { font-size: var(--t-entrada); font-weight: 800; letter-spacing: -0.02em; lin
 :focus-visible {
   outline: 3px solid var(--tinta);
   outline-offset: 3px;
-  box-shadow: 0 0 0 6px var(--foco); /* taste-skill-ignore: anillo de foco o menú flotante */
+  box-shadow: 0 0 0 6px var(--foco);
 }
-.oscuro :focus-visible, .cabecera .boton:focus-visible { outline-color: var(--foco); box-shadow: 0 0 0 6px var(--tinta); } /* taste-skill-ignore: anillo de foco o menú flotante */
+.oscuro :focus-visible, .cabecera .boton:focus-visible { outline-color: var(--foco); box-shadow: 0 0 0 6px var(--tinta); }
 main:focus { outline: none; }
 
 /* Saltar al contenido y aviso de propuesta */
@@ -162,9 +162,9 @@ main:focus { outline: none; }
 .navegacion.abierta, html:not(.js) .navegacion {
   display: block; position: absolute; left: 0; right: 0; top: 100%;
   background: var(--blanco); padding: 0.5rem var(--margen) 1.5rem;
-  box-shadow: 0 18px 30px -12px rgb(11 37 69 / 0.35); /* taste-skill-ignore: anillo de foco o menú flotante */
+  box-shadow: 0 18px 30px -12px rgb(11 37 69 / 0.35);
 }
-html:not(.js) .navegacion { position: static; box-shadow: none; } /* taste-skill-ignore: anillo de foco o menú flotante */
+html:not(.js) .navegacion { position: static; box-shadow: none; }
 .menu-boton {
   white-space: nowrap;
   width: 100%; min-height: 56px; display: flex; align-items: center; justify-content: space-between;
@@ -189,7 +189,7 @@ html:not(.js) .navegacion { position: static; box-shadow: none; } /* taste-skill
 @media (min-width: 40em) { .boton-cisterna { display: inline-flex; white-space: nowrap; } }
 @media (min-width: 85em) {
   .boton-menu { display: none; }
-  .navegacion, .js .navegacion { display: block; position: static; padding: 0; background: none; box-shadow: none; } /* taste-skill-ignore: anillo de foco o menú flotante */
+  .navegacion, .js .navegacion { display: block; position: static; padding: 0; background: none; box-shadow: none; }
   .menu { display: flex; gap: 0.15rem; }
   .menu-item { position: relative; }
   .menu-boton { width: auto; min-height: 48px; padding: 0 0.7rem; font-size: 1.0625rem; border-radius: var(--gota); }
@@ -198,7 +198,7 @@ html:not(.js) .navegacion { position: static; box-shadow: none; } /* taste-skill
   .submenu {
     position: absolute; top: calc(100% + 0.5rem); left: 0; min-width: 20rem; padding: 0.6rem;
     background: var(--blanco); border-radius: 24px 24px 24px 0;
-    box-shadow: 0 22px 40px -16px rgb(11 37 69 / 0.4); /* taste-skill-ignore: anillo de foco o menú flotante */
+    box-shadow: 0 22px 40px -16px rgb(11 37 69 / 0.4);
   }
   .menu-item:last-child .submenu { left: auto; right: 0; border-radius: 24px 24px 0 24px; }
 }
@@ -258,7 +258,7 @@ html:not(.js) .navegacion { position: static; box-shadow: none; } /* taste-skill
 .carpeta-frente .pestana { left: 0; }
 a.carpeta:hover { transform: translateY(-6px); }
 a.carpeta:hover .pestana { text-decoration: underline; }
-a.carpeta:focus-visible { outline-offset: -3px; box-shadow: inset 0 0 0 6px var(--foco); outline-color: var(--tinta); } /* taste-skill-ignore: anillo de foco o menú flotante */
+a.carpeta:focus-visible { outline-offset: -3px; box-shadow: inset 0 0 0 6px var(--foco); outline-color: var(--tinta); }
 
 @media (min-width: 48em) {
   .carpetas { padding-top: 3rem; }
@@ -355,8 +355,8 @@ a.carpeta:focus-visible { outline-offset: -3px; box-shadow: inset 0 0 0 6px var(
   content: ''; flex: none; width: 0.75rem; height: 0.75rem; background: currentColor;
   border-radius: var(--gota-foto); transform: rotate(-45deg);
 }
-.etapa-1 button:focus-visible, .etapa-2 button:focus-visible, .etapa-3 button:focus-visible { outline-color: var(--foco); box-shadow: none; outline-offset: -6px; } /* taste-skill-ignore: anillo de foco o menú flotante */
-.etapa-4 button:focus-visible, .etapa-5 button:focus-visible { outline-offset: -6px; box-shadow: none; } /* taste-skill-ignore: anillo de foco o menú flotante */
+.etapa-1 button:focus-visible, .etapa-2 button:focus-visible, .etapa-3 button:focus-visible { outline-color: var(--foco); box-shadow: none; outline-offset: -6px; }
+.etapa-4 button:focus-visible, .etapa-5 button:focus-visible { outline-offset: -6px; box-shadow: none; }
 .etapa-cuerpo { padding: 0 1.5rem 2rem; display: grid; gap: 1.5rem; }
 .etapa-cuerpo p { max-width: 38ch; }
 .etapa-cuerpo .foto-gota, .etapa-cuerpo .dibujo { width: min(100%, 22rem); aspect-ratio: 1; object-fit: cover; border-radius: var(--gota-foto); }
@@ -544,7 +544,7 @@ a.carpeta:focus-visible { outline-offset: -3px; box-shadow: inset 0 0 0 6px var(
 /* Secciones sobre azul oscuro (el cupón y las tarjetas blancas dentro de ellas vuelven a la tinta oscura) */
 .oscuro a { color: var(--blanco); }
 .oscuro .cupon a { color: var(--tinta); }
-.oscuro .cupon :focus-visible { outline-color: var(--tinta); box-shadow: 0 0 0 6px var(--foco); } /* taste-skill-ignore: anillo de foco o menú flotante */
+.oscuro .cupon :focus-visible { outline-color: var(--tinta); box-shadow: 0 0 0 6px var(--foco); }
 
 /* ------------------------------------------------------------------ Movimiento (solo transform y opacidad) */
 .js .aparece { opacity: 0; transform: translateY(24px); transition: opacity 600ms ease, transform 700ms var(--curva); transition-delay: var(--retraso, 0ms); }
@@ -705,7 +705,7 @@ a.carpeta:focus-visible { outline-offset: -3px; box-shadow: inset 0 0 0 6px var(
   display: grid; gap: 2.5rem; padding: clamp(1.75rem, 5vw, 4rem);
   background: var(--c1); color: var(--blanco); border-radius: var(--gota-bloque);
 }
-.aguaya-caja :focus-visible { outline-color: var(--foco); box-shadow: 0 0 0 6px var(--tinta); } /* taste-skill-ignore: anillo de foco o menú flotante */
+.aguaya-caja :focus-visible { outline-color: var(--foco); box-shadow: 0 0 0 6px var(--tinta); }
 .aguaya-texto { display: grid; gap: 1.5rem; justify-items: start; align-content: start; }
 .aguaya-texto h2 { max-width: 14ch; }
 .aguaya-texto .enunciado { max-width: 34ch; }
