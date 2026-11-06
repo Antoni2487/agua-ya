@@ -38,7 +38,8 @@
           "locationWhenInUsePermission": "AguaYa usa tu ubicación para marcar tu casa (vecino) o validar las entregas de agua (conductor)."
         }
       ],
-      "expo-notifications"
+      "expo-notifications",
+      "expo-font"
     ],
     "scheme": "aguaya"
   }

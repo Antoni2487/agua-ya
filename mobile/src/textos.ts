@@ -72,3 +72,41 @@ export function distanciaMetros(a: { latitude: number; longitude: number }, b: {
 export function textoDistancia(m: number): string {
   return m < 1000 ? `${Math.round(m)} m` : `${(m / 1000).toFixed(1)} km`;
 }
+
+const diaSemana = new Intl.DateTimeFormat('es-PE', { weekday: 'long' });
+const diaCorto = new Intl.DateTimeFormat('es-PE', { weekday: 'short', day: 'numeric', month: 'short' });
+
+function diasDesdeHoy(fecha: string): number {
+  const hoy = new Date();
+  const base = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
+  return Math.round((desdeIso(fecha).getTime() - base.getTime()) / 86400000);
+}
+
+/** "Hoy", "Mañana" o "Vie 6 nov" (para la línea corta junto a la pastilla de estado). */
+export function fechaCorta(fecha: string): string {
+  const n = diasDesdeHoy(fecha);
+  if (n === 0) return 'Hoy';
+  if (n === 1) return 'Mañana';
+  const t = diaCorto.format(desdeIso(fecha)).replace(/\./g, '');
+  return t.charAt(0).toUpperCase() + t.slice(1);
+}
+
+/** "Te toca hoy", "Te toca mañana" o "Te toca el viernes". */
+export function teToca(fecha: string): string {
+  const n = diasDesdeHoy(fecha);
+  if (n === 0) return 'Te toca hoy';
+  if (n === 1) return 'Te toca mañana';
+  if (n > 1 && n < 7) return `Te toca el ${diaSemana.format(desdeIso(fecha))}`;
+  return `Te toca el ${fechaLarga.format(desdeIso(fecha))}`;
+}
+
+export const TURNO_FRASE: Record<Turno, string> = { MANANA: 'en el turno de la mañana', TARDE: 'en el turno de la tarde' };
+export const TURNO_CORTO: Record<Turno, string> = { MANANA: 'turno mañana', TARDE: 'turno tarde' };
+
+/** "Hace 12 s", "hace 3 min". */
+export function haceCuanto(iso: string, ahora = Date.now()): string {
+  const s = Math.max(0, Math.round((ahora - new Date(iso).getTime()) / 1000));
+  if (s < 60) return `hace ${s} s`;
+  const m = Math.round(s / 60);
+  return m < 60 ? `hace ${m} min` : `a las ${hora(iso)}`;
+}
