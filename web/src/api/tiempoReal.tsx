@@ -29,7 +29,7 @@ export function tokenVigente(token: string | null, margenSegundos = 30, ahora: n
 }
 
 /**
- * Conexión STOMP del panel (CLAUDE.md §10: `/ws`, Authorization en el CONNECT). Se reconecta sola cada
+ * Conexión STOMP del panel (docs/especificacion.md §10: `/ws`, Authorization en el CONNECT). Se reconecta sola cada
  * 5 s; antes de cada intento renueva el access token si venció.
  */
 export function ProveedorTiempoReal({ children }: { children: ReactNode }) {

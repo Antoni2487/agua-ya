@@ -1,0 +1,422 @@
+# AguaYa — Especificación del sistema
+
+> Alcance, modelo de datos, reglas de negocio, API y forma de trabajo del equipo.
+
+---
+
+## 1. Qué es AguaYa
+
+AguaYa es un sistema de gestión logística del **abastecimiento de agua potable mediante camiones cisterna** para **EPSEL S.A.** (Entidad Prestadora de Servicios de Saneamiento de Lambayeque, Perú). Cubre Chiclayo y distritos aledaños (Monsefú, etc.).
+
+Tiene tres clientes:
+- **App móvil AguaYa** (React Native / Expo, en `mobile/`) para **Conductores** de cisterna y **Vecinos** (hogares): una sola app que muestra las pantallas de cada rol según la sesión. Decisión del 5 nov 2026: el vecino también usa la app (se descarta la web del vecino del 4 nov). El backend de Web Push queda disponible pero la app usa Expo Push.
+- **Panel web** (React / Vite) para el **Administrador** de EPSEL.
+- **Web pública de EPSEL rediseñada** (`rediseno-epsel/`, estática, sin login): incluye la información pública de las cisternas (transparencia RF09) y anuncia la app. Decisión del 6 nov 2026: el panel público del Vite se retira; `/transparencia` redirige a la web rediseñada.
+
+Todos consumen un **backend REST** en Spring Boot.
+
+### Contexto académico (importante)
+- Proyecto universitario de la **Universidad Tecnológica del Perú (UTP), sede Chiclayo**. Equipo de 4 integrantes.
+- **El sistema se desarrolla para el curso "Sistemas de Información Empresarial" (SIE)**. Las entregas son por avances.
+- El mismo caso (AguaYa/EPSEL) se documenta para el curso de **Arquitectura Empresarial (TOGAF)**, pero ese curso **solo pide documentación, no sistema**. Este repo es para SIE.
+- Es un MVP académico: prioriza que funcione bien, sea demostrable y esté ordenado. No sobre-ingeniería.
+- Los datos (sectores, cisternas, placas) son **datos referenciales**, no oficiales de EPSEL.
+
+---
+
+## 2. El problema real (y el enfoque del sistema)
+
+En zonas altas (cerros, laderas, asentamientos humanos) el agua no llega por red y depende de cisternas. Investigación previa del equipo concluyó que los fallos **reales y recurrentes** son:
+
+1. **Falta de capacidad**: no alcanzan camiones/viajes para la demanda. La propia SUNASS reconoce que las empresas prestadoras no tienen capacidad logística para cubrir el número de viajes requeridos.
+2. **Incumplimiento de rutas/horarios por conductores**: hubo denuncias en Chiclayo de cisternas de EPSEL desviadas a viviendas particulares o negocios; EPSEL abrió investigación.
+3. **El vecino no sabe cuándo llega el agua** ni si su zona está programada.
+4. **Zonas altas de difícil acceso.**
+
+Las **averías mecánicas en ruta NO son un problema recurrente documentado**. Por eso:
+
+> **Núcleo de valor del sistema** = planificación por capacidad + verificación de entregas con GPS + información al vecino.
+> **La reasignación de cisternas es una acción MANUAL y SECUNDARIA** del Administrador. **No construir un algoritmo automático de reasignación.**
+
+### Marco normativo (para reglas de negocio)
+- Reglamento de Calidad de la Prestación de los Servicios de Saneamiento (SUNASS), arts. 76 y 77 (modificados por Res. 012-2022 y 095-2022-SUNASS-CD; TUO vigente: Res. 058-2023-SUNASS-CD).
+- Dotación mínima diaria: **80 litros por unidad de uso** (20 L si la interrupción afecta a >10% de conexiones activas).
+- Corte > 18 h → obligación de abastecer con cisterna. Establecimientos de salud, bomberos y penales → desde las 6 h.
+- Número de cisternas se calcula por zona según: unidades de uso, volumen del camión y número de viajes.
+- Las cisternas para consumo humano requieren **autorización sanitaria vigente** (DIRESA/GERESA).
+
+---
+
+## 3. Alcance
+
+### Incluye
+- Gestión y autenticación de usuarios: Administrador, Conductor, Vecino.
+- Registro de vecino: DNI (nombres y apellidos se obtienen del DNI), verificación del teléfono por SMS (OTP), una clave de 4 dígitos (como Yape/Plin) y ubicación de su vivienda tomada del GPS del celular.
+- Gestión de sectores, puntos de llenado, cisternas, conductores e instituciones críticas.
+- Programación de rutas por sector y turno, con paradas priorizadas.
+- Planificación de capacidad (cálculo de viajes y cisternas necesarios vs. disponibles).
+- Asignación de cisterna + conductor (sugerencia por cercanía, confirma el Admin).
+- Monitoreo GPS en tiempo real (GPS del celular del conductor).
+- Verificación de entrega por geocerca.
+- Reporte de incidencias (conductor y vecino) y reasignación manual de paradas.
+- Calificaciones y comentarios por parada atendida.
+- Notificaciones push (vecino) y alertas en tiempo real (admin).
+- Panel público de transparencia con información agregada.
+
+### NO incluye (no implementar aunque parezca útil)
+- Pagos, cobros o facturación.
+- Telemetría o control mecánico de los camiones (solo GPS del celular del conductor).
+- Integración con ERP o sistemas comerciales de EPSEL (AguaYa es un sistema satélite independiente).
+- Zonas fuera de la jurisdicción de EPSEL.
+- Algoritmo automático de optimización/reasignación de rutas (VRP, etc.).
+- SMS para notificaciones (solo para el código de registro del vecino y para restablecer su clave).
+
+---
+
+## 4. Actores y permisos
+
+| Rol | Cliente | Puede |
+|---|---|---|
+| `ADMIN` | Panel web | CRUD de sectores, puntos de llenado, cisternas, conductores, instituciones; programar rutas; ver planificación de capacidad; asignar; ver mapa en vivo; gestionar incidencias y reasignar paradas; ver calificaciones y reportes. |
+| `CONDUCTOR` | App móvil | Ver su ruta del día y paradas; iniciar/finalizar ruta y viajes; enviar posición GPS; marcar paradas atendidas (validado por geocerca); reportar incidencias. |
+| `VECINO` | App móvil | Registrarse; ver su próxima atención y la cisterna en camino; recibir push; reportar incidencias; calificar la entrega. |
+| Público | Web pública | Ver panel de transparencia (sin login, solo datos agregados). |
+
+---
+
+## 5. Stack
+
+| Capa | Tecnología |
+|---|---|
+| Backend | Java 21, Spring Boot 3.x (Web, Data JPA, Security, Validation, WebSocket), Lombok |
+| Auth | JWT (jjwt), access + refresh token |
+| BD | PostgreSQL 16, migraciones con **Flyway** (nunca `ddl-auto=update`; usar `validate`) |
+| Docs API | springdoc-openapi (Swagger UI en `/swagger-ui.html`) |
+| Tiempo real | WebSocket + STOMP |
+| OTP | Interfaz `ProveedorOtp`: impl `ProveedorOtpLocal` (dev, código en log) e impl `ProveedorOtpTwilio` (prod, Twilio Verify por API REST) |
+| DNI | Interfaz `ProveedorDni`: impl `ProveedorDniLocal` (dev/tests, nombres de prueba; `00000000` simula DNI inexistente) e impl `ProveedorDniMiApi` (prod, miapi.cloud por API REST) |
+| Push | Web Push estándar (VAPID + cifrado RFC 8291 con la JDK, sin librerías) (disponible, sin cliente por ahora); Expo Push API (HTTP) para la app del vecino y del conductor |
+| Tests | JUnit 5, Spring Boot Test, Testcontainers (Postgres) |
+| Móvil | React Native + Expo, `expo-location`, `react-native-maps`, `expo-notifications` |
+| Web | React + Vite, Leaflet + OpenStreetMap (sin API key) |
+| Infra | Docker Compose (postgres + backend). Despliegue de `develop` en Render (`render.yaml`: Docker + PostgreSQL 16). |
+
+---
+
+## 6. Estructura del monorepo
+
+```
+aguaya/
+├── README.md
+├── .gitignore
+├── docker-compose.yml
+├── backend/          # Spring Boot
+├── mobile/           # Expo: app del Vecino y del Conductor
+├── web/              # Vite: panel del Admin
+├── rediseno-epsel/   # Web pública de EPSEL rediseñada (estática): información pública y anuncio de la app
+└── scripts/          # simular-ruta.mjs: recorrido simulado de una cisterna para demos
+```
+
+### Backend: paquetes por funcionalidad
+```
+pe.epsel.aguaya
+├── auth/           # registro, OTP, login, JWT, refresh
+├── persona/        # persona (clase padre), vecino, conductor, administrador
+├── sector/         # sector, institucion_critica
+├── puntollenado/
+├── cisterna/
+├── ruta/           # ruta, parada, viaje, programación, asignación
+├── capacidad/      # cálculo de planificación (sin tabla propia)
+├── monitoreo/      # GPS, geocerca, WebSocket
+├── incidencia/     # reportes y reasignación manual
+├── calificacion/
+├── notificacion/   # Web Push (vecino), push Expo (app), suscripciones y dispositivos
+├── transparencia/  # endpoints públicos agregados
+└── common/         # config, seguridad, excepciones, utils (Haversine)
+```
+
+Cada módulo: `controller/`, `service/`, `repository/`, `entity/`, `dto/`, `mapper/` (manual o MapStruct).
+
+### Convenciones de código
+- Código (clases, métodos, variables) y BD **en español**, sin tildes ni ñ en identificadores (`anio`, `institucion`).
+- Tablas y columnas en `snake_case`; entidades en `PascalCase`.
+- Los controladores **nunca** devuelven entidades: siempre DTOs (`record` de Java).
+- Validación con Bean Validation en DTOs de entrada.
+- Errores con `@RestControllerAdvice` → respuesta uniforme `{ timestamp, status, codigo, mensaje, detalles }`.
+- Enums persistidos como `STRING`.
+- Fechas en `OffsetDateTime` / `timestamptz`; zona horaria del negocio `America/Lima`.
+- Coordenadas como `numeric(9,6)` / `BigDecimal` o `double`; distancia con Haversine en `common/util`. La API acepta más decimales (GPS, mapas) y los redondea a 6 con `Coordenada.normalizar`.
+- Lógica de negocio en `service`, nunca en controladores.
+
+### Rendimiento (obligatorio)
+- **Sin N+1**: toda lectura que el mapper recorra por relaciones usa `@EntityGraph` (o una proyección). `hibernate.default_batch_fetch_size=50` es la red de seguridad, no la solución. `ConsultasPorPeticionTest` fija cuántas sentencias SQL ejecuta cada endpoint de lectura: si agregas uno o tocas un mapper, agrégalo/ajústalo ahí.
+- **Paginación** en todo listado que crezca (`Pageable`, por defecto 20, máx. 100); nunca `JOIN FETCH` de colecciones con paginación (Hibernate falla a propósito).
+- **Índices**: toda FK que se consulte o cuyo padre se borre lleva índice; filtros frecuentes también. Siempre en una migración nueva.
+- **Caché** (Caffeine, `spring.cache.*`): solo DTO de consultas agregadas o públicas, con TTL (`CACHE_SEGUNDOS`); nunca entidades JPA ni datos de una persona. En tests está apagada (`spring.cache.type=none`).
+- **Asíncrono**: lo que no debe demorar la respuesta (push, cálculo de destinatarios) va después del commit en `PushConfig.EJECUTOR_PUSH` con transacción propia, recibiendo ids (no entidades). La geocerca y el GPS se quedan síncronos porque son la regla de negocio.
+
+---
+
+## 7. Modelo de datos
+
+`Persona` es la clase padre de `Vecino`, `Conductor` y `Administrador`: tabla base `persona` + tablas por subtipo (herencia **JOINED**). Administrador y conductor ingresan con DNI + contraseña; el vecino con DNI + clave de 4 dígitos (V11, BCrypt en `password_hash`; los vecinos de prueba de V3 tienen la clave `1234`). Tras 5 intentos fallidos seguidos la cuenta no acepta ingresos por 15 min (`persona.intentos_fallidos`, `bloqueado_hasta`; 429 `CUENTA_BLOQUEADA`).
+
+| Tabla | Columnas |
+|---|---|
+| `persona` | id, dni (único, 8 díg.), nombres, apellidos, telefono (único), email (null), password_hash (null solo para VECINO, V9), rol, activo, intentos_fallidos, bloqueado_hasta (V11), creado_en |
+| `vecino` | persona_id (PK/FK), direccion_referencia (texto libre), latitud, longitud, sector_id |
+| `conductor` | persona_id, licencia, estado_disponibilidad (DISPONIBLE / EN_RUTA / INACTIVO), turno, lat_actual, lng_actual, ubicacion_actualizada_en |
+| `administrador` | persona_id, cargo, nivel_acceso |
+| `codigo_otp` | id, telefono, codigo_hash, expira_en, intentos, usado, creado_en (solo proveedor OTP local; con Twilio el código lo guarda Twilio) |
+| `refresh_token` | id, persona_id, token_hash, expira_en, revocado |
+| `dispositivo_push` | id, persona_id, expo_token (único), plataforma, actualizado_en (app Expo) |
+| `suscripcion_web_push` | id, persona_id, endpoint (único), p256dh, auth, actualizado_en (navegador del vecino, V10) |
+| `sector` | id, nombre, distrito, modalidad (PERMANENTE / CONTINGENCIA), es_zona_alta, unidades_uso, dotacion_litros (def. 80), frecuencia_dias, max_viajes_diarios, lat_centro, lng_centro, tipo_entrega (DOMICILIO / PUNTO_ENTREGA), activo |
+| `institucion_critica` | id, nombre, tipo (SALUD / BOMBEROS / EDUCACION / OTRO), sector_id, latitud, longitud, activo |
+| `punto_entrega` | id, sector_id, nombre, referencia, latitud, longitud, activo (lugar fijo donde se detiene la cisterna en sectores PUNTO_ENTREGA) |
+| `punto_llenado` | id, nombre, tipo (PLANTA / SURTIDOR / POZO), direccion, latitud, longitud, activo |
+| `cisterna` | id, placa (único), capacidad_litros, estado_vehiculo (OPERATIVA / MANTENIMIENTO / AVERIADA), nro_autorizacion_sanitaria, vence_autorizacion |
+| `ruta` | id, fecha_programada, turno (MANANA / TARDE), sector_id, punto_llenado_id, conductor_id, cisterna_id, administrador_id, viajes_planificados, estado (PROGRAMADA / EN_CURSO / INTERRUMPIDA / COMPLETADA), inicio, fin, creado_en |
+| `viaje` | id, ruta_id, nro_viaje, punto_llenado_id, volumen_cargado_litros, salida, retorno, estado (EN_CARGA / EN_REPARTO / FINALIZADO) |
+| `parada` | id, ruta_id, viaje_id (null), tipo (HOGAR / INSTITUCION / PUNTO_ENTREGA), vecino_id (null), institucion_id (null), punto_entrega_id (null), latitud, longitud, orden, prioridad (CRITICA / NORMAL), estado (PENDIENTE / ATENDIDA / NO_ATENDIDA / REASIGNADA), volumen_entregado_litros, verificada_gps, atendida_en, aviso_cercania_en (null; aviso push "cisterna cerca" enviado) |
+| `monitoreo_gps` | id, ruta_id, latitud, longitud, registrado_en |
+| `intento_geocerca` | id, parada_id, conductor_id, latitud (null), longitud (null), distancia_metros (null), registrado_en (intentos de atender fuera de la geocerca; evidencia ante desvíos) |
+| `incidencia` | id, ruta_id, parada_id (null), reportado_por (persona_id), tipo, descripcion, estado (ABIERTA / REASIGNADA / CERRADA), ruta_destino_id (null), resuelta_por (null), creado_en, resuelto_en |
+| `calificacion_servicio` | id, parada_id, vecino_id (único por parada y vecino, V7: en un punto de entrega califican todos sus vecinos), estrellas (1–5, CHECK), comentario, creado_en |
+
+**Tipos de incidencia**
+- Conductor: `AVERIA`, `ACCESO_BLOQUEADO`, `AGUA_AGOTADA`, `OTRO`
+- Vecino: `NO_LLEGO`, `LLEGO_TARDE`, `YA_PASO`, `VOLUMEN_INSUFICIENTE`, `OTRO`
+
+**Relaciones clave**: Ruta 1→1..* Viaje · Ruta 1→1..* Parada · Viaje 0..1→* Parada · Parada 1→0..1 Calificación · Conductor 1→* Ruta · Cisterna 1→* Ruta · Sector 1→* Vecino / Institución / Ruta.
+
+`totalParadas` y `paradasAtendidas` **no se guardan**: se calculan con `COUNT`.
+
+---
+
+## 8. Reglas de negocio (obligatorias)
+
+1. **Capacidad (RF02)**
+   - `viajes_necesarios = ceil(unidades_uso × dotacion_litros × frecuencia_dias ÷ capacidad_litros_cisterna)` (cada visita cubre los días hasta la siguiente; mínimo 1). Implementado en `capacidad/service/CalculadoraViajes`.
+   - `cisternas_necesarias = ceil(viajes_necesarios ÷ max_viajes_diarios)`
+   - Comparar con cisternas OPERATIVAS con autorización vigente y devolver el **déficit**. Es un cálculo; no se persiste (salvo `ruta.viajes_planificados`).
+   - `GET /api/admin/capacidad?fecha=&sectorId=&capacidadLitros=` (fecha por defecto hoy). La capacidad de referencia es el promedio de las cisternas disponibles en la fecha (o de toda la flota si no hay ninguna), o la que indique el Admin para simular. Sin `sectorId` suma todos los sectores activos frente a la misma flota (déficit global); cada sector trae además su déficit como si fuera el único. Devuelve el desglose de la flota (disponibles, no operativas, autorización vencida).
+2. **Asignación (RF03)**: no se puede asignar una cisterna con `vence_autorizacion < fecha_programada` ni con estado ≠ OPERATIVA. No se puede asignar un conductor INACTIVO ni con otra ruta en el mismo turno y fecha. Una cisterna no puede tener dos rutas en la misma fecha y turno. El sistema **sugiere**: cisternas por menos viajes necesarios (no tienen GPS propio) y conductores primero del mismo turno y luego por cercanía de su última posición al centro del sector (Haversine); el Admin **confirma** y puede corregir los viajes planificados.
+3. **Paradas**: una ruta por sector, fecha y turno, con fecha de hoy en adelante. Al programarla se generan paradas con las instituciones críticas activas (`CRITICA`) y, según `sector.tipo_entrega`, los vecinos activos (`HOGAR`) o los puntos de entrega activos (`PUNTO_ENTREGA`), ambos `NORMAL`. Orden: primero las `CRITICA` y luego las `NORMAL`, cada grupo como recorrido encadenado desde el punto de llenado (siguiente = la más cercana aún no visitada). Las paradas se generan al programar: un vecino registrado después entra en la siguiente ruta. Una ruta solo se elimina mientras está PROGRAMADA.
+4. **Geocerca (RF05)**: una parada pasa a `ATENDIDA` solo si la última posición del conductor (`conductor.lat_actual/lng_actual`) tiene como máximo `aguaya.geocerca.vigencia-posicion-segundos` (def. 120 s) de antigüedad y está a ≤ `aguaya.geocerca.radio-metros` (def. 50 m) de la parada. Si no, se rechaza (409 `FUERA_DE_GEOCERCA`, `POSICION_DESACTUALIZADA`, o `SIN_POSICION_GPS` si aún no envió posición) y se registra el intento en `intento_geocerca`. Marcar `NO_ATENDIDA` no exige geocerca. Solo el conductor asignado opera su ruta; una ruta ajena responde 404.
+5. **Estados de ruta**: PROGRAMADA → EN_CURSO (conductor inicia, solo el día programado y sin otra ruta EN_CURSO; queda EN_RUTA) → COMPLETADA (todas las paradas en estado final; vuelve a DISPONIBLE) | INTERRUMPIDA (incidencia del conductor con `detieneRuta: true`; vuelve a DISPONIBLE y las paradas pendientes quedan PENDIENTE para RF07). No se permiten saltos inválidos (409 `TRANSICION_INVALIDA`). El GPS solo se acepta con la ruta EN_CURSO.
+6. **Reasignación (RF07, manual)**: el Admin elige la ruta destino; las paradas PENDIENTES de la ruta origen se mueven (copia en destino, origen queda `REASIGNADA`), la incidencia pasa a `REASIGNADA` con `ruta_destino_id`. El sistema solo sugiere la cisterna disponible más cercana. **Sin algoritmo automático.**
+   - Solo incidencias ABIERTA (409 `INCIDENCIA_NO_ABIERTA`) de una ruta INTERRUMPIDA o EN_CURSO (409 `RUTA_ORIGEN_NO_REASIGNABLE`) con paradas pendientes (409 `SIN_PARADAS_PENDIENTES`). Destino: otra ruta (400 `MISMA_RUTA`) **del mismo sector** (409 `RUTA_DESTINO_OTRO_SECTOR`; la próxima atención, el GPS y los avisos del vecino se filtran por sector), PROGRAMADA o EN_CURSO y de hoy en adelante (409 `RUTA_DESTINO_NO_DISPONIBLE`).
+   - Si la destino ya tiene pendiente el mismo hogar, institución o punto, no se duplica (igual queda REASIGNADA en el origen). Las copias CRITICA van tras las CRITICA de la destino y las NORMAL al final, encadenadas desde el punto de llenado; la destino se renumera. Resuelve la incidencia (`resuelta_por`, `resuelto_en`), publica `PARADAS_REASIGNADAS` y avisa por push a los vecinos de las paradas copiadas.
+   - `GET /api/admin/incidencias/{id}/sugerencias-reasignacion`: rutas candidatas del sector; primero las EN_CURSO por distancia de su conductor a la primera parada pendiente, luego por fecha y turno.
+7. **Calificación (RF08)**: solo el vecino dueño de la parada (su hogar o el punto de entrega más cercano; si no, 404), solo si está ATENDIDA (409 `PARADA_NO_ATENDIDA`), una vez por parada y vecino (409 `CALIFICACION_DUPLICADA`). 1–5 estrellas y comentario opcional (≤ 500). La próxima atención del vecino incluye `miCalificacion`. El Admin lista (`?sectorId=`, paginado) y ve el resumen: promedio, distribución por estrellas y promedio por conductor (del peor al mejor).
+8. **Registro de vecino**: el OTP confirma que el teléfono es suyo; los nombres y apellidos salen del DNI (solo se guardan esos dos datos; dirección, género y fecha de nacimiento del proveedor se descartan) y un DNI inexistente se rechaza (400 `DNI_NO_ENCONTRADO`); el sector se asigna automáticamente al más cercano (por centro) y el vecino queda **activo de inmediato** (sin validación del Admin) y con sesión iniciada. El Admin solo puede desactivar cuentas (`persona.activo`).
+9. **Privacidad**: el panel público nunca expone datos personales ni coordenadas de viviendas. La ubicación del conductor solo se expone a vecinos/admin mientras la ruta está EN_CURSO. La próxima atención del vecino solo incluye su propia parada (su hogar o el punto de entrega más cercano).
+10. **Incidencias (RF06)**: el conductor reporta sobre su ruta (AVERIA, ACCESO_BLOQUEADO, AGUA_AGOTADA, OTRO) y el vecino sobre una ruta de su sector (NO_LLEGO, LLEGO_TARDE, YA_PASO, VOLUMEN_INSUFICIENTE, OTRO); otro tipo → 400 `TIPO_NO_PERMITIDO`. La parada, si se indica, debe ser de la ruta (y el vecino no puede indicar el hogar de otro). No se repite una incidencia ABIERTA de la misma persona, ruta y tipo (409). Cada reporte alerta al admin por `/topic/admin/incidencias`; el admin la cierra (CERRADA, `resuelta_por`, `resuelto_en`).
+11. **Viajes**: el conductor registra cada viaje al salir cargado (`POST /rutas/{id}/viajes`, ruta EN_CURSO): queda EN_REPARTO con `salida`, `nro_viaje` correlativo, punto de llenado de la ruta por defecto (otro activo si lo indica) y `volumen_cargado_litros` ≤ capacidad de la cisterna (400 `VOLUMEN_EXCEDE_CAPACIDAD`). Solo un viaje abierto por ruta (409 `VIAJE_EN_CURSO`); al finalizarlo pasa a FINALIZADO con `retorno`. Una parada atendida con un viaje abierto queda asociada a él (`parada.viaje_id`); sin viaje abierto, `viaje_id` queda null. La ruta no se completa con un viaje abierto (409 `VIAJE_SIN_FINALIZAR`); si se interrumpe, el viaje abierto se cierra. `viajes_planificados` es referencial: no limita los viajes. EN_CARGA no se usa en el MVP.
+12. **Transparencia (RF09)**: público, sin login, solo agregados. Nunca nombres, DNI, teléfonos ni coordenadas de viviendas o paradas (solo el centro del sector) ni el conductor; sí la placa de la cisterna, para que el vecino la reconozca. Indicadores del periodo `desde`/`hasta` (def. últimos 30 días, máx. 366; 400 `PERIODO_INVALIDO`). **Cumplimiento** = atendidas ÷ (atendidas + no atendidas + pendientes) de las paradas de rutas COMPLETADA o INTERRUMPIDA; las REASIGNADA no cuentan (se miden en la ruta que las recibió). Litros distribuidos = suma de `viaje.volumen_cargado_litros`. Cronograma: rutas de sectores activos de `desde` a `hasta` (def. hoy + 6 días, máx. 31), con avance de paradas. Filtro `distrito` sin distinguir mayúsculas.
+
+---
+
+## 9. Requerimientos
+
+### Funcionales (con prioridad MVP)
+
+| RF | Descripción | Fase |
+|---|---|---|
+| RF01 | Programación de rutas por sector y turno, con paradas de hogares e instituciones priorizadas | 1 |
+| RF02 | Planificación de capacidad (fórmula SUNASS) con alerta de déficit | 2 |
+| RF03 | Asignación de cisterna y conductor (sugerencia por cercanía + validación de autorización sanitaria; confirma Admin) | 1 |
+| RF04 | Monitoreo GPS en tiempo real | 1 |
+| RF05 | Verificación de entrega por geocerca | 1 |
+| RF06 | Reporte de incidencias (conductor y vecino) con categorías; alerta al Admin | 1 |
+| RF07 | Reasignación manual de paradas pendientes | 2 |
+| RF08 | Calificaciones y comentarios por parada atendida | 2 |
+| RF09 | Panel público de transparencia (sin auth, agregado por distrito/sector) | 2 |
+
+Fase 0 (base): repo, setup backend, auth + OTP, datos semilla.
+
+### No funcionales
+- **RNF01** Soportar ≥ 500 usuarios concurrentes en consultas de rastreo.
+- **RNF02** Disponibilidad 99.9% en horario operativo.
+- **RNF03** Tráfico cifrado (HTTPS/WSS); contraseñas con BCrypt; OTP guardado hasheado.
+- **RNF04** App liviana y de bajo consumo de datos, usable en celulares gama baja (payloads pequeños, paginación, GPS cada ~15 s).
+
+---
+
+## 10. Flujos clave
+
+### Registro del vecino
+1. App: DNI + celular → `POST /api/auth/otp/solicitar` (avisa antes del SMS si el DNI o el teléfono ya tienen cuenta).
+2. El proveedor OTP envía el código por SMS. En dev (`ProveedorOtpLocal`): 6 dígitos, hash en BD, vence en 5 min, máx. 3 intentos y 3 envíos/hora por teléfono. En prod (Twilio Verify) Twilio genera, envía y valida el código con sus propios límites.
+3. App: código + clave de 4 dígitos → `POST /api/auth/registro/vecino` con DNI, teléfono, código, `clave`, latitud/longitud y `direccion_referencia` opcional. El backend verifica el código, consulta el DNI (`ProveedorDni`, fuera de la transacción porque puede tardar) y responde con la sesión abierta.
+4. Ubicación: la web la toma sola del GPS del celular (Geolocation API), sin que el vecino marque el mapa. Si niega el permiso o la precisión es peor que el radio de la geocerca, se le muestra el mapa con el pin para corregirlo (alternativa obligatoria por accesibilidad). **El dato que manda es el pin** (en asentamientos las direcciones son informales: "Mz. B Lt. 12, AA.HH. X").
+
+### Login
+- Vecino: `POST /api/auth/login` con DNI + clave de 4 dígitos (campo `password`). Si la olvidó: `POST /api/auth/login/codigo/solicitar` con su DNI (el código llega al celular registrado; la respuesta lo muestra enmascarado `*** *** 789`) y `POST /api/auth/clave/restablecer` con DNI + código + clave nueva (abre sesión y levanta el bloqueo). `POST /api/auth/login/codigo` (DNI + código) sigue disponible. Errores: 404 `DNI_NO_REGISTRADO`, 409 `INGRESO_CON_PASSWORD` (admin/conductor), 403 `CUENTA_INACTIVA`.
+- Admin y conductor: `POST /api/auth/login` con DNI + contraseña (BCrypt). Las cuentas de conductor las crea el Admin.
+- Se entregan access token JWT (15 min) + refresh token (30 días, se rota en cada uso).
+
+### OTP
+- Interfaz `ProveedorOtp` (`enviar` + `verificar`), elegida con `OTP_PROVIDER`.
+- `log` → `ProveedorOtpLocal`: imprime el código en el log; lo devuelve en la respuesta si `aguaya.otp.exponer-codigo=true` (**solo dev**, prohibido en `prod`).
+- `twilio` → `ProveedorOtpTwilio`: Twilio Verify vía API REST (requiere `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_VERIFY_SID`).
+
+### DNI
+- Interfaz `ProveedorDni`, elegida con `DNI_PROVIDER`: `local` (nombres de prueba) o `miapi` (`GET https://miapi.cloud/v1/dni/{dni}` con `Authorization: Bearer DNI_API_TOKEN`; 404 → `DNI_NO_ENCONTRADO`, 401/429/5xx/timeout → 502 `DNI_PROVEEDOR_ERROR`). Los nombres llegan en mayúsculas y se guardan capitalizados.
+
+### GPS en tiempo real
+- Conductor envía `POST /api/conductor/rutas/{id}/posicion` cada ~15 s (no socket abierto desde el móvil, ahorra batería/datos).
+- Backend guarda en `monitoreo_gps`, actualiza `conductor.lat_actual/lng_actual` y publica por STOMP.
+- Endpoint WebSocket: `/ws` (STOMP). El CONNECT lleva `Authorization: Bearer <accessToken>`; cada SUBSCRIBE se autoriza: `/topic/admin/**` solo ADMIN; `/topic/rutas/{id}/posicion` ADMIN, el conductor de la ruta o un vecino de su sector mientras está EN_CURSO. Los clientes no envían mensajes. Se publica después del commit.
+- Tópicos: `/topic/rutas/{id}/posicion`, `/topic/admin/incidencias`, `/topic/admin/rutas` (eventos RUTA_INICIADA, VIAJE_INICIADO, VIAJE_FINALIZADO, PARADA_ATENDIDA, PARADA_NO_ATENDIDA, RUTA_COMPLETADA, RUTA_INTERRUMPIDA, PARADAS_REASIGNADAS).
+
+### Notificaciones
+- Vecino: avisos de ruta iniciada, cisterna cerca, parada atendida y reasignación. Salen por Expo Push a la app (y por Web Push si hubiera un navegador suscrito).
+- Web Push: la web pide la clave VAPID pública a `GET /api/public/web-push/clave-publica`, suscribe el navegador y la registra con `POST /api/vecino/web-push` (cuerpo = `PushSubscription.toJSON()`); la da de baja con `DELETE /api/vecino/web-push` al cerrar sesión. Una suscripción es de una sola persona (si otra la registra pasa a ella). Solo se aceptan endpoints `https` de los servicios de push de los navegadores (`fcm.googleapis.com`, `push.services.mozilla.com`, `notify.windows.com`, `push.apple.com`; 400 `SUSCRIPCION_INVALIDA`): el backend les hace POST, así se evita SSRF. En iPhone solo funciona con la web agregada a la pantalla de inicio (iOS 16.4+).
+- Expo (app): la app registra su token con `POST /api/dispositivos` (VECINO o CONDUCTOR; un token es de una sola persona, si otra lo registra pasa a ella) y lo da de baja con `DELETE /api/dispositivos` al cerrar sesión.
+- Destinatarios: solo vecinos activos, cada uno por su parada (su hogar o el punto de entrega más cercano; regla 9). **Ruta iniciada**: vecinos con parada pendiente. **Cisterna cerca**: cuando una posición GPS queda a ≤ `aguaya.push.radio-cercania-metros` (def. 500 m) de una parada pendiente; una sola vez por parada (`parada.aviso_cercania_en`). **Entrega registrada**: al atender la parada (invita a calificar). **Reasignación** (RF07): a los vecinos de las paradas copiadas, con la nueva fecha y turno.
+- Interfaz `ProveedorWebPush` elegida con `WEB_PUSH_PROVIDER`: `log` (dev) o `vapid` (cifra cada aviso para el navegador y lo envía con JWT VAPID ES256; requiere `WEB_PUSH_CLAVE_PUBLICA` y `WEB_PUSH_CLAVE_PRIVADA`, generadas con `npx web-push generate-vapid-keys`). Las suscripciones que responden 404/410 se eliminan.
+- Interfaz `ProveedorPush` elegida con `PUSH_PROVIDER`: `log` (dev, solo log) o `expo` (Expo Push API por HTTP, lotes de 100, `EXPO_ACCESS_TOKEN` opcional; por defecto en `prod`). Envío después del commit en un pool propio (no demora al conductor); un fallo de Expo no afecta la operación y los tokens `DeviceNotRegistered` se eliminan.
+- Admin: alertas por WebSocket en el panel web.
+
+---
+
+## 11. API (resumen)
+
+```
+# Auth
+POST /api/auth/otp/solicitar
+POST /api/auth/registro/vecino
+POST /api/auth/login                   (DNI + password: admin y conductor)
+POST /api/auth/login/codigo/solicitar  (vecino: envía el código SMS para restablecer la clave)
+POST /api/auth/clave/restablecer       (vecino: DNI + código + clave nueva)
+POST /api/auth/login/codigo            (vecino: DNI + código)
+POST /api/auth/refresh
+POST /api/auth/logout
+
+# Admin
+CRUD /api/admin/sectores
+CRUD /api/admin/instituciones
+CRUD /api/admin/puntos-entrega
+CRUD /api/admin/puntos-llenado
+CRUD /api/admin/cisternas
+CRUD /api/admin/conductores
+GET  /api/admin/capacidad?fecha=&sectorId=&capacidadLitros=   (RF02)
+POST /api/admin/rutas                                (RF01)
+GET  /api/admin/rutas/{id}/sugerencias-asignacion    (RF03)
+PATCH /api/admin/rutas/{id}/asignar                  (RF03)
+GET  /api/admin/rutas?fecha=&estado=&sectorId=
+GET  /api/admin/rutas/{id}                           (detalle con paradas)
+DELETE /api/admin/rutas/{id}                        (solo PROGRAMADA)
+GET  /api/admin/rutas/{id}/recorrido                 (posiciones GPS + intentos fuera de geocerca)
+GET  /api/admin/incidencias?estado=&tipo=&rutaId=
+GET  /api/admin/incidencias/{id}
+GET  /api/admin/incidencias/{id}/sugerencias-reasignacion   (RF07)
+POST /api/admin/incidencias/{id}/reasignar           (RF07, body: rutaDestinoId)
+PATCH /api/admin/incidencias/{id}/cerrar
+GET  /api/admin/calificaciones?sectorId=              (RF08, paginado)
+GET  /api/admin/calificaciones/resumen?sectorId=      (promedio, distribución, por conductor)
+
+# Conductor
+GET  /api/conductor/rutas/hoy
+PATCH /api/conductor/rutas/{id}/iniciar
+PATCH /api/conductor/rutas/{id}/finalizar
+POST /api/conductor/rutas/{id}/viajes               (salida cargada; un viaje abierto a la vez)
+PATCH /api/conductor/viajes/{id}/finalizar
+POST /api/conductor/rutas/{id}/posicion              (RF04)
+PATCH /api/conductor/paradas/{id}/atender            (RF05, geocerca)
+PATCH /api/conductor/paradas/{id}/no-atendida
+
+# Vecino
+GET  /api/vecino/me
+GET  /api/vecino/proxima-atencion                    (ruta en curso o siguiente + última, con su parada, placa y capacidad de la cisterna)
+GET  /api/vecino/rutas/{id}/posicion
+POST /api/vecino/calificaciones                      (RF08)
+POST /api/incidencias                                (RF06, conductor o vecino)
+GET  /api/incidencias                                (las que reportó la persona autenticada)
+POST /api/vecino/web-push                            (suscripción Web Push del navegador)
+DELETE /api/vecino/web-push                          (baja de la suscripción)
+POST /api/dispositivos                               (registrar expo_token; vecino o conductor)
+DELETE /api/dispositivos                             (baja del token al cerrar sesión)
+
+# Público (sin auth)
+GET  /api/public/transparencia/resumen?desde=&hasta=                 (RF09)
+GET  /api/public/transparencia/sectores?distrito=&desde=&hasta=      (última y próxima atención, cumplimiento)
+GET  /api/public/transparencia/cronograma?distrito=&desde=&hasta=
+GET  /api/public/web-push/clave-publica
+```
+
+Respuestas paginadas con `page`, `size`, `totalElements`. Swagger documenta todo.
+
+---
+
+## 12. Git flow (estricto)
+
+- **`main`**: solo recibe merges desde `release/*` o `hotfix/*`, con tag semántico (`v0.1.0`). **Nunca** commits ni push directo a `main`.
+- **`develop`**: rama de integración. Solo entra código por Pull Request.
+- **`feature/<modulo>`**: sale de `develop`, vuelve a `develop` por PR. Ej.: `feature/backend-setup`, `feature/auth`, `feature/rutas`.
+- **`release/avance-N`**: sale de `develop` para cada entrega de SIE; se estabiliza y se mergea a `main` (con tag) y de vuelta a `develop`.
+- **`hotfix/<desc>`**: sale de `main` para urgencias; vuelve a `main` y `develop`.
+
+**Commits**: Conventional Commits en español: `feat(auth): registro de vecino con OTP`, `fix(ruta): ...`, `chore:`, `docs:`, `test:`, `refactor:`. Commits pequeños y atómicos.
+
+**PRs**: descripción con qué hace, RF relacionado, cómo probar. Debe compilar y pasar tests.
+
+**CI** (GitHub Actions): `backend.yml` corre `./mvnw verify` (Testcontainers con Postgres real) y construye la imagen Docker de Render en cada push y PR que toque `backend/`; `web.yml` corre tipos, tests y build en cada push y PR que toque `web/`. No se mergea a `develop` ni a `main` con el CI en rojo. Si fallan tests, los reportes quedan como artefacto `surefire-reports` de la corrida.
+
+---
+
+## 13. Entornos y configuración
+
+- Perfiles: `dev` (local, docker-compose) y `prod` (Render, Blueprint `render.yaml`). En `prod` la BD se configura con `DB_URL` o con `DB_HOST`, `DB_PORT` y `DB_NAME` (como las entrega Render).
+- Variables de entorno (nunca commitear secretos; usar `.env` en `.gitignore` y un `.env.example`):
+  `DB_URL`, `DB_USER`, `DB_PASSWORD`, `JWT_SECRET`, `JWT_ACCESS_MINUTOS`, `JWT_REFRESH_DIAS`, `OTP_PROVIDER` (log|twilio), `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_VERIFY_SID`, `DNI_PROVIDER` (local|miapi), `DNI_API_URL`, `DNI_API_TOKEN`, `DNI_TIMEOUT_SEGUNDOS`, `PUSH_PROVIDER` (log|expo), `EXPO_ACCESS_TOKEN`, `WEB_PUSH_PROVIDER` (log|vapid), `WEB_PUSH_CLAVE_PUBLICA`, `WEB_PUSH_CLAVE_PRIVADA`, `WEB_PUSH_SUJETO`, `WEB_PUSH_TTL_SEGUNDOS`, `PUSH_RADIO_CERCANIA_METROS`, `SWAGGER_ENABLED`, `DB_POOL_MAX`, `CACHE_SEGUNDOS`, `GEOCERCA_RADIO_METROS`, `GEOCERCA_VIGENCIA_POSICION_SEGUNDOS`, `CORS_ORIGINS`.
+- CORS: permitir el origen del panel web y del panel público.
+- Para probar GPS desde el celular el backend debe ser accesible por red: Render (rama `develop`) o `ngrok` en local.
+
+---
+
+## 14. Datos semilla (migración `V3__datos_referenciales.sql`)
+
+Marcar como **datos referenciales** (comentario en la migración y en README).
+- 4–5 sectores reales de Chiclayo y Monsefú (zonas altas / asentamientos), con coordenadas aproximadas de OpenStreetMap, `unidades_uso` estimadas y `dotacion_litros = 80`.
+- 1–2 instituciones críticas por sector (posta, colegio).
+- Punto de llenado: planta de tratamiento de agua potable de EPSEL en Chiclayo (coordenadas aproximadas).
+- 5 cisternas con **placas ficticias**, capacidades realistas, una con autorización vencida (para probar la regla 2) y una en MANTENIMIENTO.
+- 1 admin, 3 conductores y 10–15 vecinos distribuidos en sectores (contraseñas de prueba documentadas solo en `.env.example`/README de dev).
+
+---
+
+## 15. Plan de trabajo
+
+### Sprint 0 (hoy)
+1. **Repo base**: estructura del monorepo, README, `.gitignore`, especificación, rama `develop`. (El usuario configura protecciones de rama en GitHub.)
+2. **`feature/backend-setup`**: proyecto Spring Boot (Java 21), perfiles, docker-compose con Postgres, Flyway `V1__esquema_inicial.sql` con **todo** el modelo de la sección 7, Swagger, handler global de errores, endpoint de health. PR → `develop`.
+3. **`feature/auth`**: entidades de persona, OTP de registro (local + Twilio Verify), registro de vecino, login con DNI + contraseña, JWT + refresh, seguridad por roles. Tests de servicio. PR → `develop`.
+4. **`feature/seed-data`**: `V3` con datos referenciales. PR → `develop`.
+5. **Despliegue** de `develop` en Render (`render.yaml`).
+
+En paralelo (otros integrantes): `feature/mobile-setup` (Expo) y `feature/web-setup` (Vite).
+
+### Fase 1 (siguiente)
+`feature/catalogos` (sectores, instituciones, puntos de llenado, cisternas, conductores) → `feature/rutas` (RF01 + RF03) → `feature/monitoreo-gps` (RF04 + RF05 + WebSocket) → `feature/incidencias` (RF06) → `feature/notificaciones`.
+
+### Fase 2
+`feature/capacidad` (RF02) → `feature/reasignacion` (RF07) → `feature/calificaciones` (RF08) → `feature/transparencia` (RF09).
+
+Cada entrega de SIE → `release/avance-N` → `main` con tag.
+
+---
+
+## 16. Glosario
+
+- **EPSEL**: Entidad Prestadora de Servicios de Saneamiento de Lambayeque S.A.
+- **SUNASS**: Superintendencia Nacional de Servicios de Saneamiento (regulador).
+- **Unidad de uso**: vivienda/conexión que recibe el servicio.
+- **Dotación**: litros por unidad de uso por día.
+- **Punto de llenado**: planta, surtidor o pozo donde la cisterna carga agua.
+- **Viaje**: un ciclo carga → reparto → retorno. Una ruta puede tener varios.
+- **Parada**: punto de entrega dentro de una ruta (hogar o institución).
+- **Geocerca**: radio alrededor de una parada dentro del cual se valida la entrega.
+- **AA.HH.**: asentamiento humano.

@@ -1,5 +1,5 @@
 # Blueprint de Render: backend Spring Boot (Docker) + PostgreSQL 16.
-# En Render: New > Blueprint > este repositorio. Despliega la rama develop (CLAUDE.md, sección 15).
+# En Render: New > Blueprint > este repositorio. Despliega la rama develop (docs/especificacion.md, sección 15).
 # Las variables con "sync: false" se completan en el panel de Render; nunca se commitean.
 
 databases:

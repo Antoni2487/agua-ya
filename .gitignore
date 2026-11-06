@@ -42,6 +42,14 @@ mobile/android/
 # Capturas del inspector de diseño (se regeneran)
 rediseno-epsel/.taste-skill/
 
+# Asistentes y herramientas de IA (configuración local de cada integrante)
+CLAUDE.md
+.claude/
+.impeccable/
+PRODUCT.md
+AGENTS.md
+.cursor/
+
 # Configuración local de herramientas de diseño (no son parte del proyecto)
 .github/agents/
 .github/hooks/
