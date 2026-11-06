@@ -3,6 +3,7 @@ import { NavLink, Outlet } from 'react-router-dom';
 import { ProveedorTiempoReal, useEstadoTiempoReal } from '../api/tiempoReal';
 import { useSesion } from '../auth/ContextoSesion';
 import { AlertasIncidencias } from './AlertasIncidencias';
+import { WEB_PUBLICA_URL } from '../utilidades';
 import { Icono, type NombreIcono } from './Icono';
 
 /** Secciones del panel (ver CLAUDE.md, sección 4). */
@@ -47,10 +48,10 @@ function Contenido() {
               <span>{s.etiqueta}</span>
             </NavLink>
           ))}
-          <a href="/transparencia" target="_blank" rel="noreferrer" className="menu-externo">
+          <a href={WEB_PUBLICA_URL} target="_blank" rel="noreferrer" className="menu-externo">
             <Icono nombre="publico" />
             <span>
-              Panel público <span aria-hidden="true">↗</span>
+              Web de EPSEL <span aria-hidden="true">↗</span>
               <span className="solo-lector"> (se abre en otra pestaña)</span>
             </span>
           </a>

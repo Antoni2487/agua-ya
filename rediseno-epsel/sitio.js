@@ -6,8 +6,9 @@
 // URL del backend de AguaYa (panel público de transparencia). Con ?datos=ejemplo se usan datos de ejemplo.
 const API = window.EPSEL_API ?? 'https://aguaya-backend.onrender.com';
 const ESPERA_MS = 6000;
-// Web del vecino de AguaYa. Mientras esté vacía, "Entrar a AguaYa" lleva a ¿Pasa hoy la cisterna?
-const AGUAYA_WEB = '';
+// Enlace de descarga de la app AguaYa (Google Play o APK). Mientras esté vacío, el botón "Descargar AguaYa"
+// no se muestra y queda el aviso "Muy pronto en Google Play".
+const AGUAYA_APP = '';
 // WhatsApp de atención de EPSEL (#TeEscucha), el mismo que publica su sitio
 const WHATSAPP_EPSEL = '51942813797';
 const SOLO_EJEMPLO =new URLSearchParams(location.search).get('datos') === 'ejemplo';
@@ -579,7 +580,8 @@ function iniciarMovimiento() {
 }
 
 /* ---------------------------------------------------------------- Inicio */
-if (AGUAYA_WEB) document.querySelectorAll('[data-aguaya]').forEach((a) => { a.href = AGUAYA_WEB; });
+document.querySelectorAll('[data-aguaya]').forEach((a) => { if (AGUAYA_APP) a.href = AGUAYA_APP; else a.hidden = true; });
+document.querySelectorAll('[data-aguaya-nota]').forEach((n) => { n.hidden = Boolean(AGUAYA_APP); });
 document.querySelectorAll('[data-hoy]').forEach((el) => { el.textContent = `Hoy, ${fechaCorta.format(hoy)}`; });
 iniciarMenu();
 pintarAvisosDeHoy();
