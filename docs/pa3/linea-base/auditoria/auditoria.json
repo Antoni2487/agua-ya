@@ -1,0 +1,1274 @@
+{
+  "fecha": "2026-11-05T03:34:56.163Z",
+  "resultados": [
+    {
+      "url": "https://www.epsel.com.pe/sue/",
+      "nombre": "sue",
+      "urlFinal": "https://www.epsel.com.pe/sue/",
+      "menu": [
+        {
+          "titulo": "Nosotros",
+          "items": [
+            "Nosotros",
+            "Historia",
+            "Misión y Visión",
+            "Nuestro Compromiso",
+            "Valores Empresariales",
+            "Alta Dirección",
+            "Organización",
+            "Area de Cobertura",
+            "Información General"
+          ]
+        },
+        {
+          "titulo": "Orientación al Cliente",
+          "items": [
+            "Orientación al Cliente",
+            "Centros de Atención",
+            "Centro de Recaudación",
+            "Requisitos para Trámite del Servicio",
+            "Requisitos para Realizar Reclamo",
+            "Procedimiento del Reclamo"
+          ]
+        },
+        {
+          "titulo": "Ciclo Operacional",
+          "items": [
+            "Ciclo Operacional",
+            "Servicio de Alcantarillado",
+            "Servicio de Agua Potable",
+            "Potabilización del Agua"
+          ]
+        },
+        {
+          "titulo": "Gobernanza y Gobernabilidad",
+          "items": [
+            "Gobernanza y Gobernabilidad",
+            "Sostenibilidad Financiera",
+            "Desempeño Global del PMO",
+            "Fortalecimiento Institucional",
+            "Clima Laboral",
+            "Transparencia de Gestión",
+            "Calidad de Atención al Cliente",
+            "Gestión Social e Institucional"
+          ]
+        },
+        {
+          "titulo": "VMA",
+          "items": [
+            "VMA",
+            "Nosotros VMA",
+            "¿Por qué el control VMA?",
+            "Normatividad",
+            "¿Cómo se aplica la Normatividad?"
+          ]
+        },
+        {
+          "titulo": "Integridad",
+          "items": [
+            "Integridad",
+            "Información de integridad",
+            "Denuncia actos de corrupción"
+          ]
+        }
+      ],
+      "idioma": null,
+      "saltarAlContenido": false,
+      "teclado": {
+        "pasos": [
+          {
+            "etiqueta": "button",
+            "texto": "×",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Ingresa aquí",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "button",
+            "texto": "Cerrar",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "div",
+            "texto": "× EPSEL - CENTRAL DE ATENCION VIRTUAL Plataforma de monitore",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "button",
+            "texto": "×",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Ingresa aquí",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "button",
+            "texto": "Cerrar",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "div",
+            "texto": "× EPSEL - CENTRAL DE ATENCION VIRTUAL Plataforma de monitore",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "button",
+            "texto": "×",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Ingresa aquí",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "button",
+            "texto": "Cerrar",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "div",
+            "texto": "× EPSEL - CENTRAL DE ATENCION VIRTUAL Plataforma de monitore",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "button",
+            "texto": "×",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Ingresa aquí",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "button",
+            "texto": "Cerrar",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "div",
+            "texto": "× EPSEL - CENTRAL DE ATENCION VIRTUAL Plataforma de monitore",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "button",
+            "texto": "×",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Ingresa aquí",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "button",
+            "texto": "Cerrar",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "div",
+            "texto": "× EPSEL - CENTRAL DE ATENCION VIRTUAL Plataforma de monitore",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "button",
+            "texto": "×",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Ingresa aquí",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "button",
+            "texto": "Cerrar",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "div",
+            "texto": "× EPSEL - CENTRAL DE ATENCION VIRTUAL Plataforma de monitore",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "button",
+            "texto": "×",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Ingresa aquí",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "button",
+            "texto": "Cerrar",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "div",
+            "texto": "× EPSEL - CENTRAL DE ATENCION VIRTUAL Plataforma de monitore",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "button",
+            "texto": "×",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Ingresa aquí",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "button",
+            "texto": "Cerrar",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "div",
+            "texto": "× EPSEL - CENTRAL DE ATENCION VIRTUAL Plataforma de monitore",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "button",
+            "texto": "×",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Ingresa aquí",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "button",
+            "texto": "Cerrar",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "div",
+            "texto": "× EPSEL - CENTRAL DE ATENCION VIRTUAL Plataforma de monitore",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "button",
+            "texto": "×",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Ingresa aquí",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "button",
+            "texto": "Cerrar",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "div",
+            "texto": "× EPSEL - CENTRAL DE ATENCION VIRTUAL Plataforma de monitore",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          }
+        ],
+        "enfocados": 40,
+        "sinFocoVisible": 10,
+        "sinTexto": 0,
+        "invisibles": 0
+      },
+      "menuConTeclado": false,
+      "controles": 54,
+      "controlesMenores44": 34,
+      "controlesMenores24": 24,
+      "textos": 77,
+      "textosMenores14": 0,
+      "ejemplosTextoPequeno": [],
+      "celular": {
+        "anchoContenido": 391,
+        "desplazamientoHorizontal": false,
+        "altoPagina": 7047
+      }
+    },
+    {
+      "url": "https://www.epsel.com.pe/sue/PortalTransparencia.aspx",
+      "nombre": "sue_PortalTransparencia_aspx",
+      "urlFinal": "https://www.epsel.com.pe/sue/PortalTransparencia",
+      "menu": [
+        {
+          "titulo": "Nosotros",
+          "items": [
+            "Nosotros",
+            "Historia",
+            "Misión y Visión",
+            "Nuestro Compromiso",
+            "Valores Empresariales",
+            "Alta Dirección",
+            "Organización",
+            "Area de Cobertura",
+            "Información General"
+          ]
+        },
+        {
+          "titulo": "Orientación al Cliente",
+          "items": [
+            "Orientación al Cliente",
+            "Centros de Atención",
+            "Centro de Recaudación",
+            "Requisitos para Trámite del Servicio",
+            "Requisitos para Realizar Reclamo",
+            "Procedimiento del Reclamo"
+          ]
+        },
+        {
+          "titulo": "Ciclo Operacional",
+          "items": [
+            "Ciclo Operacional",
+            "Servicio de Alcantarillado",
+            "Servicio de Agua Potable",
+            "Potabilización del Agua"
+          ]
+        },
+        {
+          "titulo": "Gobernanza y Gobernabilidad",
+          "items": [
+            "Gobernanza y Gobernabilidad",
+            "Sostenibilidad Financiera",
+            "Desempeño Global del PMO",
+            "Fortalecimiento Institucional",
+            "Clima Laboral",
+            "Transparencia de Gestión",
+            "Calidad de Atención al Cliente",
+            "Gestión Social e Institucional"
+          ]
+        },
+        {
+          "titulo": "VMA",
+          "items": [
+            "VMA",
+            "Nosotros VMA",
+            "¿Por qué el control VMA?",
+            "Normatividad",
+            "¿Cómo se aplica la Normatividad?"
+          ]
+        },
+        {
+          "titulo": "Integridad",
+          "items": [
+            "Integridad",
+            "Información de integridad",
+            "Denuncia actos de corrupción"
+          ]
+        }
+      ],
+      "idioma": null,
+      "saltarAlContenido": false,
+      "teclado": {
+        "pasos": [
+          {
+            "etiqueta": "a",
+            "texto": "",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Transparencia",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Intranet",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Tu gerente te escucha #TeEscucha",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Nosotros",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Orientación al Cliente",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Ciclo Operacional",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Gobernanza y Gobernabilidad",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "VMA",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Integridad",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Transparencia Pública",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Transparencia Estandar",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Rendición de Cuentas",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Indicadores de Gestión",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Solicitud de Información",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Iniciar Sesión",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Historia",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Misión y Visión",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Nuestro Compromiso",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Valores Empresariales",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Alta Dirección",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Transparencia Pública",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Transparencia Estandar",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Centros de Atención",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Centro de Recaudación",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Requisitos para Trámites",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Nosotros VMA",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "¿Por qué el control VMA?",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Normatividad",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "¿Como se aplica la Normatividad?",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Información General",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          null,
+          {
+            "etiqueta": "a",
+            "texto": "",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          }
+        ],
+        "enfocados": 39,
+        "sinFocoVisible": 6,
+        "sinTexto": 9,
+        "invisibles": 0
+      },
+      "menuConTeclado": true,
+      "controles": 44,
+      "controlesMenores44": 32,
+      "controlesMenores24": 20,
+      "textos": 43,
+      "textosMenores14": 0,
+      "ejemplosTextoPequeno": [],
+      "celular": {
+        "anchoContenido": 391,
+        "desplazamientoHorizontal": false,
+        "altoPagina": 2203
+      }
+    },
+    {
+      "url": "https://www.epsel.com.pe/sue/PortalAguaPotable.aspx",
+      "nombre": "sue_PortalAguaPotable_aspx",
+      "urlFinal": "https://www.epsel.com.pe/sue/PortalAguaPotable",
+      "menu": [
+        {
+          "titulo": "Nosotros",
+          "items": [
+            "Nosotros",
+            "Historia",
+            "Misión y Visión",
+            "Nuestro Compromiso",
+            "Valores Empresariales",
+            "Alta Dirección",
+            "Organización",
+            "Area de Cobertura",
+            "Información General"
+          ]
+        },
+        {
+          "titulo": "Orientación al Cliente",
+          "items": [
+            "Orientación al Cliente",
+            "Centros de Atención",
+            "Centro de Recaudación",
+            "Requisitos para Trámite del Servicio",
+            "Requisitos para Realizar Reclamo",
+            "Procedimiento del Reclamo"
+          ]
+        },
+        {
+          "titulo": "Ciclo Operacional",
+          "items": [
+            "Ciclo Operacional",
+            "Servicio de Alcantarillado",
+            "Servicio de Agua Potable",
+            "Potabilización del Agua"
+          ]
+        },
+        {
+          "titulo": "Gobernanza y Gobernabilidad",
+          "items": [
+            "Gobernanza y Gobernabilidad",
+            "Sostenibilidad Financiera",
+            "Desempeño Global del PMO",
+            "Fortalecimiento Institucional",
+            "Clima Laboral",
+            "Transparencia de Gestión",
+            "Calidad de Atención al Cliente",
+            "Gestión Social e Institucional"
+          ]
+        },
+        {
+          "titulo": "VMA",
+          "items": [
+            "VMA",
+            "Nosotros VMA",
+            "¿Por qué el control VMA?",
+            "Normatividad",
+            "¿Cómo se aplica la Normatividad?"
+          ]
+        },
+        {
+          "titulo": "Integridad",
+          "items": [
+            "Integridad",
+            "Información de integridad",
+            "Denuncia actos de corrupción"
+          ]
+        }
+      ],
+      "idioma": null,
+      "saltarAlContenido": false,
+      "teclado": {
+        "pasos": [
+          {
+            "etiqueta": "a",
+            "texto": "",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Transparencia",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Intranet",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Tu gerente te escucha #TeEscucha",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Nosotros",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Orientación al Cliente",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Ciclo Operacional",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Gobernanza y Gobernabilidad",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "VMA",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Integridad",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Iniciar Sesión",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Historia",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Misión y Visión",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Nuestro Compromiso",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Valores Empresariales",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Alta Dirección",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Transparencia Pública",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Transparencia Estandar",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Centros de Atención",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Centro de Recaudación",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Requisitos para Trámites",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Nosotros VMA",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "¿Por qué el control VMA?",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Normatividad",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "¿Como se aplica la Normatividad?",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Información General",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          null,
+          {
+            "etiqueta": "a",
+            "texto": "",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Transparencia",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Intranet",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Tu gerente te escucha #TeEscucha",
+            "focoVisible": true,
+            "visibleEnPantalla": true
+          }
+        ],
+        "enfocados": 39,
+        "sinFocoVisible": 6,
+        "sinTexto": 11,
+        "invisibles": 0
+      },
+      "menuConTeclado": true,
+      "controles": 39,
+      "controlesMenores44": 32,
+      "controlesMenores24": 20,
+      "textos": 79,
+      "textosMenores14": 0,
+      "ejemplosTextoPequeno": [],
+      "celular": {
+        "anchoContenido": 391,
+        "desplazamientoHorizontal": false,
+        "altoPagina": 10914
+      }
+    },
+    {
+      "url": "https://eps.center/central-virtual/epsel/dana/proceso-monitoreo/programaciones",
+      "nombre": "dana",
+      "urlFinal": "https://eps.center/central-virtual/epsel/dana/proceso-monitoreo/programaciones",
+      "menu": [],
+      "idioma": "es",
+      "saltarAlContenido": false,
+      "teclado": {
+        "pasos": [
+          {
+            "etiqueta": "a",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "a",
+            "texto": "Central virtual",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "button",
+            "texto": "📍 Usar mi ubicación",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          },
+          {
+            "etiqueta": "input",
+            "texto": "",
+            "focoVisible": false,
+            "visibleEnPantalla": true
+          }
+        ],
+        "enfocados": 40,
+        "sinFocoVisible": 40,
+        "sinTexto": 38,
+        "invisibles": 0
+      },
+      "menuConTeclado": null,
+      "controles": 47,
+      "controlesMenores44": 1,
+      "controlesMenores24": 1,
+      "textos": 114,
+      "textosMenores14": 47,
+      "ejemplosTextoPequeno": [
+        "9.8px · Gestión operacional",
+        "12.6px · Central virtual",
+        "12.6px · Transparencia Operativa",
+        "11.2px · Importante : Para usar desde el celular es necesar",
+        "11.2px · Importante",
+        "13px · Horario: desde las 08:00 AM hasta las 01:00 PM por",
+        "13px · Horario:",
+        "13px · Ruta:"
+      ],
+      "celular": {
+        "anchoContenido": 390,
+        "desplazamientoHorizontal": false,
+        "altoPagina": 6760
+      }
+    }
+  ]
+}

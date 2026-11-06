@@ -40,11 +40,14 @@ public interface RutaRepository extends JpaRepository<Ruta, Long> {
 
     boolean existsByConductorIdAndEstado(Long conductorId, EstadoRuta estado);
 
+    @EntityGraph(attributePaths = "cisterna")
     Optional<Ruta> findFirstBySectorIdAndEstadoOrderByFechaProgramadaDesc(Long sectorId, EstadoRuta estado);
 
+    @EntityGraph(attributePaths = "cisterna")
     Optional<Ruta> findFirstBySectorIdAndEstadoAndFechaProgramadaGreaterThanEqualOrderByFechaProgramadaAscTurnoAsc(
             Long sectorId, EstadoRuta estado, LocalDate desde);
 
+    @EntityGraph(attributePaths = "cisterna")
     Optional<Ruta> findFirstBySectorIdAndEstadoInOrderByFechaProgramadaDescIdDesc(Long sectorId,
                                                                                    Collection<EstadoRuta> estados);
 

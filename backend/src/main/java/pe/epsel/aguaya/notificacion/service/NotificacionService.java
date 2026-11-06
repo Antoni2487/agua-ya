@@ -26,6 +26,7 @@ import pe.epsel.aguaya.common.dominio.Turno;
 import pe.epsel.aguaya.common.util.Haversine;
 import pe.epsel.aguaya.notificacion.config.PushConfig;
 import pe.epsel.aguaya.notificacion.repository.DispositivoPushRepository;
+import pe.epsel.aguaya.notificacion.repository.SuscripcionWebPushRepository;
 import pe.epsel.aguaya.persona.entity.Vecino;
 import pe.epsel.aguaya.persona.repository.VecinoRepository;
 import pe.epsel.aguaya.ruta.entity.EstadoParada;
@@ -37,10 +38,11 @@ import pe.epsel.aguaya.ruta.repository.RutaRepository;
 import pe.epsel.aguaya.ruta.service.VecinoRutaService;
 
 /**
- * Notificaciones push al vecino: ruta iniciada, cisterna cerca, entrega registrada y reasignación.
+ * Notificaciones push al vecino: ruta iniciada, cisterna cerca, entrega registrada y reasignación. Salen por
+ * Web Push (la web del vecino) y por Expo (celulares con la app registrada).
  * Cada vecino recibe solo lo de su parada: su hogar o el punto de entrega más cercano (regla 9).
  * <p>
- * Todo el trabajo (calcular destinatarios, buscar sus dispositivos y llamar a Expo) corre después del
+ * Todo el trabajo (calcular destinatarios, buscar sus dispositivos y llamar a los servicios de push) corre después del
  * commit en el pool {@link PushConfig#EJECUTOR_PUSH}, con su propia transacción: la petición del conductor
  * no espera. Por eso los métodos públicos reciben ids y no entidades.
  */
@@ -54,20 +56,25 @@ public class NotificacionService {
     private final RutaRepository rutaRepository;
     private final ParadaRepository paradaRepository;
     private final DispositivoPushRepository dispositivoRepository;
+    private final SuscripcionWebPushRepository suscripcionRepository;
     private final ProveedorPush proveedor;
+    private final ProveedorWebPush proveedorWeb;
     private final Executor ejecutor;
     private final TransactionTemplate transaccion;
     private final AguayaProperties properties;
 
     public NotificacionService(VecinoRepository vecinoRepository, RutaRepository rutaRepository,
                                ParadaRepository paradaRepository, DispositivoPushRepository dispositivoRepository,
-                               ProveedorPush proveedor, @Qualifier(PushConfig.EJECUTOR_PUSH) Executor ejecutor,
+                               SuscripcionWebPushRepository suscripcionRepository, ProveedorPush proveedor,
+                               ProveedorWebPush proveedorWeb, @Qualifier(PushConfig.EJECUTOR_PUSH) Executor ejecutor,
                                PlatformTransactionManager transactionManager, AguayaProperties properties) {
         this.vecinoRepository = vecinoRepository;
         this.rutaRepository = rutaRepository;
         this.paradaRepository = paradaRepository;
         this.dispositivoRepository = dispositivoRepository;
+        this.suscripcionRepository = suscripcionRepository;
         this.proveedor = proveedor;
+        this.proveedorWeb = proveedorWeb;
         this.ejecutor = ejecutor;
         this.transaccion = new TransactionTemplate(transactionManager);
         this.properties = properties;
@@ -105,21 +112,21 @@ public class NotificacionService {
                     .filter(id -> paradaRepository.marcarAvisoCercania(id, ahora) == 1)
                     .toList();
             if (cercanas.isEmpty()) {
-                return List.of();
+                return Avisos.VACIO;
             }
             Ruta ruta = rutaRepository.findDetalleById(rutaId).orElseThrow();
             List<Parada> paradas = paradaRepository.findDetalleByRutaId(rutaId);
             Map<Long, List<Long>> porParada = vecinosPorParada(ruta, paradas);
-            List<MensajePush> mensajes = new ArrayList<>();
+            Avisos avisos = Avisos.VACIO;
             for (Parada parada : paradas) {
                 if (cercanas.contains(parada.getId())) {
-                    mensajes.addAll(mensajes(porParada.getOrDefault(parada.getId(), List.of()),
+                    avisos = avisos.mas(mensajes(porParada.getOrDefault(parada.getId(), List.of()),
                             "La cisterna está cerca",
                             "Está a menos de " + radio + " m de " + lugar(parada) + ". Ten listos tus recipientes.",
                             Map.of("tipo", "CISTERNA_CERCA", "rutaId", rutaId, "paradaId", parada.getId())));
                 }
             }
-            return mensajes;
+            return avisos;
         });
     }
 
@@ -166,14 +173,31 @@ public class NotificacionService {
         return porParada;
     }
 
-    private List<MensajePush> mensajes(Collection<Long> personaIds, String titulo, String cuerpo,
-                                       Map<String, Object> datos) {
+    private Avisos mensajes(Collection<Long> personaIds, String titulo, String cuerpo, Map<String, Object> datos) {
         if (personaIds.isEmpty()) {
-            return List.of();
+            return Avisos.VACIO;
         }
-        return dispositivoRepository.deActivos(personaIds).stream()
-                .map(d -> new MensajePush(d.getExpoToken(), titulo, cuerpo, datos))
-                .toList();
+        return new Avisos(
+                dispositivoRepository.deActivos(personaIds).stream()
+                        .map(d -> new MensajePush(d.getExpoToken(), titulo, cuerpo, datos))
+                        .toList(),
+                suscripcionRepository.deActivos(personaIds).stream()
+                        .map(w -> new MensajeWebPush(w.getEndpoint(), w.getP256dh(), w.getAuth(), titulo, cuerpo, datos))
+                        .toList());
+    }
+
+    /** Los avisos de un evento, separados por canal: app (Expo) y web (Web Push). */
+    record Avisos(List<MensajePush> expo, List<MensajeWebPush> web) {
+
+        static final Avisos VACIO = new Avisos(List.of(), List.of());
+
+        Avisos mas(Avisos otros) {
+            List<MensajePush> expoTotal = new ArrayList<>(expo);
+            expoTotal.addAll(otros.expo());
+            List<MensajeWebPush> webTotal = new ArrayList<>(web);
+            webTotal.addAll(otros.web());
+            return new Avisos(expoTotal, webTotal);
+        }
     }
 
     /**
@@ -181,14 +205,20 @@ public class NotificacionService {
      * en una transacción propia y luego llama al proveedor. Si el pool está lleno se descarta: el push es
      * de mejor esfuerzo y el aviso de cercanía se reintenta con la siguiente posición.
      */
-    private void enSegundoPlano(String descripcion, Supplier<List<MensajePush>> preparar) {
+    private void enSegundoPlano(String descripcion, Supplier<Avisos> preparar) {
         Runnable tarea = () -> {
             try {
-                List<MensajePush> mensajes = transaccion.execute(estado -> preparar.get());
-                if (mensajes != null && !mensajes.isEmpty()) {
-                    Set<String> invalidos = proveedor.enviar(mensajes);
+                Avisos avisos = transaccion.execute(estado -> preparar.get());
+                if (avisos != null && !avisos.expo().isEmpty()) {
+                    Set<String> invalidos = proveedor.enviar(avisos.expo());
                     if (!invalidos.isEmpty()) {
                         dispositivoRepository.eliminarTokens(invalidos);
+                    }
+                }
+                if (avisos != null && !avisos.web().isEmpty()) {
+                    Set<String> vencidos = proveedorWeb.enviar(avisos.web());
+                    if (!vencidos.isEmpty()) {
+                        suscripcionRepository.eliminarEndpoints(vencidos);
                     }
                 }
             } catch (RuntimeException e) {

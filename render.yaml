@@ -1,5 +1,5 @@
 # Blueprint de Render: backend Spring Boot (Docker) + PostgreSQL 16.
-# En Render: New > Blueprint > este repositorio. Despliega la rama develop (CLAUDE.md, sección 15).
+# En Render: New > Blueprint > este repositorio. Despliega la rama develop (docs/especificacion.md, sección 15).
 # Las variables con "sync: false" se completan en el panel de Render; nunca se commitean.
 
 databases:
@@ -59,7 +59,7 @@ services:
 
       # Orígenes del panel web y del panel público, separados por coma (actualizar al desplegar el web)
       - key: CORS_ORIGINS
-        value: http://localhost:5173
+        value: http://localhost:5173,https://agua-ya-web.vercel.app,https://epsel-rediseno.vercel.app
 
       # OTP: "log" deja el código solo en los logs de Render (demo). Con las credenciales, cambiar a "twilio".
       - key: OTP_PROVIDER
@@ -71,7 +71,23 @@ services:
       - key: TWILIO_VERIFY_SID
         sync: false
 
-      # Push al vecino por Expo
+      # Nombres del vecino a partir del DNI (miapi.cloud); el token se carga en el panel de Render
+      - key: DNI_PROVIDER
+        value: miapi
+      - key: DNI_API_TOKEN
+        sync: false
+
+      # Web Push: sin cliente web por ahora (el vecino usa la app). Para activarlo: "vapid" + las claves VAPID en el panel
+      - key: WEB_PUSH_PROVIDER
+        value: log
+      - key: WEB_PUSH_CLAVE_PUBLICA
+        sync: false
+      - key: WEB_PUSH_CLAVE_PRIVADA
+        sync: false
+      - key: WEB_PUSH_SUJETO
+        sync: false
+
+      # Push a la app (Expo)
       - key: PUSH_PROVIDER
         value: expo
       - key: EXPO_ACCESS_TOKEN

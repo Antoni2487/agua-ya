@@ -18,6 +18,7 @@ import pe.epsel.aguaya.common.util.Haversine;
 import pe.epsel.aguaya.persona.entity.Vecino;
 import pe.epsel.aguaya.persona.repository.VecinoRepository;
 import pe.epsel.aguaya.ruta.dto.AtencionVecinoResponse;
+import pe.epsel.aguaya.cisterna.entity.Cisterna;
 import pe.epsel.aguaya.ruta.dto.AtencionVecinoResponse.Atencion;
 import pe.epsel.aguaya.ruta.dto.AtencionVecinoResponse.MiParada;
 import pe.epsel.aguaya.ruta.dto.ParadaResponse;
@@ -74,11 +75,14 @@ public class VecinoRutaService {
                     return new MiParada(p.getId(), p.getTipo(), datos.nombre(), datos.referencia(), p.getOrden(),
                             p.getEstado(), pendientesAntes,
                             calificacionRepository.findByParadaIdAndVecinoId(p.getId(), vecino.getId())
-                                    .map(c -> (int) c.getEstrellas()).orElse(null));
+                                    .map(c -> (int) c.getEstrellas()).orElse(null),
+                            p.isVerificadaGps(), p.getAtendidaEn());
                 })
                 .orElse(null);
+        Cisterna cisterna = ruta.getCisterna();
         return new Atencion(ruta.getId(), ruta.getFechaProgramada(), ruta.getTurno(), ruta.getEstado(),
-                paradas.size(), atendidas, miParada);
+                paradas.size(), atendidas, cisterna != null ? cisterna.getPlaca() : null,
+                cisterna != null ? cisterna.getCapacidadLitros() : null, miParada);
     }
 
     /** Su hogar (reparto a domicilio) o el punto de entrega más cercano a su vivienda. */

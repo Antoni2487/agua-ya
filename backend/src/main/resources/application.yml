@@ -71,7 +71,7 @@ springdoc:
 aguaya:
   zona-horaria: America/Lima
   cors:
-    origins: ${CORS_ORIGINS:http://localhost:5173}
+    origins: ${CORS_ORIGINS:http://localhost:5173,http://localhost:5500,http://127.0.0.1:5500}
   geocerca:
     radio-metros: ${GEOCERCA_RADIO_METROS:50}
     vigencia-posicion-segundos: ${GEOCERCA_VIGENCIA_POSICION_SEGUNDOS:120}
@@ -85,6 +85,12 @@ aguaya:
     vigencia-minutos: 5
     max-intentos: 3
     max-envios-hora: 3
+  dni:
+    # local: nombres de prueba (dev y tests) | miapi: miapi.cloud (prod)
+    provider: ${DNI_PROVIDER:local}
+    url: ${DNI_API_URL:https://miapi.cloud/v1/dni/}
+    token: ${DNI_API_TOKEN:}
+    timeout-segundos: ${DNI_TIMEOUT_SEGUNDOS:30}
   twilio:
     account-sid: ${TWILIO_ACCOUNT_SID:}
     auth-token: ${TWILIO_AUTH_TOKEN:}
@@ -93,3 +99,11 @@ aguaya:
     provider: ${PUSH_PROVIDER:log}
     expo-access-token: ${EXPO_ACCESS_TOKEN:}
     radio-cercania-metros: ${PUSH_RADIO_CERCANIA_METROS:500}
+  web-push:
+    # log: solo escribe en el log (dev) | vapid: envía a los servicios de push de los navegadores
+    provider: ${WEB_PUSH_PROVIDER:log}
+    clave-publica: ${WEB_PUSH_CLAVE_PUBLICA:}
+    clave-privada: ${WEB_PUSH_CLAVE_PRIVADA:}
+    sujeto: ${WEB_PUSH_SUJETO:mailto:aguaya@example.com}
+    # Un aviso de "cisterna cerca" no sirve horas después
+    ttl-segundos: ${WEB_PUSH_TTL_SEGUNDOS:3600}

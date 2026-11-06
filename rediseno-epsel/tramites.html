@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="es-PE">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pagos y trámites · EPSEL (propuesta de rediseño)</title>
+  <meta name="description" content="Dónde pagar tu recibo de agua con tu número de suministro, oficina virtual, requisitos para una conexión nueva y otros trámites de EPSEL.">
+  <meta name="theme-color" content="#0b2545">
+  <link rel="icon" href="assets/gota.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilos.css">
+  <script>document.documentElement.classList.add('js');</script>
+  <script src="sitio.js" defer></script>
+</head>
+<body data-pagina="tramites">
+  <a class="saltar" href="#contenido">Ir al contenido principal</a>
+
+  <header class="cabecera">
+    <p class="aviso-propuesta">Propuesta académica de rediseño (UTP). No es el sitio oficial de EPSEL.</p>
+    <div class="cabecera-fila">
+      <a class="marca" href="index.html" aria-label="EPSEL, página de inicio">
+        <img class="marca-logo" src="assets/logo-epsel.webp" width="358" height="247" alt="">
+        <span class="marca-detalle">Agua potable y alcantarillado de Lambayeque</span>
+      </a>
+
+      <button class="boton-menu" type="button" aria-expanded="false" aria-controls="navegacion">
+        <span class="boton-menu-icono" aria-hidden="true"></span>Menú
+      </button>
+
+      <nav id="navegacion" class="navegacion" aria-label="Principal">
+        <ul class="menu">
+          <li class="menu-item">
+            <button class="menu-boton" type="button" aria-expanded="false" aria-controls="sub-agua">Agua en tu zona</button>
+            <ul class="submenu" id="sub-agua">
+              <li><a href="avisos.html">Cortes y avisos</a></li>
+              <li><a href="cisterna.html">¿Pasa hoy la cisterna?</a></li>
+              <li><a href="index.html#aguaya">AguaYa: la cisterna en tu celular</a></li>
+              <li><a href="index.html#recorrido">De dónde viene tu agua</a></li>
+              <li><a href="index.html#limpieza">Cómo limpiamos el agua</a></li>
+            </ul>
+          </li>
+          <li class="menu-item">
+            <button class="menu-boton menu-actual" type="button" aria-expanded="false" aria-controls="sub-pagos">Pagos y trámites</button>
+            <ul class="submenu" id="sub-pagos">
+              <li><a href="tramites.html" aria-current="page">Dónde pagar tu recibo</a></li>
+              <li><a href="tramites.html#oficina-virtual">Oficina virtual: duplicado y saldo</a></li>
+              <li><a href="tramites.html#tramites">Conexión nueva y otros trámites</a></li>
+              <li><a href="tramites.html#vma">Para empresas: desagüe no doméstico (VMA)</a></li>
+            </ul>
+          </li>
+          <li class="menu-item">
+            <button class="menu-boton" type="button" aria-expanded="false" aria-controls="sub-atencion">Atención y reclamos</button>
+            <ul class="submenu" id="sub-atencion">
+              <li><a href="atencion.html">Oficinas y teléfonos</a></li>
+              <li><a href="atencion.html#emergencias">Emergencias: fugas y atoros</a></li>
+              <li><a href="atencion.html#reclamo">Cómo hacer un reclamo</a></li>
+              <li><a href="atencion.html#escribenos">Escríbenos por WhatsApp</a></li>
+              <li><a href="atencion.html#denuncias">Denuncias y sugerencias</a></li>
+            </ul>
+          </li>
+          <li class="menu-item">
+            <button class="menu-boton" type="button" aria-expanded="false" aria-controls="sub-informacion">Información pública</button>
+            <ul class="submenu" id="sub-informacion">
+              <li><a href="informacion.html">Las cisternas en cifras</a></li>
+              <li><a href="informacion.html#zonas">Cumplimiento por zona</a></li>
+              <li><a href="informacion.html#transparencia">Portal de Transparencia</a></li>
+              <li><a href="informacion.html#pedir-informacion">Pedir información pública</a></li>
+              <li><a href="informacion.html#integridad">Integridad y denuncias de corrupción</a></li>
+            </ul>
+          </li>
+          <li class="menu-item">
+            <button class="menu-boton" type="button" aria-expanded="false" aria-controls="sub-nosotros">Nosotros</button>
+            <ul class="submenu" id="sub-nosotros">
+              <li><a href="nosotros.html">Quiénes somos</a></li>
+              <li><a href="nosotros.html#historia">Historia</a></li>
+              <li><a href="nosotros.html#direccion">Alta dirección</a></li>
+              <li><a href="nosotros.html#cobertura">Dónde damos servicio</a></li>
+              <li><a href="nosotros.html#entidades">Entidades relacionadas</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+
+      <a class="boton boton-cisterna" href="cisterna.html">¿Pasa hoy la cisterna?</a>
+    </div>
+  </header>
+
+  <main id="contenido" tabindex="-1">
+    <section class="pagina-cabeza" aria-labelledby="titulo-pagina">
+      <div class="pagina-cabeza-texto">
+        <nav class="migas" aria-label="Estás en">
+          <ol><li><a href="index.html">Inicio</a></li><li><span aria-current="page">Pagos y trámites</span></li></ol>
+        </nav>
+        <h1 id="titulo-pagina">Pagos y trámites</h1>
+        <p class="portada-bajada">Paga tu recibo cerca de tu casa, saca un duplicado sin hacer cola y mira qué necesitas para una conexión nueva.</p>
+      </div>
+      <img class="foto-gota pagina-foto" src="assets/epsel-conexion.webp" width="768" height="1024" fetchpriority="high"
+           alt="Dos trabajadores de EPSEL con casco hacen una conexión de agua dentro de una zanja.">
+    </section>
+
+    <!-- Dónde pagar -->
+    <section class="seccion seccion-pegada pagar" id="pagar" aria-labelledby="titulo-pagar">
+      <div class="pagar-texto">
+        <h2 id="titulo-pagar">Dónde pagar tu recibo</h2>
+        <p class="enunciado">Solo necesitas tu número de suministro. Está en la parte de arriba de tu recibo.</p>
+        <p>Paga a tiempo y evita el corte y el cobro por reconexión.</p>
+        <div class="alerta-cobro" role="note">
+          <span class="gota-vineta gota-corte" aria-hidden="true"></span>
+          <p><strong>EPSEL no cobra a domicilio.</strong> No le pagues a nadie que llegue a tu casa.</p>
+        </div>
+      </div>
+      <div class="pagar-lugares">
+        <h3>Bancos y agentes</h3>
+        <ul class="fichas">
+          <li><a href="https://www.viabcp.com/" rel="noopener">BCP</a></li>
+          <li><a href="https://www.bbva.pe/" rel="noopener">BBVA</a></li>
+          <li><a href="https://interbank.pe/" rel="noopener">Interbank</a></li>
+          <li><a href="https://www.scotiabank.com.pe/" rel="noopener">Scotiabank</a></li>
+          <li><a href="https://www.bn.com.pe/" rel="noopener">Banco de la Nación</a></li>
+          <li><a href="https://www.westernunion.com/pe/en/home.html" rel="noopener">Western Union</a></li>
+          <li><span>Niubiz</span></li>
+          <li><span>Yape</span></li>
+        </ul>
+        <h3>Con tarjeta, desde tu casa</h3>
+        <p>En la <a href="#oficina-virtual">oficina virtual</a>, con tarjeta Visa.</p>
+        <h3>En persona</h3>
+        <p>En los <a href="atencion.html#oficinas">centros de atención de EPSEL</a> de tu localidad.</p>
+      </div>
+    </section>
+
+    <!-- Oficina virtual -->
+    <div class="campo-color oscuro" style="--fondo-seccion: var(--c2); --tinta-seccion: var(--blanco)">
+    <section class="seccion" id="oficina-virtual" aria-labelledby="titulo-oficina">
+      <h2 id="titulo-oficina">Oficina virtual</h2>
+      <p class="seccion-bajada seccion-bajada-clara">Hazlo desde el celular, sin ir a una oficina. Se abren en el sistema de EPSEL.</p>
+      <ul class="accesos">
+        <li><a href="https://www.epsel.com.pe/sue/SicdesaRpd.aspx" rel="noopener"><strong>Duplicado de recibo</strong><span>Descárgalo si se te perdió</span></a></li>
+        <li><a href="https://www.epsel.com.pe/sue/PortalOficinaVirtual.aspx" rel="noopener"><strong>Consulta tu saldo</strong><span>Cuánto debes y hasta cuándo pagar</span></a></li>
+        <li><a href="https://www.epsel.com.pe/sue/PortalOficinaVirtual.aspx" rel="noopener"><strong>Paga aquí</strong><span>Con tarjeta Visa</span></a></li>
+        <li><a href="https://www.epsel.com.pe/sue/SicdesaRbq.aspx" rel="noopener"><strong>Solicitud de reclamo</strong><span>Reclama por tu recibo o el servicio</span></a></li>
+        <li><a href="https://www.epsel.com.pe/sue/SicdesaRel.aspx" rel="noopener"><strong>Comprobante electrónico</strong><span>Tu factura o boleta</span></a></li>
+        <li><a href="https://www.epsel.com.pe/sue/SicdesaCbq.aspx" rel="noopener"><strong>Pide una cita</strong><span>Para que te atiendan sin esperar</span></a></li>
+      </ul>
+    </section>
+    </div>
+
+    <!-- Trámites -->
+    <section class="seccion tramites" id="tramites" aria-labelledby="titulo-tramites">
+      <div class="pagos-texto">
+        <h2 id="titulo-tramites">Conexión nueva y otros trámites</h2>
+        <p class="enunciado">Los requisitos los fija SUNASS (Resolución N.º 011-2007-SUNASS-CD). Llévalos al local comercial de Av. Grau 451.</p>
+      </div>
+      <div class="pagos-lista">
+        <details class="desplegable" open>
+          <summary>Conexión nueva de agua o desagüe</summary>
+          <ol class="pasos requisitos">
+            <li>Una solicitud al Gerente Comercial pidiendo la conexión.</li>
+            <li>Copia de tu DNI.</li>
+            <li>Un documento de la casa, el que tengas:
+              <ul>
+                <li>casa inscrita: copia de la partida registral a tu nombre;</li>
+                <li>casa no inscrita: certificado de búsqueda catastral y copia de la escritura de compraventa;</li>
+                <li>título de COFOPRI;</li>
+                <li>si eres poseedor: constancia de posesión de la municipalidad.</li>
+              </ul>
+              Los documentos deben tener menos de 6 meses.</li>
+            <li>Un croquis de cómo llegar a la casa.</li>
+            <li>El pago por la inspección.</li>
+            <li>Si lo hace otra persona por ti: carta poder especial y su DNI.</li>
+          </ol>
+          <p class="nota-pequena">La casa debe tener al menos un punto de agua. En un lote sin construir, adjunta los planos sanitarios aprobados por la municipalidad.</p>
+        </details>
+        <details class="desplegable">
+          <summary>Cambio de Nombre</summary>
+          <div class="requisito-cuerpo"><ul class="lista-requisitos"><li>Solicitud dirigida al Gerente Comercial requiriendo el Cambio de Nombre.</li></ul><p class="requisito-sub">Documentos de propiedad (Cualquiera de los cuatro siguientes):</p><ul class="lista-requisitos"><li>Para predios inscritos en Registros Públicos: Copia simple de la Partida Registral de inscripción de la propiedad del inmueble en la que figure como propietario actual el Solicitante.</li></ul><p class="requisito-sub">Para predios no inscritos en Registros Públicos:</p><ul class="lista-requisitos"><li>Certificado de Búsqueda Catastral emitido por la Oficina de Registros Públicos de la jurisdicción pertinente, que certifique que el predio no ha sido inscrito.</li><li>Copia simple de la Escritura Pública del contrato de compra-venta del inmueble en la que figure como propietario actual el solicitante.</li><li>Título COFOPRI.</li></ul><p class="requisito-sub">Los Poseedores informales:</p><ul class="lista-requisitos"><li>Copia simple del Certificado o Constancia de Posesión emitida por la Municipalidad de la circunscripción territorial correspondiente. Dichos documentos no deberán tener más de seis (06) meses de expedidos.</li><li>Copia de DNI.</li><li>Copia de último recibo de agua cancelado.</li><li>Pago de derecho de inspección.</li><li>En el caso de ser representante o tercero el que solicite el Cambio de Nombre del suministro el solicitante deberá adjuntar Carta Poder especial del propietario que autorice expresamente el trámite en mención adjuntando documentos de identidad.</li></ul><p class="requisito-sub">Nota:</p><ul class="lista-requisitos"><li>Cuando la Partida Registral de inscripción de la propiedad del inmueble no indique el número de placa domiciliaria según el recibo de agua presentado se deberá adjuntar el Certificado de Placa Domiciliaria emitida por la Municipalidad de la circunscripción territorial correspondiente.</li></ul></div>
+        </details>
+        <details class="desplegable">
+          <summary>Cambio de Tarifa</summary>
+          <div class="requisito-cuerpo"><ul class="lista-requisitos"><li>Solicitud dirigida al Gerente Comercial requiriendo el Cambio de Tarifa.</li><li>Copia de DNI.</li><li>Copia del último recibo de agua cancelado.</li><li>Pago de derecho de inspección.</li><li>En el caso de ser representante o tercero el que solicite el Cambio de Tarifa del suministro el solicitante deberá adjuntar copia de DNI.</li></ul></div>
+        </details>
+        <details class="desplegable">
+          <summary>Cambio de Diámetro</summary>
+          <div class="requisito-cuerpo"><ul class="lista-requisitos"><li>Solicitud dirigida al Gerente Comercial requiriendo el Cambio de Diámetro.</li><li>En caso de figurar como el titular del suministro (usuario) el trámite procederá sólo con la presentación del DNI de lo contrario deberá primero efectuar el Cambio de Nombre.</li><li>Copia de DNI.</li><li>Croquis de ubicación del inmueble.</li><li>Pago de derecho de inspección.</li><li>Copia de último recibo de agua cancelado.</li><li>En el caso de ser representante o tercero el que solicite el Cambio de Nombre del suministro el solicitante deberá adjuntar Carta Poder especial del propietario que autorice expresamente el trámite en mención adjuntando documentos de identidad.</li><li>Para edificios recién construidos se deberá adjuntar planos de Instalaciones Sanitarias aprobados por la Municipalidad de la circunscripción territorial correspondiente.</li><li>Para edificios antiguos se deberá adjuntar copia de planos de instalaciones sanitarias visados por Ingeniero Civil o Sanitario según norma.</li></ul><p class="requisito-sub">Nota:</p><ul class="lista-requisitos"><li>De ser factible su pedido, el solicitante deberá apersonarse al Área de Presupuestos del Dpto. de Catastro y Conexiones para la cancelación del presupuesto respectivo.</li></ul></div>
+        </details>
+        <details class="desplegable">
+          <summary>Corte Temporal</summary>
+          <div class="requisito-cuerpo"><ul class="lista-requisitos"><li>Solicitud dirigida al Gerente Comercial requiriendo el Corte Temporal de Agua y Alcantarillado.</li><li>En caso de figurar como el titular del suministro (usuario) el trámite procederá sólo con la presentación del DNI de lo contrario deberá primero efectuar el Cambio de Nombre.</li><li>Copia de DNI.</li><li>Pago de derecho de inspección.</li><li>Copia de último recibo de agua cancelado.</li><li>En el caso de ser representante o tercero el que solicite el Corte Temporal a nombre del propietario deberá adjuntar Carta Poder especial que autorice expresamente el trámite en mención adjuntando documentos de identidad.</li></ul><p class="requisito-sub">Nota:</p><ul class="lista-requisitos"><li>De ser factible su pedido, el solicitante deberá apersonarse al Área de Presupuestos del Dpto. de Catastro y Conexiones para la cancelación del presupuesto respectivo.</li><li>Se considera corte temporal al corte de la tubería de agua y taponeo del desagüe.</li></ul></div>
+        </details>
+        <details class="desplegable">
+          <summary>Corte Definitivo (Levantamiento)</summary>
+          <div class="requisito-cuerpo"><ul class="lista-requisitos"><li>Solicitud dirigida al Gerente Comercial requiriendo el Corte Definitivo de Agua y Alcantarillado.</li><li>En caso de figurar como el titular del suministro (usuario) el trámite procederá sólo con la presentación del DNI de lo contrario deberá primero efectuar el Cambio de Nombre.</li><li>Copia de DNI.</li><li>Pago de derecho de inspección.</li><li>Copia de último recibo de agua cancelado.</li><li>En el caso de ser representante o tercero el que solicite el Corte Temporal a nombre del propietario deberá adjuntar Carta Poder especial que autorice expresamente el trámite en mención adjuntando documentos de identidad.</li></ul><p class="requisito-sub">Nota:</p><ul class="lista-requisitos"><li>De ser necesario posteriormente se alcanzará Oficio a la Municipalidad de la circunscripción territorial correspondiente solicitando la Autorización para rotura de vía.</li><li>De ser factible su pedido, el solicitante deberá apersonarse al Área de Presupuestos del Dpto. de Catastro y Conexiones para la cancelación del presupuesto respectivo.</li></ul></div>
+        </details>
+        <details class="desplegable">
+          <summary>Rectificación de Nombre</summary>
+          <div class="requisito-cuerpo"><ul class="lista-requisitos"><li>Copia de DNI.</li><li>Copia de último recibo de agua cancelado.</li></ul><p class="requisito-sub">Nota:</p><ul class="lista-requisitos"><li>Se considera rectificación de nombre sólo a la corrección de alguna letra(s).</li></ul></div>
+        </details>
+        <details class="desplegable">
+          <summary>Rectificación de Dirección</summary>
+          <div class="requisito-cuerpo"><ul class="lista-requisitos"><li>Copia de DNI.</li><li>Copia de último recibo de agua cancelado.</li><li>Certificado de Placa Domiciliaria emitida por la Municipalidad de la circunscripción territorial correspondiente y visada por el Supervisor de Catastro del Dpto. de Catastro y Conexiones de EPSEL S.A.</li></ul></div>
+        </details>
+        <details class="desplegable">
+          <summary>Reubicación de Caja o Conexión de Agua o Desagüe</summary>
+          <div class="requisito-cuerpo"><ul class="lista-requisitos"><li>Solicitud dirigida al Gerente Comercial requiriendo la Reubicación de Caja o Conexión de Agua y/o Alcantarillado.</li><li>En caso de figurar como el titular del suministro (usuario el trámite procederá sólo con la presentación del DNI de la Copia de DNI.</li><li>Copia de DNI.</li><li>Croquis de ubicación del inmueble.</li><li>Pago de derecho de inspección.</li><li>Copia de último recibo de agua cancelado.</li><li>En el caso de ser representante o tercero el que solicite la reubicación de caja o desagüe a nombre del propietario deberá adjuntar Carta Poder especial que autorice expresamente el trámite en mención adjuntando documentos de identidad.</li></ul><p class="requisito-sub">Nota:</p><ul class="lista-requisitos"><li>De ser necesario posteriormente se alcanzará Oficio a la Municipalidad de la circunscripción territorial correspondiente solicitando la Autorización para rotura de vía o vereda.</li><li>De ser factible su pedido, el solicitante deberá apersonarse al Área de Presupuestos del Dpto. de Catastro y Conexiones para la cancelación del presupuesto respectivo.</li></ul></div>
+        </details>
+        <details class="desplegable">
+          <summary>Instalación de Medidores Nuevos</summary>
+          <div class="requisito-cuerpo"><ul class="lista-requisitos"><li>Presentar Solicitud Gerencia General de EPSEL S.A. en original y copia. (Solicitando instalación de medidor).</li><li>Copia de último recibo de pago.</li><li>Copia de la factura o boleta de la compra del medidor.</li></ul><p class="requisito-sub">Compra:</p><ul class="lista-requisitos"><li>01 Medidor ¾”.</li><li>02 Niples con tuerca ¾”.</li><li>01 Válvula de paso ¾”.</li><li>1/32 GLN pegamento para tubo.</li><li>01 Cinta teflón ¾”.</li><li>01 Adaptador ¾”.</li><li>01 Unión mixta ¾”.</li></ul><p class="requisito-sub">Nota: Señor usuario, cuando reuna todos los requisitos presentarlos al Dpto.Area de Micro Medición para proceder a instalar su medidor.</p></div>
+        </details>
+        <details class="desplegable">
+          <summary>Independización del Agua y Alcantarillado</summary>
+          <div class="requisito-cuerpo"><ul class="lista-requisitos"><li>Solicitud dirigida al Gerente Comercial EPSEL S.A. Solicitando la Independización del Servicio de Agua y Alcantarillado.</li><li>Copia Literal del inmueble expedida por registros Publicos Legalizada.</li><li>Copia simple de D.N.I y copia simple del ultimo recibo de Agua debidamente cancelado.</li><li>Croquis de ubicación del inmueble.</li><li>Reporte de Adeudos cancelar S/. 4.60 en ventanilla Nº 11.</li><li>Derecho de Inspección S/. 18.60</li><li>Firma del contrato por el suministro de Agua Potable y/o Alcantarillado.</li></ul><p class="requisito-sub">Nota:</p><ul class="lista-requisitos"><li>En caso de Edificios Multifamiliares presentar Plano de Instalaciones Sanitarias, otorgado por la Municipalidad.</li><li>En el caso de Predios en donde se dificulta ubicar la dirección directa , es necesario la presentación de la Certificación de número de Placas expedido por la Municipalidad.</li></ul></div>
+        </details>
+        <details class="desplegable">
+          <summary>Reubicación de Cajas (Conexiones)</summary>
+          <div class="requisito-cuerpo"><ul class="lista-requisitos"><li>Solicitud dirigida al Gerente Comercial de EPSEL S.A. Requiriendo la ubicación de la caja.</li><li>Copia simple de D.N.I.</li><li>Croquis de ubicación del inmueble.</li><li>Copia simple del ultimo recibo de Agua debidamente cancelado.</li><li>Pago por derecho de inspección : S/. 7.70.</li><li>Firma del contrato por el suministro de Agua Potable y/o Alcantarillado.</li></ul></div>
+        </details>
+        <details class="desplegable">
+          <summary>Corte Temporal (Conexiones)</summary>
+          <div class="requisito-cuerpo"><ul class="lista-requisitos"><li>Solicitud dirigida al Gerente Comercial EPSEL S.A. requeriendo el Corte Temporal del Servicio, indicando el tiempo y la dirección del inmueble donde se realizará el corte y dirección donde se notificará.</li><li>Copia Literal del inmueble expedida por registros Publicos.</li><li>Copia simple de D.N.I. y copia simple del ultimo recibo de Agua debidamente cancelado</li><li>Pago por derecho de inspección S/. 7.70 la cual se realizará en el plazo no mayor de 72 horas.</li><li>El Inmueble debe estar deshabitado . Anexar croquis del inmueble.</li></ul><p class="requisito-sub">Nota:</p><ul class="lista-requisitos"><li>Después de la inspección el interesado deberá regresar para cancelar el Derecho por Corte Temporal S/.59.50.</li><li>En el caso de predios en donde se dificulta ubicar la dirección correcta,es necesario la presentación de la Certificación de Número de Placa expedido por la Municipalidad.</li></ul></div>
+        </details>
+        <details class="desplegable">
+          <summary>Levantamiento de Conexiones</summary>
+          <div class="requisito-cuerpo"><ul class="lista-requisitos"><li>Solicitud dirigida al Gerente Comercial EPSEL S.A. requeriendo el levantamiento de conexión.</li><li>En caso de figurar como el titular del suministro (Usuario) el tramite procederá solo con la presentación del D.N.I adjuntando copia de la misma , caso contrario deberá primero efectuar su cambio de nombre respectivo para poder realizar este tramite.</li><li>En caso de ser un tercero quien solicite el levantamiento de conexión deberá adjuntar carta poder especial del propietario autorizando el tramite incluyendo copias de D.N.I de ambas partes.</li><li>Pago por derecho de Inspección S/. 7.70</li></ul><p class="requisito-sub">Nota:</p><ul class="lista-requisitos"><li>Admitida la solicitud y efectuada la inspección para factibilidad técnica , el solicitante deberá apersonarse a esta dependencia a fín de cancelar el derecho de presupuesto por el levantamiento solicitado.. El inmueble deberá estar completamente deshabitado.</li></ul></div>
+        </details>
+        <details class="desplegable">
+          <summary>Revisión del Medidor</summary>
+          <div class="requisito-cuerpo"><ul class="lista-requisitos"><li>Solicitud dirigida al Gerente Comercial EPSEL S.A. requeriendo la Revisión del medidor.</li><li>Copia simple de D.N.I.</li><li>Anexar croquis de ubicación del inmueble.</li><li>Copia simple del ultimo recibo de Agua debidamente cancelado.</li><li>Reporte de Adeudos cancelar S/. 4.60 en ventanilla Nº 11 o 12.</li><li>Derecho de Revisión de Medidor S/. 17.00.</li></ul></div>
+        </details>
+        <details class="desplegable">
+          <summary>Robo de Medidor</summary>
+          <div class="requisito-cuerpo"><ul class="lista-requisitos"><li>01 Solicitud dirigida al Gerente Comercial EPSEL S.A. Informando el robo.</li><li>01 Demanda Policial.</li><li>01 copia de D.N.I.</li><li>01 copia del ultimo recibo cancelado.</li></ul></div>
+        </details>
+        <details class="desplegable">
+          <summary>Cambio de Dirección</summary>
+          <div class="requisito-cuerpo"><ul class="lista-requisitos"><li>Solicitud dirigida al Gerente Comercial EPSEL S.A. Requiriendo el cambio de Dirección.</li><li>Copia Literal del inmueble expedida por registros Publicos.</li><li>Copia simple de D.N.I.</li><li>Copia simple del ultimo recibo de Agua debidamente cancelado.</li><li>Derecho de Inspección S/. 7.70.</li><li>Firma del contrato por el suministro de Agua Potable y/o Alcantarillado</li></ul></div>
+        </details>
+        <details class="desplegable">
+          <summary>Rebaja de intereses por situación económica</summary>
+          <div class="requisito-cuerpo"><ul class="lista-requisitos"><li>01 Solicitud dirigida al Gerente Comercial EPSEL S.A. Solicitando la rebaja de intereses por situación socioeconómica.</li><li>01 Copia simple del Recibo de Agua.</li><li>01 Copia del D.N.I.</li><li>01 Certificado de indigencia que lo entrega el Teniente Gobernador del Pueblo Joven.</li></ul></div>
+        </details>
+        <p class="nota-pequena">Requisitos tal como los publica EPSEL. Los montos (derecho de inspección y otros) pueden cambiar: confírmalos en la oficina.</p>
+      </div>
+    </section>
+
+    <!-- VMA -->
+    <div class="campo-color" style="--fondo-seccion: var(--c5); --tinta-seccion: var(--tinta)">
+    <section class="seccion vma" id="vma" aria-labelledby="titulo-vma">
+      <div class="pagos-texto">
+        <h2 id="titulo-vma">Desagüe no doméstico (VMA)</h2>
+        <p class="enunciado">Para empresas: si tu negocio o industria echa agua usada al desagüe, debe cumplir los Valores Máximos Admisibles.</p>
+      </div>
+      <div class="vma-cuerpo">
+        <p>Los VMA son los límites de lo que puede llevar el agua que una actividad comercial o industrial echa al alcantarillado. Se cumplen en todo el país y EPSEL los hace cumplir en Lambayeque.</p>
+        <h3>Por qué importan</h3>
+        <ul class="lista-gotas lista-simple">
+          <li><span class="gota-vineta" aria-hidden="true"></span><p><strong>Las tuberías:</strong> el desagüe se diseña para durar al menos 50 años; las descargas fuera de límite lo desgastan antes.</p></li>
+          <li><span class="gota-vineta" aria-hidden="true"></span><p><strong>El ambiente:</strong> provocan atoros y aniegos que sacan aguas servidas a la calle.</p></li>
+          <li><span class="gota-vineta" aria-hidden="true"></span><p><strong>La salud:</strong> un desagüe que funciona bien protege a todo el barrio.</p></li>
+        </ul>
+        <h3>Normas</h3>
+        <p>D.S. 021-2009-VIVIENDA, D.S. 003-2011-VIVIENDA y D.S. 001-2015-VIVIENDA.</p>
+        <h3>Qué hace EPSEL</h3>
+        <p>Registra a los usuarios no domésticos, los inspecciona, atiende sus reclamos y puede suspender la conexión de desagüe a quien no cumpla.</p>
+      </div>
+    </section>
+    </div>
+  </main>
+
+  <footer class="pie">
+    <svg class="pie-marca" viewBox="0 0 1001 360" role="img" aria-labelledby="pie-marca-titulo" preserveAspectRatio="xMidYMax meet"><title id="pie-marca-titulo">EPSEL</title><rect x="0" y="0" width="196" height="360" rx="44" fill="var(--c1)"/><rect x="0" y="316" width="44" height="44" fill="var(--c1)"/><text x="98.0" y="336" text-anchor="middle" fill="#f4f8fb" font-size="232" font-weight="800" font-family="Schibsted Grotesk, system-ui, sans-serif">E</text><rect x="201" y="64" width="196" height="296" rx="44" fill="var(--c2)"/><rect x="201" y="316" width="44" height="44" fill="var(--c2)"/><text x="299.0" y="336" text-anchor="middle" fill="#f4f8fb" font-size="232" font-weight="800" font-family="Schibsted Grotesk, system-ui, sans-serif">P</text><rect x="402" y="28" width="196" height="332" rx="44" fill="var(--c3)"/><rect x="402" y="316" width="44" height="44" fill="var(--c3)"/><text x="500.0" y="336" text-anchor="middle" fill="#f4f8fb" font-size="232" font-weight="800" font-family="Schibsted Grotesk, system-ui, sans-serif">S</text><rect x="603" y="108" width="196" height="252" rx="44" fill="var(--c2)"/><rect x="603" y="316" width="44" height="44" fill="var(--c2)"/><text x="701.0" y="336" text-anchor="middle" fill="#f4f8fb" font-size="232" font-weight="800" font-family="Schibsted Grotesk, system-ui, sans-serif">E</text><rect x="804" y="50" width="196" height="310" rx="44" fill="var(--c1)"/><rect x="804" y="316" width="44" height="44" fill="var(--c1)"/><text x="902.0" y="336" text-anchor="middle" fill="#f4f8fb" font-size="232" font-weight="800" font-family="Schibsted Grotesk, system-ui, sans-serif">L</text></svg>
+    <div class="pie-columnas">
+      <nav aria-label="Pie de página">
+        <ul class="pie-enlaces">
+          <li><a href="avisos.html">Cortes y avisos</a></li>
+          <li><a href="cisterna.html">¿Pasa hoy la cisterna?</a></li>
+          <li><a href="tramites.html" aria-current="page">Dónde pagar</a></li>
+          <li><a href="atencion.html">Oficinas y teléfonos</a></li>
+          <li><a href="atencion.html#reclamo">Hacer un reclamo</a></li>
+          <li><a href="informacion.html">Información pública</a></li>
+          <li><a href="nosotros.html">Nosotros</a></li>
+        </ul>
+      </nav>
+      <div class="pie-contacto">
+        <p><strong>EPSEL S.A.</strong> Empresa Prestadora de Servicios de Saneamiento de Lambayeque. RUC 20103448591.</p>
+        <p>Atención al cliente: Av. Grau 451, Chiclayo · <a href="tel:+5174273609">(074) 273609</a></p>
+        <p>Emergencias: <a href="tel:+51932070554">932 070 554</a> · <a href="tel:+51942413905">942 413 905</a></p>
+        <p>WhatsApp #TeEscucha: <a href="https://api.whatsapp.com/send/?phone=51942813797" rel="noopener">942 813 797</a></p>
+      </div>
+    </div>
+    <nav class="pie-entidades" aria-labelledby="pie-entidades-titulo">
+      <h2 id="pie-entidades-titulo">Entidades relacionadas</h2>
+      <ul>
+        <li><a href="https://www.sunass.gob.pe/" rel="noopener"><strong>SUNASS</strong><span>Regula y supervisa el servicio de agua</span></a></li>
+        <li><a href="https://web.otass.gob.pe/" rel="noopener"><strong>OTASS</strong><span>Conduce a EPSEL en el Régimen de Apoyo Transitorio</span></a></li>
+        <li><a href="https://www.gob.pe/vivienda" rel="noopener"><strong>Ministerio de Vivienda</strong><span>Dirige el sector saneamiento</span></a></li>
+        <li><a href="https://www.ana.gob.pe/" rel="noopener"><strong>ANA</strong><span>Autoridad Nacional del Agua</span></a></li>
+        <li><a href="https://www.gob.pe/" rel="noopener"><strong>gob.pe</strong><span>Trámites y servicios del Estado</span></a></li>
+      </ul>
+    </nav>
+    <div class="pie-final">
+      <p>Propuesta académica de rediseño, curso Interacción Humano-Computador, UTP Chiclayo. No es el sitio oficial de EPSEL. Contenido tomado de www.epsel.com.pe el 5 de noviembre de 2026.</p>
+      <a class="boton boton-pie" href="https://www.epsel.com.pe/Intranet/WFrmLogueo.aspx" rel="noopener">Acceso del personal</a>
+    </div>
+    <p class="creditos">Fotos de obras, cisternas y equipo: EPSEL S.A. · «Reservorio Tinajones», EdsonFuentesMera, y «Reservorio de Tinajones», Josefito123, CC BY-SA 4.0 · «Chiclayo, Plaza de Armas», Burkhard Mücke, CC BY-SA 4.0; todas vía Wikimedia Commons.</p>
+  </footer>
+</body>
+</html>

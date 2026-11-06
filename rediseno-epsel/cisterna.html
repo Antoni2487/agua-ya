@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="es-PE">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>¿Pasa hoy la cisterna? · EPSEL (propuesta de rediseño)</title>
+  <meta name="description" content="Consulta qué día y en qué turno pasa la cisterna de EPSEL por tu zona y reconócela por su placa.">
+  <meta name="theme-color" content="#0b2545">
+  <link rel="icon" href="assets/gota.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilos.css">
+  <script>document.documentElement.classList.add('js');</script>
+  <script src="sitio.js" defer></script>
+</head>
+<body data-pagina="cisterna">
+  <a class="saltar" href="#contenido">Ir al contenido principal</a>
+
+  <header class="cabecera">
+    <p class="aviso-propuesta">Propuesta académica de rediseño (UTP). No es el sitio oficial de EPSEL.</p>
+    <div class="cabecera-fila">
+      <a class="marca" href="index.html" aria-label="EPSEL, página de inicio">
+        <img class="marca-logo" src="assets/logo-epsel.webp" width="358" height="247" alt="">
+        <span class="marca-detalle">Agua potable y alcantarillado de Lambayeque</span>
+      </a>
+
+      <button class="boton-menu" type="button" aria-expanded="false" aria-controls="navegacion">
+        <span class="boton-menu-icono" aria-hidden="true"></span>Menú
+      </button>
+
+      <nav id="navegacion" class="navegacion" aria-label="Principal">
+        <ul class="menu">
+          <li class="menu-item">
+            <button class="menu-boton menu-actual" type="button" aria-expanded="false" aria-controls="sub-agua">Agua en tu zona</button>
+            <ul class="submenu" id="sub-agua">
+              <li><a href="avisos.html">Cortes y avisos</a></li>
+              <li><a href="cisterna.html" aria-current="page">¿Pasa hoy la cisterna?</a></li>
+              <li><a href="index.html#aguaya">AguaYa: la cisterna en tu celular</a></li>
+              <li><a href="index.html#recorrido">De dónde viene tu agua</a></li>
+              <li><a href="index.html#limpieza">Cómo limpiamos el agua</a></li>
+            </ul>
+          </li>
+          <li class="menu-item">
+            <button class="menu-boton" type="button" aria-expanded="false" aria-controls="sub-pagos">Pagos y trámites</button>
+            <ul class="submenu" id="sub-pagos">
+              <li><a href="tramites.html">Dónde pagar tu recibo</a></li>
+              <li><a href="tramites.html#oficina-virtual">Oficina virtual: duplicado y saldo</a></li>
+              <li><a href="tramites.html#tramites">Conexión nueva y otros trámites</a></li>
+              <li><a href="tramites.html#vma">Para empresas: desagüe no doméstico (VMA)</a></li>
+            </ul>
+          </li>
+          <li class="menu-item">
+            <button class="menu-boton" type="button" aria-expanded="false" aria-controls="sub-atencion">Atención y reclamos</button>
+            <ul class="submenu" id="sub-atencion">
+              <li><a href="atencion.html">Oficinas y teléfonos</a></li>
+              <li><a href="atencion.html#emergencias">Emergencias: fugas y atoros</a></li>
+              <li><a href="atencion.html#reclamo">Cómo hacer un reclamo</a></li>
+              <li><a href="atencion.html#escribenos">Escríbenos por WhatsApp</a></li>
+              <li><a href="atencion.html#denuncias">Denuncias y sugerencias</a></li>
+            </ul>
+          </li>
+          <li class="menu-item">
+            <button class="menu-boton" type="button" aria-expanded="false" aria-controls="sub-informacion">Información pública</button>
+            <ul class="submenu" id="sub-informacion">
+              <li><a href="informacion.html">Las cisternas en cifras</a></li>
+              <li><a href="informacion.html#zonas">Cumplimiento por zona</a></li>
+              <li><a href="informacion.html#transparencia">Portal de Transparencia</a></li>
+              <li><a href="informacion.html#pedir-informacion">Pedir información pública</a></li>
+              <li><a href="informacion.html#integridad">Integridad y denuncias de corrupción</a></li>
+            </ul>
+          </li>
+          <li class="menu-item">
+            <button class="menu-boton" type="button" aria-expanded="false" aria-controls="sub-nosotros">Nosotros</button>
+            <ul class="submenu" id="sub-nosotros">
+              <li><a href="nosotros.html">Quiénes somos</a></li>
+              <li><a href="nosotros.html#historia">Historia</a></li>
+              <li><a href="nosotros.html#direccion">Alta dirección</a></li>
+              <li><a href="nosotros.html#cobertura">Dónde damos servicio</a></li>
+              <li><a href="nosotros.html#entidades">Entidades relacionadas</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+
+      <a class="boton boton-cisterna" href="#buscar">¿Pasa hoy la cisterna?</a>
+    </div>
+  </header>
+
+  <main id="contenido" tabindex="-1">
+    <section class="pagina-cabeza" aria-labelledby="titulo-pagina">
+      <div class="pagina-cabeza-texto">
+      <nav class="migas" aria-label="Estás en">
+        <ol><li><a href="index.html">Inicio</a></li><li><a href="avisos.html">Agua en tu zona</a></li><li><span aria-current="page">¿Pasa hoy la cisterna?</span></li></ol>
+      </nav>
+      <h1 id="titulo-pagina">¿Pasa hoy la cisterna?</h1>
+      <p class="portada-bajada">Donde la red no llega, EPSEL lleva el agua en camiones cisterna. Busca tu zona y mira qué día, en qué turno y qué cisterna te toca.</p>
+      </div>
+      <img class="foto-gota pagina-foto" src="assets/epsel-cisterna.webp" width="1400" height="788" fetchpriority="high"
+           alt="Un camión cisterna de EPSEL estacionado junto a un reservorio, con trabajadores al lado.">
+    </section>
+
+    <div class="seccion seccion-pegada">
+      <div class="panel" id="buscar">
+        <form class="buscador" action="#semana" role="search" aria-label="Buscar mi zona" novalidate>
+          <label for="zona" class="buscador-etiqueta">Escribe tu zona, barrio o distrito</label>
+          <p id="zona-ayuda" class="buscador-ayuda">Por ejemplo: Cerropón, Atusparias o Monsefú.</p>
+          <div class="buscador-fila">
+            <input id="zona" name="zona" type="search" list="lista-zonas" autocomplete="off"
+                   spellcheck="false" aria-describedby="zona-ayuda zona-error">
+            <button class="boton boton-grande" type="submit">Buscar mi zona</button>
+          </div>
+          <p id="zona-error" class="buscador-error" hidden></p>
+          <datalist id="lista-zonas"></datalist>
+        </form>
+        <div class="resultado" id="resultado" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <section class="seccion" id="semana" aria-labelledby="titulo-semana">
+      <div class="avisos-cabeza">
+        <h2 id="titulo-semana">La cisterna esta semana</h2>
+        <p class="avisos-fecha" id="semana-cuenta" role="status">Cargando las visitas…</p>
+      </div>
+      <div class="filtro" role="group" aria-labelledby="filtro-semana-titulo">
+        <p class="filtro-titulo" id="filtro-semana-titulo">Ver solo un distrito</p>
+        <div class="filtro-botones" id="filtro-semana"></div>
+      </div>
+      <div class="semana" id="semana-dias">
+        <p>Cargando las visitas de cisterna de los próximos 7 días…</p>
+      </div>
+      <p class="nota-datos" id="nota-semana" hidden></p>
+      <div class="anuncio-aguaya">
+        <p class="anuncio-aguaya-titulo" id="anuncio-cisterna-titulo">¿Quieres saber cuándo está cerca?</p>
+        <p>Con la app <strong>AguaYa</strong> ves el camión en el mapa y te llega un aviso cuando faltan pocas casas para la tuya.</p>
+        <a class="enlace-flecha" href="index.html#aguaya">Conoce AguaYa</a>
+      </div>
+      <p><a class="enlace-flecha" href="informacion.html#cifras">Cuánto se cumplió y cuántos litros se repartieron</a></p>
+    </section>
+
+    <div class="campo-color" style="--fondo-seccion: var(--c5); --tinta-seccion: var(--tinta)">
+    <section class="seccion consejos" aria-labelledby="titulo-consejos">
+      <h2 id="titulo-consejos">Cuando llega la cisterna</h2>
+      <ol class="pasos-grandes">
+        <li>
+          <h3>Fíjate en la placa</h3>
+          <p>Cada visita de esta página dice qué cisterna te toca. Si llega otra o no es de EPSEL, avísanos.</p>
+        </li>
+        <li>
+          <h3>Ten tus baldes limpios y con tapa</h3>
+          <p>Lávalos antes con agua y jabón, y tápalos apenas los llenes para que el agua no se ensucie.</p>
+        </li>
+        <li>
+          <h3>Te tocan al menos 80 litros por casa al día</h3>
+          <p>Es el mínimo que fija SUNASS. Si la cisterna viene cada dos días, te corresponde lo de esos dos días.</p>
+        </li>
+        <li>
+          <h3>Si te piden dinero o la cisterna se desvía, denúncialo</h3>
+          <p>Puedes hacerlo sin dar tu nombre. Tu aviso ayuda a que el agua llegue a toda tu zona.</p>
+        </li>
+      </ol>
+    </section>
+    </div>
+
+    <section class="seccion banda no-paso" aria-labelledby="titulo-no-paso">
+      <div class="cupon cupon-simple">
+        <div class="cupon-izquierda">
+          <h2 id="titulo-no-paso">¿No pasó la cisterna?</h2>
+          <p class="enunciado">Cuéntanos tu zona y el día. Lo revisamos con el recorrido de la cisterna.</p>
+        </div>
+        <div class="cupon-derecha cupon-acciones">
+          <a class="boton boton-grande" href="index.html#escribenos">Escríbenos por WhatsApp</a>
+          <a class="enlace-flecha" href="index.html#reclamo">Cómo hacer un reclamo</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <svg class="pie-marca" viewBox="0 0 1001 360" role="img" aria-labelledby="pie-marca-titulo" preserveAspectRatio="xMidYMax meet"><title id="pie-marca-titulo">EPSEL</title><rect x="0" y="0" width="196" height="360" rx="44" fill="var(--c1)"/><rect x="0" y="316" width="44" height="44" fill="var(--c1)"/><text x="98.0" y="336" text-anchor="middle" fill="#f4f8fb" font-size="232" font-weight="800" font-family="Schibsted Grotesk, system-ui, sans-serif">E</text><rect x="201" y="64" width="196" height="296" rx="44" fill="var(--c2)"/><rect x="201" y="316" width="44" height="44" fill="var(--c2)"/><text x="299.0" y="336" text-anchor="middle" fill="#f4f8fb" font-size="232" font-weight="800" font-family="Schibsted Grotesk, system-ui, sans-serif">P</text><rect x="402" y="28" width="196" height="332" rx="44" fill="var(--c3)"/><rect x="402" y="316" width="44" height="44" fill="var(--c3)"/><text x="500.0" y="336" text-anchor="middle" fill="#f4f8fb" font-size="232" font-weight="800" font-family="Schibsted Grotesk, system-ui, sans-serif">S</text><rect x="603" y="108" width="196" height="252" rx="44" fill="var(--c2)"/><rect x="603" y="316" width="44" height="44" fill="var(--c2)"/><text x="701.0" y="336" text-anchor="middle" fill="#f4f8fb" font-size="232" font-weight="800" font-family="Schibsted Grotesk, system-ui, sans-serif">E</text><rect x="804" y="50" width="196" height="310" rx="44" fill="var(--c1)"/><rect x="804" y="316" width="44" height="44" fill="var(--c1)"/><text x="902.0" y="336" text-anchor="middle" fill="#f4f8fb" font-size="232" font-weight="800" font-family="Schibsted Grotesk, system-ui, sans-serif">L</text></svg>
+    <div class="pie-columnas">
+      <nav aria-label="Pie de página">
+        <ul class="pie-enlaces">
+          <li><a href="avisos.html">Cortes y avisos</a></li>
+          <li><a href="cisterna.html" aria-current="page">¿Pasa hoy la cisterna?</a></li>
+          <li><a href="tramites.html">Dónde pagar</a></li>
+          <li><a href="atencion.html">Oficinas y teléfonos</a></li>
+          <li><a href="atencion.html#reclamo">Hacer un reclamo</a></li>
+          <li><a href="informacion.html">Información pública</a></li>
+          <li><a href="nosotros.html">Nosotros</a></li>
+        </ul>
+      </nav>
+      <div class="pie-contacto">
+        <p><strong>EPSEL S.A.</strong> Empresa Prestadora de Servicios de Saneamiento de Lambayeque. RUC 20103448591.</p>
+        <p>Atención al cliente: Av. Grau 451, Chiclayo · <a href="tel:+5174273609">(074) 273609</a></p>
+        <p>Emergencias: <a href="tel:+51932070554">932 070 554</a> · <a href="tel:+51942413905">942 413 905</a></p>
+        <p>WhatsApp #TeEscucha: <a href="https://api.whatsapp.com/send/?phone=51942813797" rel="noopener">942 813 797</a></p>
+      </div>
+    </div>
+    <nav class="pie-entidades" aria-labelledby="pie-entidades-titulo">
+      <h2 id="pie-entidades-titulo">Entidades relacionadas</h2>
+      <ul>
+        <li><a href="https://www.sunass.gob.pe/" rel="noopener"><strong>SUNASS</strong><span>Regula y supervisa el servicio de agua</span></a></li>
+        <li><a href="https://web.otass.gob.pe/" rel="noopener"><strong>OTASS</strong><span>Conduce a EPSEL en el Régimen de Apoyo Transitorio</span></a></li>
+        <li><a href="https://www.gob.pe/vivienda" rel="noopener"><strong>Ministerio de Vivienda</strong><span>Dirige el sector saneamiento</span></a></li>
+        <li><a href="https://www.ana.gob.pe/" rel="noopener"><strong>ANA</strong><span>Autoridad Nacional del Agua</span></a></li>
+        <li><a href="https://www.gob.pe/" rel="noopener"><strong>gob.pe</strong><span>Trámites y servicios del Estado</span></a></li>
+      </ul>
+    </nav>
+    <div class="pie-final">
+      <p>Propuesta académica de rediseño, curso Interacción Humano-Computador, UTP Chiclayo. No es el sitio oficial de EPSEL. Contenido tomado de www.epsel.com.pe el 5 de noviembre de 2026.</p>
+      <a class="boton boton-pie" href="https://www.epsel.com.pe/Intranet/WFrmLogueo.aspx" rel="noopener">Acceso del personal</a>
+    </div>
+    <p class="creditos">Fotos de obras, cisternas y equipo: EPSEL S.A. · «Reservorio Tinajones», EdsonFuentesMera, y «Reservorio de Tinajones», Josefito123, CC BY-SA 4.0 · «Chiclayo, Plaza de Armas», Burkhard Mücke, CC BY-SA 4.0; todas vía Wikimedia Commons.</p>
+  </footer>
+</body>
+</html>

@@ -1,5 +1,8 @@
 # AguaYa
 
+[![Backend](https://github.com/Antoni2487/agua-ya/actions/workflows/backend.yml/badge.svg?branch=develop)](https://github.com/Antoni2487/agua-ya/actions/workflows/backend.yml)
+[![Web](https://github.com/Antoni2487/agua-ya/actions/workflows/web.yml/badge.svg?branch=develop)](https://github.com/Antoni2487/agua-ya/actions/workflows/web.yml)
+
 Sistema de gestión logística del abastecimiento de agua potable mediante camiones cisterna para **EPSEL S.A.** (Lambayeque, Perú).
 
 Proyecto académico del curso **Sistemas de Información Empresarial** — Universidad Tecnológica del Perú (UTP), sede Chiclayo.
@@ -38,7 +41,9 @@ Para el panel web en otro dominio, agregarlo a `CORS_ORIGINS` en Render.
 |---|---|---|
 | Backend REST (Spring Boot) | — | [`backend/`](backend/) |
 | App móvil (React Native / Expo) | Vecinos y Conductores | [`mobile/`](mobile/) |
-| Panel web (React / Vite) | Administrador + panel público de transparencia | [`web/`](web/) |
+| Panel web (React / Vite) | Administrador | [`web/`](web/) |
+| Web de EPSEL rediseñada (HTML, CSS y JS, sin librerías) | Público: información de las cisternas y anuncio de la app | [`rediseno-epsel/`](rediseno-epsel/) |
+| Simulador de recorrido | Demos sin GPS real | [`scripts/`](scripts/) |
 
 ## Stack
 
@@ -61,8 +66,21 @@ Commits con [Conventional Commits](https://www.conventionalcommits.org/es/) en e
 
 ## Puesta en marcha
 
-Las instrucciones de cada cliente se agregan en su carpeta a medida que se configura (`feature/backend-setup`, `feature/mobile-setup`, `feature/web-setup`).
+Todo corre en la PC. Requisitos: Docker Desktop, Node 20 y, para la app, Expo Go en el celular (misma red wifi que la PC).
+
+| # | Qué | Comando (desde la raíz) | Se abre en |
+|---|---|---|---|
+| 1 | Base de datos + backend | `docker compose up --build` | http://localhost:8080/swagger-ui.html |
+| 2 | Panel del admin | `cd web && npm install && npm run dev` | http://localhost:5173 |
+| 3 | Web de EPSEL rediseñada | `npx serve rediseno-epsel -l 5500` | http://localhost:5500 |
+| 4 | App (vecino y conductor) | `cd mobile && npm install && EXPO_PUBLIC_API_URL=http://<IP-de-la-PC>:8080 npx expo start` | Expo Go (escanear el QR) |
+| 5 | Mover una cisterna | `node scripts/simular-ruta.mjs --api http://localhost:8080` | panel, web y app a la vez |
+
+`npm run dev` solo existe en `web/`. La web rediseñada es estática: se sirve con `npx serve` (o Live Server en el puerto 5500) y, abierta desde `localhost`, lee el backend local.
+En PowerShell el paso 4 es `$env:EXPO_PUBLIC_API_URL="http://<IP>:8080"; npx expo start` (la IP sale con `ipconfig`).
+
+**Cuentas de prueba** (datos referenciales de V3): admin `10000001` / `Admin2026!`; conductores `20000001`–`20000003` / `Conductor2026!`; vecinos `30000001`–`30000012` / clave `1234`.
 
 ## Documentación para el equipo
 
-El contexto completo del proyecto (alcance, modelo de datos, reglas de negocio, API) está en [`CLAUDE.md`](CLAUDE.md).
+El contexto completo del proyecto (alcance, modelo de datos, reglas de negocio, API) está en [`docs/especificacion.md`](docs/especificacion.md).
