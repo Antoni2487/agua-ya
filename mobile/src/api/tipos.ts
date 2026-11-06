@@ -97,6 +97,8 @@ export interface MiParada {
   estado: EstadoParada;
   pendientesAntes: number;
   miCalificacion: number | null;
+  verificadaGps: boolean;
+  atendidaEn: string | null;
 }
 
 export interface Atencion {
@@ -106,6 +108,9 @@ export interface Atencion {
   estado: EstadoRuta;
   totalParadas: number;
   paradasAtendidas: number;
+  /** Placa y capacidad de la cisterna asignada, para que el vecino la reconozca. */
+  cisternaPlaca?: string | null;
+  capacidadLitros?: number | null;
   miParada?: MiParada;
 }
 
