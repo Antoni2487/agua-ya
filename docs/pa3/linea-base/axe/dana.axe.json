@@ -1,0 +1,485 @@
+{
+  "url": "https://eps.center/central-virtual/epsel/dana/proceso-monitoreo/programaciones",
+  "fecha": "2026-11-05T03:37:32.804Z",
+  "axe": "4.10.3",
+  "conteo": {
+    "violaciones": 8,
+    "aprobadas": 26,
+    "revisar": 0
+  },
+  "violaciones": [
+    {
+      "id": "button-name",
+      "impacto": "critical",
+      "ayuda": "Buttons must have discernible text",
+      "wcag": [
+        "wcag2a",
+        "wcag412"
+      ],
+      "enlace": "https://dequeuniversity.com/rules/axe/4.10/button-name?application=playwright",
+      "elementos": [
+        {
+          "selector": "#btnBuscar",
+          "html": "<button type=\"button\" class=\"input-group-text\" id=\"btnBuscar\">\n                                        <i class=\"fas fa-search\"></i>\n                                    </button>",
+          "resumen": "Fix any of the following:\n  Element does not have inner text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        }
+      ]
+    },
+    {
+      "id": "color-contrast",
+      "impacto": "serious",
+      "ayuda": "Elements must meet minimum color contrast ratio thresholds",
+      "wcag": [
+        "wcag2aa",
+        "wcag143"
+      ],
+      "enlace": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=playwright",
+      "elementos": [
+        {
+          "selector": ".breadcrumb-item:nth-child(1) > a",
+          "html": "<a href=\"https://eps.center/central-virtual/epsel\">Central virtual</a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 3.12 (foreground color: #009c9f, background color: #f5f7fa, font size: 9.4pt (12.6px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": "#btnUbicacion",
+          "html": "<button type=\"button\" id=\"btnUbicacion\" class=\"btn btn-success px-4 py-2 mb-3\" style=\"min-width: 260px;\">\n                                    📍 Usar mi ubicación\n                                </but",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.94 (foreground color: #ffffff, background color: #16d39a, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".text-success",
+          "html": "<h2 class=\"text-success text-center\">\n                            💧 Hay unidades programadas para abastecer de agua potable en tu zona\n                        </h2>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.94 (foreground color: #16d39a, background color: #ffffff, font size: 18.3pt (24.36px), font weight: normal). Expected contrast ratio of 3:1"
+        },
+        {
+          "selector": "button[onclick=\"verMapa(7,1603,'epsel')\"]",
+          "html": "<button class=\"btn btn-success px-3 py-2 mb-2 mb-md-0 mr-md-2 w-100 w-md-auto\" onclick=\"verMapa(7,1603,'epsel')\" title=\"Ver ubicación\">",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.94 (foreground color: #ffffff, background color: #16d39a, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".list-group-item:nth-child(1) > .row.align-items-center > .col-md-6.col-12:nth-child(2) > .flex-md-row.align-items-md-center.justify-content-md-end > .btn-outline-info.mr-md-2.px-3",
+          "html": "<button class=\"btn btn-outline-info px-3 py-2 mb-2 w-100 mb-md-0 w-md-auto mr-md-2\" onclick=\"verEvidencias(7,\n                                                    1603,\n                                ",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.9 (foreground color: #2dcee3, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".list-group-item:nth-child(1) > .row.align-items-center > .col-md-6.col-12:nth-child(2) > .flex-md-row.align-items-md-center.justify-content-md-end > .btn-outline-danger.px-3.w-100",
+          "html": "<button class=\"btn btn-outline-danger px-3 py-2 w-100 w-md-auto\" onclick=\"reportarIncidencia(7,\n                                                    -6.762005,\n                                         ",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 2.57 (foreground color: #ff7588, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": "button[onclick=\"verMapa(10,1604,'epsel')\"]",
+          "html": "<button class=\"btn btn-success px-3 py-2 mb-2 mb-md-0 mr-md-2 w-100 w-md-auto\" onclick=\"verMapa(10,1604,'epsel')\" title=\"Ver ubicación\">",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.94 (foreground color: #ffffff, background color: #16d39a, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".list-group-item:nth-child(2) > .row.align-items-center > .col-md-6.col-12:nth-child(2) > .flex-md-row.align-items-md-center.justify-content-md-end > .btn-outline-info.mr-md-2.px-3",
+          "html": "<button class=\"btn btn-outline-info px-3 py-2 mb-2 w-100 mb-md-0 w-md-auto mr-md-2\" onclick=\"verEvidencias(10,\n                                                    1604,\n                               ",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.9 (foreground color: #2dcee3, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".list-group-item:nth-child(2) > .row.align-items-center > .col-md-6.col-12:nth-child(2) > .flex-md-row.align-items-md-center.justify-content-md-end > .btn-outline-danger.px-3.w-100",
+          "html": "<button class=\"btn btn-outline-danger px-3 py-2 w-100 w-md-auto\" onclick=\"reportarIncidencia(10,\n                                                    -6.7620483,\n                                       ",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 2.57 (foreground color: #ff7588, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": "button[onclick=\"verMapa(8,1605,'epsel')\"]",
+          "html": "<button class=\"btn btn-success px-3 py-2 mb-2 mb-md-0 mr-md-2 w-100 w-md-auto\" onclick=\"verMapa(8,1605,'epsel')\" title=\"Ver ubicación\">",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.94 (foreground color: #ffffff, background color: #16d39a, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".list-group-item:nth-child(3) > .row.align-items-center > .col-md-6.col-12:nth-child(2) > .flex-md-row.align-items-md-center.justify-content-md-end > .btn-outline-info.mr-md-2.px-3",
+          "html": "<button class=\"btn btn-outline-info px-3 py-2 mb-2 w-100 mb-md-0 w-md-auto mr-md-2\" onclick=\"verEvidencias(8,\n                                                    1605,\n                                ",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.9 (foreground color: #2dcee3, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".list-group-item:nth-child(3) > .row.align-items-center > .col-md-6.col-12:nth-child(2) > .flex-md-row.align-items-md-center.justify-content-md-end > .btn-outline-danger.px-3.w-100",
+          "html": "<button class=\"btn btn-outline-danger px-3 py-2 w-100 w-md-auto\" onclick=\"reportarIncidencia(8,\n                                                    -6.7620266,\n                                        ",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 2.57 (foreground color: #ff7588, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": "button[onclick=\"verMapa(9,1606,'epsel')\"]",
+          "html": "<button class=\"btn btn-success px-3 py-2 mb-2 mb-md-0 mr-md-2 w-100 w-md-auto\" onclick=\"verMapa(9,1606,'epsel')\" title=\"Ver ubicación\">",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.94 (foreground color: #ffffff, background color: #16d39a, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".list-group-item:nth-child(4) > .row.align-items-center > .col-md-6.col-12:nth-child(2) > .flex-md-row.align-items-md-center.justify-content-md-end > .btn-outline-info.mr-md-2.px-3",
+          "html": "<button class=\"btn btn-outline-info px-3 py-2 mb-2 w-100 mb-md-0 w-md-auto mr-md-2\" onclick=\"verEvidencias(9,\n                                                    1606,\n                                ",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.9 (foreground color: #2dcee3, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".list-group-item:nth-child(4) > .row.align-items-center > .col-md-6.col-12:nth-child(2) > .flex-md-row.align-items-md-center.justify-content-md-end > .btn-outline-danger.px-3.w-100",
+          "html": "<button class=\"btn btn-outline-danger px-3 py-2 w-100 w-md-auto\" onclick=\"reportarIncidencia(9,\n                                                    -6.7620366,\n                                        ",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 2.57 (foreground color: #ff7588, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": "button[onclick=\"verMapa(11,1607,'epsel')\"]",
+          "html": "<button class=\"btn btn-success px-3 py-2 mb-2 mb-md-0 mr-md-2 w-100 w-md-auto\" onclick=\"verMapa(11,1607,'epsel')\" title=\"Ver ubicación\">",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.94 (foreground color: #ffffff, background color: #16d39a, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".list-group-item:nth-child(5) > .row.align-items-center > .col-md-6.col-12:nth-child(2) > .flex-md-row.align-items-md-center.justify-content-md-end > .btn-outline-info.mr-md-2.px-3",
+          "html": "<button class=\"btn btn-outline-info px-3 py-2 mb-2 w-100 mb-md-0 w-md-auto mr-md-2\" onclick=\"verEvidencias(11,\n                                                    1607,\n                               ",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.9 (foreground color: #2dcee3, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".list-group-item:nth-child(5) > .row.align-items-center > .col-md-6.col-12:nth-child(2) > .flex-md-row.align-items-md-center.justify-content-md-end > .btn-outline-danger.px-3.w-100",
+          "html": "<button class=\"btn btn-outline-danger px-3 py-2 w-100 w-md-auto\" onclick=\"reportarIncidencia(11,\n                                                    -6.7620283,\n                                       ",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 2.57 (foreground color: #ff7588, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": "button[onclick=\"verMapa(2,1608,'epsel')\"]",
+          "html": "<button class=\"btn btn-success px-3 py-2 mb-2 mb-md-0 mr-md-2 w-100 w-md-auto\" onclick=\"verMapa(2,1608,'epsel')\" title=\"Ver ubicación\">",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.94 (foreground color: #ffffff, background color: #16d39a, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".list-group-item:nth-child(6) > .row.align-items-center > .col-md-6.col-12:nth-child(2) > .flex-md-row.align-items-md-center.justify-content-md-end > .btn-outline-info.mr-md-2.px-3",
+          "html": "<button class=\"btn btn-outline-info px-3 py-2 mb-2 w-100 mb-md-0 w-md-auto mr-md-2\" onclick=\"verEvidencias(2,\n                                                    1608,\n                                ",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.9 (foreground color: #2dcee3, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".list-group-item:nth-child(6) > .row.align-items-center > .col-md-6.col-12:nth-child(2) > .flex-md-row.align-items-md-center.justify-content-md-end > .btn-outline-danger.px-3.w-100",
+          "html": "<button class=\"btn btn-outline-danger px-3 py-2 w-100 w-md-auto\" onclick=\"reportarIncidencia(2,\n                                                    -6.762495,\n                                         ",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 2.57 (foreground color: #ff7588, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": "button[onclick=\"verMapa(12,1609,'epsel')\"]",
+          "html": "<button class=\"btn btn-success px-3 py-2 mb-2 mb-md-0 mr-md-2 w-100 w-md-auto\" onclick=\"verMapa(12,1609,'epsel')\" title=\"Ver ubicación\">",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.94 (foreground color: #ffffff, background color: #16d39a, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".list-group-item:nth-child(7) > .row.align-items-center > .col-md-6.col-12:nth-child(2) > .flex-md-row.align-items-md-center.justify-content-md-end > .btn-outline-info.mr-md-2.px-3",
+          "html": "<button class=\"btn btn-outline-info px-3 py-2 mb-2 w-100 mb-md-0 w-md-auto mr-md-2\" onclick=\"verEvidencias(12,\n                                                    1609,\n                               ",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.9 (foreground color: #2dcee3, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".list-group-item:nth-child(7) > .row.align-items-center > .col-md-6.col-12:nth-child(2) > .flex-md-row.align-items-md-center.justify-content-md-end > .btn-outline-danger.px-3.w-100",
+          "html": "<button class=\"btn btn-outline-danger px-3 py-2 w-100 w-md-auto\" onclick=\"reportarIncidencia(12,\n                                                    -6.762455,\n                                        ",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 2.57 (foreground color: #ff7588, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": "button[onclick=\"verMapa(4,1610,'epsel')\"]",
+          "html": "<button class=\"btn btn-success px-3 py-2 mb-2 mb-md-0 mr-md-2 w-100 w-md-auto\" onclick=\"verMapa(4,1610,'epsel')\" title=\"Ver ubicación\">",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.94 (foreground color: #ffffff, background color: #16d39a, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".list-group-item:nth-child(8) > .row.align-items-center > .col-md-6.col-12:nth-child(2) > .flex-md-row.align-items-md-center.justify-content-md-end > .btn-outline-info.mr-md-2.px-3",
+          "html": "<button class=\"btn btn-outline-info px-3 py-2 mb-2 w-100 mb-md-0 w-md-auto mr-md-2\" onclick=\"verEvidencias(4,\n                                                    1610,\n                                ",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.9 (foreground color: #2dcee3, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".list-group-item:nth-child(8) > .row.align-items-center > .col-md-6.col-12:nth-child(2) > .flex-md-row.align-items-md-center.justify-content-md-end > .btn-outline-danger.px-3.w-100",
+          "html": "<button class=\"btn btn-outline-danger px-3 py-2 w-100 w-md-auto\" onclick=\"reportarIncidencia(4,\n                                                    -6.76238,\n                                          ",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 2.57 (foreground color: #ff7588, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": "button[onclick=\"verMapa(5,1611,'epsel')\"]",
+          "html": "<button class=\"btn btn-success px-3 py-2 mb-2 mb-md-0 mr-md-2 w-100 w-md-auto\" onclick=\"verMapa(5,1611,'epsel')\" title=\"Ver ubicación\">",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.94 (foreground color: #ffffff, background color: #16d39a, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".list-group-item:nth-child(9) > .row.align-items-center > .col-md-6.col-12:nth-child(2) > .flex-md-row.align-items-md-center.justify-content-md-end > .btn-outline-info.mr-md-2.px-3",
+          "html": "<button class=\"btn btn-outline-info px-3 py-2 mb-2 w-100 mb-md-0 w-md-auto mr-md-2\" onclick=\"verEvidencias(5,\n                                                    1611,\n                                ",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.9 (foreground color: #2dcee3, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".list-group-item:nth-child(9) > .row.align-items-center > .col-md-6.col-12:nth-child(2) > .flex-md-row.align-items-md-center.justify-content-md-end > .btn-outline-danger.px-3.w-100",
+          "html": "<button class=\"btn btn-outline-danger px-3 py-2 w-100 w-md-auto\" onclick=\"reportarIncidencia(5,\n                                                    -6.7623766,\n                                        ",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 2.57 (foreground color: #ff7588, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": "button[onclick=\"verMapa(6,1612,'epsel')\"]",
+          "html": "<button class=\"btn btn-success px-3 py-2 mb-2 mb-md-0 mr-md-2 w-100 w-md-auto\" onclick=\"verMapa(6,1612,'epsel')\" title=\"Ver ubicación\">",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.94 (foreground color: #ffffff, background color: #16d39a, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".list-group-item:nth-child(10) > .row.align-items-center > .col-md-6.col-12:nth-child(2) > .flex-md-row.align-items-md-center.justify-content-md-end > .btn-outline-info.mr-md-2.px-3",
+          "html": "<button class=\"btn btn-outline-info px-3 py-2 mb-2 w-100 mb-md-0 w-md-auto mr-md-2\" onclick=\"verEvidencias(6,\n                                                    1612,\n                                ",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.9 (foreground color: #2dcee3, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".list-group-item:nth-child(10) > .row.align-items-center > .col-md-6.col-12:nth-child(2) > .flex-md-row.align-items-md-center.justify-content-md-end > .btn-outline-danger.px-3.w-100",
+          "html": "<button class=\"btn btn-outline-danger px-3 py-2 w-100 w-md-auto\" onclick=\"reportarIncidencia(6,\n                                                    -6.1533066,\n                                        ",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 2.57 (foreground color: #ff7588, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": "button[onclick=\"verMapa(13,1613,'epsel')\"]",
+          "html": "<button class=\"btn btn-success px-3 py-2 mb-2 mb-md-0 mr-md-2 w-100 w-md-auto\" onclick=\"verMapa(13,1613,'epsel')\" title=\"Ver ubicación\">",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.94 (foreground color: #ffffff, background color: #16d39a, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".list-group-item:nth-child(11) > .row.align-items-center > .col-md-6.col-12:nth-child(2) > .flex-md-row.align-items-md-center.justify-content-md-end > .btn-outline-info.mr-md-2.px-3",
+          "html": "<button class=\"btn btn-outline-info px-3 py-2 mb-2 w-100 mb-md-0 w-md-auto mr-md-2\" onclick=\"verEvidencias(13,\n                                                    1613,\n                               ",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.9 (foreground color: #2dcee3, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".list-group-item:nth-child(11) > .row.align-items-center > .col-md-6.col-12:nth-child(2) > .flex-md-row.align-items-md-center.justify-content-md-end > .btn-outline-danger.px-3.w-100",
+          "html": "<button class=\"btn btn-outline-danger px-3 py-2 w-100 w-md-auto\" onclick=\"reportarIncidencia(13,\n                                                    -6.7623283,\n                                       ",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 2.57 (foreground color: #ff7588, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": "button[onclick=\"verMapa(15,1614,'epsel')\"]",
+          "html": "<button class=\"btn btn-success px-3 py-2 mb-2 mb-md-0 mr-md-2 w-100 w-md-auto\" onclick=\"verMapa(15,1614,'epsel')\" title=\"Ver ubicación\">",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.94 (foreground color: #ffffff, background color: #16d39a, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".list-group-item:nth-child(12) > .row.align-items-center > .col-md-6.col-12:nth-child(2) > .flex-md-row.align-items-md-center.justify-content-md-end > .btn-outline-info.mr-md-2.px-3",
+          "html": "<button class=\"btn btn-outline-info px-3 py-2 mb-2 w-100 mb-md-0 w-md-auto mr-md-2\" onclick=\"verEvidencias(15,\n                                                    1614,\n                               ",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.9 (foreground color: #2dcee3, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".list-group-item:nth-child(12) > .row.align-items-center > .col-md-6.col-12:nth-child(2) > .flex-md-row.align-items-md-center.justify-content-md-end > .btn-outline-danger.px-3.w-100",
+          "html": "<button class=\"btn btn-outline-danger px-3 py-2 w-100 w-md-auto\" onclick=\"reportarIncidencia(15,\n                                                    -6.7623416,\n                                       ",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 2.57 (foreground color: #ff7588, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": "button[onclick=\"verMapa(16,1615,'epsel')\"]",
+          "html": "<button class=\"btn btn-success px-3 py-2 mb-2 mb-md-0 mr-md-2 w-100 w-md-auto\" onclick=\"verMapa(16,1615,'epsel')\" title=\"Ver ubicación\">",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.94 (foreground color: #ffffff, background color: #16d39a, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".list-group-item:nth-child(13) > .row.align-items-center > .col-md-6.col-12:nth-child(2) > .flex-md-row.align-items-md-center.justify-content-md-end > .btn-outline-info.mr-md-2.px-3",
+          "html": "<button class=\"btn btn-outline-info px-3 py-2 mb-2 w-100 mb-md-0 w-md-auto mr-md-2\" onclick=\"verEvidencias(16,\n                                                    1615,\n                               ",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.9 (foreground color: #2dcee3, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".list-group-item:nth-child(13) > .row.align-items-center > .col-md-6.col-12:nth-child(2) > .flex-md-row.align-items-md-center.justify-content-md-end > .btn-outline-danger.px-3.w-100",
+          "html": "<button class=\"btn btn-outline-danger px-3 py-2 w-100 w-md-auto\" onclick=\"reportarIncidencia(16,\n                                                    -6.762395,\n                                        ",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 2.57 (foreground color: #ff7588, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": "button[onclick=\"verMapa(17,1616,'epsel')\"]",
+          "html": "<button class=\"btn btn-success px-3 py-2 mb-2 mb-md-0 mr-md-2 w-100 w-md-auto\" onclick=\"verMapa(17,1616,'epsel')\" title=\"Ver ubicación\">",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.94 (foreground color: #ffffff, background color: #16d39a, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".list-group-item:nth-child(14) > .row.align-items-center > .col-md-6.col-12:nth-child(2) > .flex-md-row.align-items-md-center.justify-content-md-end > .btn-outline-info.mr-md-2.px-3",
+          "html": "<button class=\"btn btn-outline-info px-3 py-2 mb-2 w-100 mb-md-0 w-md-auto mr-md-2\" onclick=\"verEvidencias(17,\n                                                    1616,\n                               ",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 1.9 (foreground color: #2dcee3, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".list-group-item:nth-child(14) > .row.align-items-center > .col-md-6.col-12:nth-child(2) > .flex-md-row.align-items-md-center.justify-content-md-end > .btn-outline-danger.px-3.w-100",
+          "html": "<button class=\"btn btn-outline-danger px-3 py-2 w-100 w-md-auto\" onclick=\"reportarIncidencia(17,\n                                                    -6.7623199,\n                                       ",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 2.57 (foreground color: #ff7588, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".float-md-left",
+          "html": "<span class=\"float-md-left d-block d-md-inline-block\">\n            Copyright © 2020\n            <span class=\"text-bold-800 grey darken-2\">\n                Intranet\n            </span>\n        </span>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 2.59 (foreground color: #90a4ae, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".text-bold-800",
+          "html": "<span class=\"text-bold-800 grey darken-2\">\n                Intranet\n            </span>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 2.59 (foreground color: #90a4ae, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".float-md-right",
+          "html": "<span class=\"float-md-right d-none d-lg-block\">\n            <i class=\"far fa-lightbulb yellow\"></i> Sistema integrado\n        </span>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 2.59 (foreground color: #90a4ae, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        }
+      ]
+    },
+    {
+      "id": "image-alt",
+      "impacto": "critical",
+      "ayuda": "Images must have alternative text",
+      "wcag": [
+        "wcag2a",
+        "wcag111"
+      ],
+      "enlace": "https://dequeuniversity.com/rules/axe/4.10/image-alt?application=playwright",
+      "elementos": [
+        {
+          "selector": ".brand-logo",
+          "html": "<img src=\"https://eps.center/img/logos/app/logo-intranet-epsel.png\" class=\"brand-logo\" width=\"140px\">",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        }
+      ]
+    },
+    {
+      "id": "landmark-one-main",
+      "impacto": "moderate",
+      "ayuda": "Document should have one main landmark",
+      "wcag": [],
+      "enlace": "https://dequeuniversity.com/rules/axe/4.10/landmark-one-main?application=playwright",
+      "elementos": [
+        {
+          "selector": "html",
+          "html": "<html class=\"loaded\" lang=\"es\" data-textdirection=\"ltr\" style=\"--vh: 9px;\">",
+          "resumen": "Fix all of the following:\n  Document does not have a main landmark"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impacto": "serious",
+      "ayuda": "Links must have discernible text",
+      "wcag": [
+        "wcag2a",
+        "wcag244",
+        "wcag412"
+      ],
+      "enlace": "https://dequeuniversity.com/rules/axe/4.10/link-name?application=playwright",
+      "elementos": [
+        {
+          "selector": ".navbar-brand",
+          "html": "<a class=\"navbar-brand nav-link pt-0\" href=\"https://eps.center/central-virtual/epsel\">\n                            <img src=\"https://eps.center/img/logos/app/logo-intranet-epsel.png\" class=\"brand-logo",
+          "resumen": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+        }
+      ]
+    },
+    {
+      "id": "meta-viewport",
+      "impacto": "critical",
+      "ayuda": "Zooming and scaling must not be disabled",
+      "wcag": [
+        "wcag2aa",
+        "wcag144"
+      ],
+      "enlace": "https://dequeuniversity.com/rules/axe/4.10/meta-viewport?application=playwright",
+      "elementos": [
+        {
+          "selector": "meta[name=\"viewport\"]",
+          "html": "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui\">",
+          "resumen": "Fix any of the following:\n  user-scalable on <meta> tag disables zooming on mobile devices"
+        }
+      ]
+    },
+    {
+      "id": "page-has-heading-one",
+      "impacto": "moderate",
+      "ayuda": "Page should contain a level-one heading",
+      "wcag": [],
+      "enlace": "https://dequeuniversity.com/rules/axe/4.10/page-has-heading-one?application=playwright",
+      "elementos": [
+        {
+          "selector": "html",
+          "html": "<html class=\"loaded\" lang=\"es\" data-textdirection=\"ltr\" style=\"--vh: 9px;\">",
+          "resumen": "Fix all of the following:\n  Page must have a level-one heading"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impacto": "moderate",
+      "ayuda": "All page content should be contained by landmarks",
+      "wcag": [],
+      "enlace": "https://dequeuniversity.com/rules/axe/4.10/region?application=playwright",
+      "elementos": [
+        {
+          "selector": ".content-header",
+          "html": "<div class=\"content-header row\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".card-header",
+          "html": "<div class=\"card-header card-head-inverse bg-success bg-darken-4\">\n                    <h4 class=\"card-title\">\n                        <i class=\"fa-solid fa-map-pin\"></i>\n                        TRANS",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".form-body > h4",
+          "html": "<h4 class=\"mb-2\">\n                                💧 ¿Esta tu zona programada para reparto de agua potable?\n                            </h4>",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".form-body > .mb-3",
+          "html": "<p class=\"text-muted mb-3\">\n                                Consulta la ubicación en tiempo real\n                            </p>",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".text-muted.mb-2",
+          "html": "<div class=\"text-muted mb-2\">o escribe tu dirección en </div>",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": "#criterio",
+          "html": "<input class=\"form-control form-control-lg\" placeholder=\"Calle | Jirón | Manzana | Lote | Localidad | Sector  \" id=\"criterio\" name=\"criterio\" type=\"text\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".mt-2.d-block",
+          "html": "<small class=\"text-muted mt-2 d-block\">\n                                <i class=\"fa-regular fa-star\"></i> <strong>Importante</strong> : Para usar desde el celular es necesario permitir el acceso a su",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".text-success",
+          "html": "<h2 class=\"text-success text-center\">\n                            💧 Hay unidades programadas para abastecer de agua potable en tu zona\n                        </h2>",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".card-body > p",
+          "html": "<p class=\"text-center text-muted\">\n                            Selecciona una para ver su ubicación o reportar alguna incidencia\n                        </p>",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".list-group-item:nth-child(1) > .row.align-items-center > .col-md-6.col-12.mb-md-0",
+          "html": "<div class=\"col-12 col-md-6 mb-2 mb-md-0\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".list-group-item:nth-child(2) > .row.align-items-center > .col-md-6.col-12.mb-md-0",
+          "html": "<div class=\"col-12 col-md-6 mb-2 mb-md-0\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".list-group-item:nth-child(3) > .row.align-items-center > .col-md-6.col-12.mb-md-0",
+          "html": "<div class=\"col-12 col-md-6 mb-2 mb-md-0\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".list-group-item:nth-child(4) > .row.align-items-center > .col-md-6.col-12.mb-md-0",
+          "html": "<div class=\"col-12 col-md-6 mb-2 mb-md-0\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".list-group-item:nth-child(5) > .row.align-items-center > .col-md-6.col-12.mb-md-0",
+          "html": "<div class=\"col-12 col-md-6 mb-2 mb-md-0\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".list-group-item:nth-child(6) > .row.align-items-center > .col-md-6.col-12.mb-md-0",
+          "html": "<div class=\"col-12 col-md-6 mb-2 mb-md-0\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".list-group-item:nth-child(7) > .row.align-items-center > .col-md-6.col-12.mb-md-0",
+          "html": "<div class=\"col-12 col-md-6 mb-2 mb-md-0\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".list-group-item:nth-child(8) > .row.align-items-center > .col-md-6.col-12.mb-md-0",
+          "html": "<div class=\"col-12 col-md-6 mb-2 mb-md-0\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".list-group-item:nth-child(9) > .row.align-items-center > .col-md-6.col-12.mb-md-0",
+          "html": "<div class=\"col-12 col-md-6 mb-2 mb-md-0\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".list-group-item:nth-child(10) > .row.align-items-center > .col-md-6.col-12.mb-md-0",
+          "html": "<div class=\"col-12 col-md-6 mb-2 mb-md-0\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".list-group-item:nth-child(11) > .row.align-items-center > .col-md-6.col-12.mb-md-0",
+          "html": "<div class=\"col-12 col-md-6 mb-2 mb-md-0\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".list-group-item:nth-child(12) > .row.align-items-center > .col-md-6.col-12.mb-md-0",
+          "html": "<div class=\"col-12 col-md-6 mb-2 mb-md-0\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".list-group-item:nth-child(13) > .row.align-items-center > .col-md-6.col-12.mb-md-0",
+          "html": "<div class=\"col-12 col-md-6 mb-2 mb-md-0\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".list-group-item:nth-child(14) > .row.align-items-center > .col-md-6.col-12.mb-md-0",
+          "html": "<div class=\"col-12 col-md-6 mb-2 mb-md-0\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    }
+  ]
+}
