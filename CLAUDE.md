@@ -12,7 +12,7 @@ AguaYa es un sistema de gestión logística del **abastecimiento de agua potable
 Tiene tres clientes:
 - **App móvil AguaYa** (React Native / Expo, en `mobile/`) para **Conductores** de cisterna y **Vecinos** (hogares): una sola app que muestra las pantallas de cada rol según la sesión. Decisión del 5 nov 2026: el vecino también usa la app (se descarta la web del vecino del 4 nov). El backend de Web Push queda disponible pero la app usa Expo Push.
 - **Panel web** (React / Vite) para el **Administrador** de EPSEL.
-- **Panel público de transparencia** (web, solo lectura, sin login).
+- **Web pública de EPSEL rediseñada** (`rediseno-epsel/`, estática, sin login): incluye la información pública de las cisternas (transparencia RF09) y anuncia la app. Decisión del 6 nov 2026: el panel público del Vite se retira; `/transparencia` redirige a la web rediseñada.
 
 Todos consumen un **backend REST** en Spring Boot.
 
@@ -52,7 +52,7 @@ Las **averías mecánicas en ruta NO son un problema recurrente documentado**. P
 
 ### Incluye
 - Gestión y autenticación de usuarios: Administrador, Conductor, Vecino.
-- Registro de vecino sin contraseña: DNI (nombres y apellidos se obtienen del DNI), verificación del teléfono por SMS (OTP) y ubicación de su vivienda tomada del GPS del celular.
+- Registro de vecino: DNI (nombres y apellidos se obtienen del DNI), verificación del teléfono por SMS (OTP), una clave de 4 dígitos (como Yape/Plin) y ubicación de su vivienda tomada del GPS del celular.
 - Gestión de sectores, puntos de llenado, cisternas, conductores e instituciones críticas.
 - Programación de rutas por sector y turno, con paradas priorizadas.
 - Planificación de capacidad (cálculo de viajes y cisternas necesarios vs. disponibles).
@@ -70,7 +70,7 @@ Las **averías mecánicas en ruta NO son un problema recurrente documentado**. P
 - Integración con ERP o sistemas comerciales de EPSEL (AguaYa es un sistema satélite independiente).
 - Zonas fuera de la jurisdicción de EPSEL.
 - Algoritmo automático de optimización/reasignación de rutas (VRP, etc.).
-- SMS para notificaciones (solo para el código de registro e ingreso del vecino).
+- SMS para notificaciones (solo para el código de registro del vecino y para restablecer su clave).
 
 ---
 
@@ -113,8 +113,10 @@ aguaya/
 ├── .gitignore
 ├── docker-compose.yml
 ├── backend/          # Spring Boot
-├── mobile/           # Expo: app del Conductor
-└── web/              # Vite: panel Admin + rutas públicas /transparencia
+├── mobile/           # Expo: app del Vecino y del Conductor
+├── web/              # Vite: panel del Admin
+├── rediseno-epsel/   # Web pública de EPSEL rediseñada (estática): información pública y anuncio de la app
+└── scripts/          # simular-ruta.mjs: recorrido simulado de una cisterna para demos
 ```
 
 ### Backend: paquetes por funcionalidad
@@ -159,11 +161,11 @@ Cada módulo: `controller/`, `service/`, `repository/`, `entity/`, `dto/`, `mapp
 
 ## 7. Modelo de datos
 
-`Persona` es la clase padre de `Vecino`, `Conductor` y `Administrador`: tabla base `persona` + tablas por subtipo (herencia **JOINED**). Administrador y conductor ingresan con DNI + contraseña; el vecino con DNI + código SMS (`password_hash` nulo; las cuentas de prueba de V3 conservan contraseña).
+`Persona` es la clase padre de `Vecino`, `Conductor` y `Administrador`: tabla base `persona` + tablas por subtipo (herencia **JOINED**). Administrador y conductor ingresan con DNI + contraseña; el vecino con DNI + clave de 4 dígitos (V11, BCrypt en `password_hash`; los vecinos de prueba de V3 tienen la clave `1234`). Tras 5 intentos fallidos seguidos la cuenta no acepta ingresos por 15 min (`persona.intentos_fallidos`, `bloqueado_hasta`; 429 `CUENTA_BLOQUEADA`).
 
 | Tabla | Columnas |
 |---|---|
-| `persona` | id, dni (único, 8 díg.), nombres, apellidos, telefono (único), email (null), password_hash (null solo para VECINO, V9), rol, activo, creado_en |
+| `persona` | id, dni (único, 8 díg.), nombres, apellidos, telefono (único), email (null), password_hash (null solo para VECINO, V9), rol, activo, intentos_fallidos, bloqueado_hasta (V11), creado_en |
 | `vecino` | persona_id (PK/FK), direccion_referencia (texto libre), latitud, longitud, sector_id |
 | `conductor` | persona_id, licencia, estado_disponibilidad (DISPONIBLE / EN_RUTA / INACTIVO), turno, lat_actual, lng_actual, ubicacion_actualizada_en |
 | `administrador` | persona_id, cargo, nivel_acceso |
@@ -249,11 +251,11 @@ Fase 0 (base): repo, setup backend, auth + OTP, datos semilla.
 ### Registro del vecino
 1. App: DNI + celular → `POST /api/auth/otp/solicitar` (avisa antes del SMS si el DNI o el teléfono ya tienen cuenta).
 2. El proveedor OTP envía el código por SMS. En dev (`ProveedorOtpLocal`): 6 dígitos, hash en BD, vence en 5 min, máx. 3 intentos y 3 envíos/hora por teléfono. En prod (Twilio Verify) Twilio genera, envía y valida el código con sus propios límites.
-3. App: código → `POST /api/auth/registro/vecino` con DNI, teléfono, código, latitud/longitud y `direccion_referencia` opcional. El backend verifica el código, consulta el DNI (`ProveedorDni`, fuera de la transacción porque puede tardar) y responde con la sesión abierta.
+3. App: código + clave de 4 dígitos → `POST /api/auth/registro/vecino` con DNI, teléfono, código, `clave`, latitud/longitud y `direccion_referencia` opcional. El backend verifica el código, consulta el DNI (`ProveedorDni`, fuera de la transacción porque puede tardar) y responde con la sesión abierta.
 4. Ubicación: la web la toma sola del GPS del celular (Geolocation API), sin que el vecino marque el mapa. Si niega el permiso o la precisión es peor que el radio de la geocerca, se le muestra el mapa con el pin para corregirlo (alternativa obligatoria por accesibilidad). **El dato que manda es el pin** (en asentamientos las direcciones son informales: "Mz. B Lt. 12, AA.HH. X").
 
 ### Login
-- Vecino: `POST /api/auth/login/codigo/solicitar` con su DNI (el código llega al celular registrado; la respuesta lo muestra enmascarado `*** *** 789`) y `POST /api/auth/login/codigo` con DNI + código. Errores: 404 `DNI_NO_REGISTRADO`, 409 `INGRESO_CON_PASSWORD` (admin/conductor), 403 `CUENTA_INACTIVA`.
+- Vecino: `POST /api/auth/login` con DNI + clave de 4 dígitos (campo `password`). Si la olvidó: `POST /api/auth/login/codigo/solicitar` con su DNI (el código llega al celular registrado; la respuesta lo muestra enmascarado `*** *** 789`) y `POST /api/auth/clave/restablecer` con DNI + código + clave nueva (abre sesión y levanta el bloqueo). `POST /api/auth/login/codigo` (DNI + código) sigue disponible. Errores: 404 `DNI_NO_REGISTRADO`, 409 `INGRESO_CON_PASSWORD` (admin/conductor), 403 `CUENTA_INACTIVA`.
 - Admin y conductor: `POST /api/auth/login` con DNI + contraseña (BCrypt). Las cuentas de conductor las crea el Admin.
 - Se entregan access token JWT (15 min) + refresh token (30 días, se rota en cada uso).
 
@@ -289,7 +291,8 @@ Fase 0 (base): repo, setup backend, auth + OTP, datos semilla.
 POST /api/auth/otp/solicitar
 POST /api/auth/registro/vecino
 POST /api/auth/login                   (DNI + password: admin y conductor)
-POST /api/auth/login/codigo/solicitar  (vecino: envía el código SMS)
+POST /api/auth/login/codigo/solicitar  (vecino: envía el código SMS para restablecer la clave)
+POST /api/auth/clave/restablecer       (vecino: DNI + código + clave nueva)
 POST /api/auth/login/codigo            (vecino: DNI + código)
 POST /api/auth/refresh
 POST /api/auth/logout
@@ -329,7 +332,7 @@ PATCH /api/conductor/paradas/{id}/no-atendida
 
 # Vecino
 GET  /api/vecino/me
-GET  /api/vecino/proxima-atencion                    (ruta en curso o siguiente + última, con su parada)
+GET  /api/vecino/proxima-atencion                    (ruta en curso o siguiente + última, con su parada, placa y capacidad de la cisterna)
 GET  /api/vecino/rutas/{id}/posicion
 POST /api/vecino/calificaciones                      (RF08)
 POST /api/incidencias                                (RF06, conductor o vecino)
