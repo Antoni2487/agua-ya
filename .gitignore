@@ -41,3 +41,10 @@ mobile/android/
 
 # Capturas del inspector de diseño (se regeneran)
 rediseno-epsel/.taste-skill/
+
+# Configuración local de herramientas de diseño (no son parte del proyecto)
+.github/agents/
+.github/hooks/
+.github/skills/
+.github/modernize/
+.taste-skill/
