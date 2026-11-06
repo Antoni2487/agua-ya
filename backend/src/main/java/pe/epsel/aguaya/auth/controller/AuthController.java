@@ -17,6 +17,7 @@ import pe.epsel.aguaya.auth.dto.LoginCodigoRequest;
 import pe.epsel.aguaya.auth.dto.LoginRequest;
 import pe.epsel.aguaya.auth.dto.RefreshRequest;
 import pe.epsel.aguaya.auth.dto.RegistroVecinoRequest;
+import pe.epsel.aguaya.auth.dto.RestablecerClaveRequest;
 import pe.epsel.aguaya.auth.dto.SolicitarCodigoLoginRequest;
 import pe.epsel.aguaya.auth.dto.SolicitarCodigoLoginResponse;
 import pe.epsel.aguaya.auth.dto.SolicitarOtpRequest;
@@ -37,14 +38,14 @@ public class AuthController {
         return authService.solicitarOtp(request);
     }
 
-    @Operation(summary = "Registra un vecino con DNI, código SMS y ubicación; los nombres salen del DNI y queda con sesión iniciada")
+    @Operation(summary = "Registra un vecino con DNI, código SMS, clave de 4 dígitos y ubicación; los nombres salen del DNI y queda con sesión iniciada")
     @PostMapping("/registro/vecino")
     @ResponseStatus(HttpStatus.CREATED)
     public AuthResponse registrarVecino(@Valid @RequestBody RegistroVecinoRequest request) {
         return authService.registrarVecino(request);
     }
 
-    @Operation(summary = "Login con DNI + contraseña (administrador y conductor)")
+    @Operation(summary = "Login con DNI + contraseña (administrador y conductor) o DNI + clave de 4 dígitos (vecino)")
     @PostMapping("/login")
     public AuthResponse login(@Valid @RequestBody LoginRequest request) {
         return authService.login(request);
@@ -60,6 +61,12 @@ public class AuthController {
     @PostMapping("/login/codigo")
     public AuthResponse loginConCodigo(@Valid @RequestBody LoginCodigoRequest request) {
         return authService.loginConCodigo(request);
+    }
+
+    @Operation(summary = "El vecino cambia su clave con el código SMS (si la olvidó) y queda con sesión iniciada")
+    @PostMapping("/clave/restablecer")
+    public AuthResponse restablecerClave(@Valid @RequestBody RestablecerClaveRequest request) {
+        return authService.restablecerClave(request);
     }
 
     @Operation(summary = "Renueva el access token; el refresh token se rota")

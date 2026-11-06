@@ -119,7 +119,7 @@ class WebSocketIntegrationTest extends EscenarioRutaHoy {
         Escenario e = escenario();
         iniciar(e).andExpect(status().isOk());
 
-        StompSession sesion = conectar(login("30000004", "Vecino2026!"));
+        StompSession sesion = conectar(login("30000004", "1234"));
         BlockingQueue<Map<String, Object>> posiciones = suscribir(sesion, "/topic/rutas/" + e.rutaId() + "/posicion");
         Thread.sleep(300);
 

@@ -1,161 +1,179 @@
-// Inicio del vecino: cuándo llega su cisterna, el camión en el mapa mientras reparte, calificar y reportar.
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
-import { api, ErrorApi, textoError } from '../../api/cliente';
-import type { Atencion, AtencionVecino, Posicion, VecinoPerfil } from '../../api/tipos';
-import { Aviso, Boton, Cargando, Etiqueta, Fila, Pantalla, Tarjeta, Texto } from '../../componentes/ui';
-import { color } from '../../tema';
-import { cuando, distanciaMetros, ESTADO_PARADA, ESTADO_RUTA, hora, textoDistancia, TURNO } from '../../textos';
+// Inicio del vecino (Figma 01 "Cisterna en camino" y 02 "Atención programada"): cuándo le toca, cuántas paradas
+// faltan antes de la suya, la placa de la cisterna y su última entrega. Si no hay visita programada, lo dice.
+import type { ReactNode } from 'react';
+import { RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import type { Atencion } from '../../api/tipos';
+import { Icono } from '../../componentes/iconos';
+import { Aviso, Boton, Cargando, Divisor, Etiqueta, Fila, PieServicio, Tarjeta, Texto } from '../../componentes/ui';
+import { CabeceraVecino, GotaAvance, Muestra, PlacaCisterna, TiraParadas } from '../../componentes/vecino';
+import { color, fuente, medida } from '../../tema';
+import { cuando, fechaCorta, teToca, TURNO_CORTO, TURNO_FRASE } from '../../textos';
+import type { DatosVecino } from './VecinoApp';
 
-const CADA_MS = 15000; // el conductor envía su posición cada ~15 s
-
-export function InicioVecino({ alCalificar, alReportar, alVerReportes, alSalir }: {
-  alCalificar: (paradaId: number) => void;
-  alReportar: (rutaId: number, paradaId?: number) => void;
-  alVerReportes: () => void;
-  alSalir: () => void;
+export function InicioVecino({ datos, barra, alVerMapa, alReportar, alCalificar }: {
+  datos: DatosVecino; barra: ReactNode; alVerMapa: () => void; alReportar: () => void; alCalificar: (a: Atencion) => void;
 }) {
-  const [perfil, setPerfil] = useState<VecinoPerfil | null>(null);
-  const [atencion, setAtencion] = useState<AtencionVecino | null>(null);
-  const [posicion, setPosicion] = useState<Posicion | null>(null);
-  const [sinPosicion, setSinPosicion] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [cargando, setCargando] = useState(true);
-  const mapa = useRef<MapView>(null);
-
-  const cargar = useCallback(async () => {
-    setError(null);
-    try {
-      const [p, a] = await Promise.all([
-        api<VecinoPerfil>('/api/vecino/me'),
-        api<AtencionVecino>('/api/vecino/proxima-atencion'),
-      ]);
-      setPerfil(p); setAtencion(a);
-    } catch (e) {
-      setError(textoError(e));
-    } finally {
-      setCargando(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    void cargar();
-    const t = setInterval(() => void cargar(), 60000);
-    return () => clearInterval(t);
-  }, [cargar]);
-
-  const enCamino = atencion?.proxima?.estado === 'EN_CURSO' ? atencion.proxima : null;
-
-  // Mientras la cisterna reparte en su sector, se pide su posición cada 15 s
-  useEffect(() => {
-    if (!enCamino) { setPosicion(null); return; }
-    let vivo = true;
-    const pedir = async () => {
-      try {
-        const p = await api<Posicion>(`/api/vecino/rutas/${enCamino.rutaId}/posicion`);
-        if (vivo) { setPosicion(p); setSinPosicion(false); }
-      } catch (e) {
-        if (vivo && e instanceof ErrorApi && e.status !== 0) setSinPosicion(true);
-      }
-    };
-    void pedir();
-    const t = setInterval(pedir, CADA_MS);
-    return () => { vivo = false; clearInterval(t); };
-  }, [enCamino?.rutaId]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const casa = perfil ? { latitude: Number(perfil.latitud), longitude: Number(perfil.longitud) } : null;
-  const camion = posicion ? { latitude: Number(posicion.latitud), longitude: Number(posicion.longitud) } : null;
-
-  useEffect(() => {
-    if (casa && camion) mapa.current?.fitToCoordinates([casa, camion], { edgePadding: { top: 60, right: 60, bottom: 60, left: 60 }, animated: true });
-  }, [camion?.latitude, camion?.longitude]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const rutaParaReportar = atencion?.proxima ?? atencion?.ultima ?? null;
+  const borde = useSafeAreaInsets();
+  const { perfil, atencion, error, cargando, recargar } = datos;
+  const proxima = atencion?.proxima ?? null;
+  const ultima = atencion?.ultima ?? null;
+  const nombre = perfil?.nombres.split(' ')[0];
+  const lugar = perfil ? [perfil.sector?.nombre, perfil.sector?.distrito, perfil.direccionReferencia].filter(Boolean).join(' · ') : '';
 
   return (
-    <Pantalla titulo={perfil ? `Hola, ${perfil.nombres.split(' ')[0]}` : 'Tu agua'}
-      pie={<Fila>
-        <Boton texto="Actualizar" variante="secundario" alPresionar={() => { setCargando(true); void cargar(); }} estilo={{ flex: 1 }} />
-        <Boton texto="Salir" variante="secundario" alPresionar={alSalir} estilo={{ flex: 1 }} />
-      </Fila>}>
-      {cargando && !atencion ? <Cargando texto="Buscando tu próxima cisterna…" /> : null}
-      <Aviso texto={error} />
-      {perfil?.sector ? <Texto tipo="suave">Tu sector: {perfil.sector.nombre}, {perfil.sector.distrito}</Texto> : null}
-
-      {atencion && !atencion.proxima ? (
-        <Tarjeta tono="claro">
-          <Texto tipo="subtitulo">Aún no hay una cisterna programada</Texto>
-          <Texto>Cuando EPSEL programe la visita a tu sector, la verás aquí y te avisaremos.</Texto>
-        </Tarjeta>
-      ) : null}
-
-      {atencion?.proxima ? (
-        <TarjetaAtencion atencion={atencion.proxima} titulo={enCamino ? 'La cisterna está en camino' : 'Tu próxima cisterna'} destacada />
-      ) : null}
-
-      {enCamino && casa ? (
-        <View style={estilos.mapa}>
-          <MapView ref={mapa} style={StyleSheet.absoluteFill}
-            initialRegion={{ ...casa, latitudeDelta: 0.02, longitudeDelta: 0.02 }}
-            accessibilityLabel={camion ? `Mapa: la cisterna está a ${textoDistancia(distanciaMetros(casa, camion))} de tu casa` : 'Mapa de tu casa'}>
-            <Marker coordinate={casa} title="Tu casa" pinColor={color.acento} />
-            {camion ? <Marker coordinate={camion} title="Cisterna" description={`Última señal ${hora(posicion!.registradoEn)}`} pinColor={color.bien} /> : null}
-          </MapView>
+    <View style={[estilos.pantalla, { paddingTop: borde.top }]}>
+      <CabeceraVecino />
+      <ScrollView contentContainerStyle={estilos.contenido}
+        refreshControl={<RefreshControl refreshing={false} onRefresh={() => void recargar()} colors={[color.acento]} />}>
+        <View style={{ gap: 4 }}>
+          <Texto tipo="titulo">{nombre ? `Hola, ${nombre}` : 'Hola'}</Texto>
+          {lugar ? (
+            <Fila estilo={{ gap: 6, flexWrap: 'nowrap' }}>
+              <Icono nombre="ubicacion" tamano={18} color={color.tintaSuave} />
+              <Texto tipo="pequeno" estilo={{ flex: 1 }}>{lugar}</Texto>
+            </Fila>
+          ) : null}
         </View>
-      ) : null}
-      {enCamino && camion && casa ? (
-        <Texto tipo="subtitulo">La cisterna está a {textoDistancia(distanciaMetros(casa, camion))} de tu casa (señal de las {hora(posicion!.registradoEn)}).</Texto>
-      ) : null}
-      {enCamino && sinPosicion ? <Texto tipo="suave">Aún no recibimos la ubicación del camión. Se actualiza sola.</Texto> : null}
 
-      {atencion?.ultima ? (
-        <>
-          <TarjetaAtencion atencion={atencion.ultima} titulo="Tu última cisterna" />
-          {atencion.ultima.miParada?.estado === 'ATENDIDA' && atencion.ultima.miParada.miCalificacion == null ? (
-            <Boton texto="Calificar la entrega" alPresionar={() => alCalificar(atencion.ultima!.miParada!.paradaId)} />
-          ) : null}
-          {atencion.ultima.miParada?.miCalificacion != null ? (
-            <Texto tipo="suave">Calificaste esta entrega con {atencion.ultima.miParada.miCalificacion} de 5 estrellas. ¡Gracias!</Texto>
-          ) : null}
-        </>
-      ) : null}
+        {cargando && !atencion ? <Cargando texto="Buscando tu próxima cisterna…" /> : null}
+        <Aviso texto={error} />
 
-      {rutaParaReportar ? (
-        <Boton texto="Reportar un problema" variante="claro"
-          alPresionar={() => alReportar(rutaParaReportar.rutaId, rutaParaReportar.miParada?.paradaId)} />
-      ) : null}
-      <Boton texto="Ver mis reportes" variante="secundario" alPresionar={alVerReportes} />
-    </Pantalla>
+        {atencion && !proxima ? <SinVisita sector={perfil?.sector?.nombre} /> : null}
+        {proxima ? <TarjetaProxima atencion={proxima} punto={perfil?.sector?.tipoEntrega === 'PUNTO_ENTREGA'} /> : null}
+
+        {proxima ? <Boton texto="Ver la cisterna en el mapa" icono="mapa" alPresionar={alVerMapa} /> : null}
+        {proxima || ultima ? <Boton texto="Reportar un problema" icono="reportar" variante="secundario" alPresionar={alReportar} /> : null}
+
+        {ultima ? <TarjetaUltima atencion={ultima} alCalificar={() => alCalificar(ultima)} /> : null}
+        <PieServicio />
+      </ScrollView>
+      {barra}
+    </View>
   );
 }
 
-function TarjetaAtencion({ atencion, titulo, destacada = false }: { atencion: Atencion; titulo: string; destacada?: boolean }) {
-  const estado = ESTADO_RUTA[atencion.estado];
-  const mi = atencion.miParada;
+function SinVisita({ sector }: { sector?: string }) {
   return (
-    <Tarjeta tono={destacada ? 'blanco' : 'claro'} estilo={destacada ? estilos.destacada : undefined}>
-      <Texto tipo="subtitulo">{titulo}</Texto>
-      <Texto tipo="grande">{cuando(atencion.fecha)}</Texto>
+    <Tarjeta>
+      <Etiqueta texto="Sin programar" tono="neutro" icono="calendario" />
+      <Texto tipo="grande">Aún no hay visita programada</Texto>
+      <Texto>
+        EPSEL todavía no programa la cisterna para {sector ?? 'tu sector'}. Cuando lo haga, aparecerá aquí con el día, el
+        turno y la placa del camión, y te llegará un aviso.
+      </Texto>
+      <Divisor />
+      <Texto tipo="pequeno">Mientras tanto, guarda agua en recipientes limpios y tapados.</Texto>
+    </Tarjeta>
+  );
+}
+
+function TarjetaProxima({ atencion, punto }: { atencion: Atencion; punto: boolean }) {
+  const mi = atencion.miParada;
+  const enCurso = atencion.estado === 'EN_CURSO';
+  const lugar = punto ? 'Tu punto de entrega' : 'Tu casa';
+  const avance = atencion.totalParadas ? atencion.paradasAtendidas / atencion.totalParadas : 0;
+
+  let titular: string;
+  let detalle: string;
+  if (!mi) {
+    titular = enCurso ? 'La cisterna está repartiendo' : teToca(atencion.fecha);
+    detalle = 'Tu casa se registró después de programar esta ruta: entra en la siguiente visita a tu sector.';
+  } else if (mi.estado === 'ATENDIDA') {
+    titular = 'Ya te atendieron';
+    detalle = 'La cisterna ya pasó por tu parada en esta ruta.';
+  } else if (mi.estado !== 'PENDIENTE') {
+    titular = mi.estado === 'REASIGNADA' ? 'Tu parada pasó a otra cisterna' : 'No se pudo atender tu parada';
+    detalle = mi.estado === 'REASIGNADA' ? 'EPSEL la reprogramó; te avisaremos cuándo llega.' : 'Puedes reportarlo para que EPSEL lo revise.';
+  } else if (enCurso) {
+    titular = mi.pendientesAntes === 0 ? '¡Eres la siguiente parada!' : `Faltan ${mi.pendientesAntes} ${mi.pendientesAntes === 1 ? 'parada' : 'paradas'}`;
+    detalle = mi.pendientesAntes === 0 ? 'Ten listos tus baldes o tu tanque.' : 'antes de la tuya. Ten listos tus baldes o tu tanque.';
+  } else {
+    titular = teToca(atencion.fecha);
+    detalle = `${TURNO_FRASE[atencion.turno]}. Serás la parada ${mi.orden} de ${atencion.totalParadas}. Te avisaremos cuando la cisterna salga.`;
+  }
+
+  return (
+    <Tarjeta>
       <Fila>
-        <Etiqueta texto={TURNO[atencion.turno]} />
-        <Etiqueta texto={estado.texto} tono={estado.tono} />
+        {enCurso ? <Etiqueta texto="En camino" tono="marino" icono="camion" /> : <Etiqueta texto="Programada" tono="info" icono="calendario" />}
+        <Text style={estilos.cuando}>{fechaCorta(atencion.fecha)} · {TURNO_CORTO[atencion.turno]}</Text>
       </Fila>
-      {mi ? (
+      <View style={estilos.titular}>
+        <View style={{ flex: 1, gap: 6 }}>
+          <Text style={estilos.grande} accessibilityRole="header">{titular}</Text>
+          <Texto>{detalle}</Texto>
+        </View>
+        <GotaAvance avance={avance} />
+      </View>
+      {mi && atencion.totalParadas > 0 ? (
         <>
-          <Texto>Tu parada: {mi.nombre}{mi.referencia ? ` · ${mi.referencia}` : ''}</Texto>
-          <Fila><Etiqueta texto={ESTADO_PARADA[mi.estado].texto} tono={ESTADO_PARADA[mi.estado].tono} /></Fila>
-          {atencion.estado === 'EN_CURSO' && mi.estado === 'PENDIENTE' ? (
-            <Texto tipo="subtitulo">{mi.pendientesAntes === 0 ? '¡Eres la siguiente parada!' : `Faltan ${mi.pendientesAntes} paradas antes que la tuya.`}</Texto>
-          ) : null}
+          <TiraParadas total={atencion.totalParadas} orden={mi.orden} pendientesAntes={mi.pendientesAntes} enCurso={enCurso} />
+          <View style={{ gap: 6 }} accessible accessibilityLabel={`${atencion.paradasAtendidas} paradas atendidas de ${atencion.totalParadas}. ${lugar}: parada ${mi.orden}.`}>
+            <Fila estilo={{ gap: 16 }}>
+              {enCurso ? <Leyenda muestra="atendida" texto={`${atencion.paradasAtendidas} atendidas`} /> : <Leyenda muestra="despues" texto={`${atencion.totalParadas} paradas programadas`} />}
+              {enCurso && mi.estado === 'PENDIENTE' && mi.pendientesAntes > 0 ? <Leyenda muestra="antes" texto={`${mi.pendientesAntes} antes de ti`} /> : null}
+            </Fila>
+            <Leyenda muestra="tuya" texto={`${lugar}: parada ${mi.orden} de ${atencion.totalParadas}`} naranja />
+          </View>
         </>
       ) : null}
-      <Texto tipo="pequeno">Avance de la ruta: {atencion.paradasAtendidas} de {atencion.totalParadas} paradas atendidas.</Texto>
+      {atencion.cisternaPlaca ? (
+        <>
+          <Divisor />
+          <PlacaCisterna placa={atencion.cisternaPlaca} capacidad={atencion.capacidadLitros ?? null} />
+          <Texto tipo="pequeno">Reconócela por su placa</Texto>
+        </>
+      ) : null}
+    </Tarjeta>
+  );
+}
+
+function Leyenda({ muestra, texto, naranja }: { muestra: 'atendida' | 'antes' | 'tuya' | 'despues'; texto: string; naranja?: boolean }) {
+  return (
+    <Fila estilo={{ gap: 6 }}>
+      <Muestra tipo={muestra} />
+      <Text style={[estilos.leyenda, naranja && { color: color.tuCasa }]}>{texto}</Text>
+    </Fila>
+  );
+}
+
+function TarjetaUltima({ atencion, alCalificar }: { atencion: Atencion; alCalificar: () => void }) {
+  const mi = atencion.miParada;
+  const estado = mi?.estado === 'ATENDIDA' ? { texto: 'Atendida', tono: 'bien' as const, icono: 'check' as const }
+    : mi?.estado === 'NO_ATENDIDA' ? { texto: 'No atendida', tono: 'error' as const, icono: 'alerta' as const }
+    : mi?.estado === 'REASIGNADA' ? { texto: 'Reprogramada', tono: 'neutro' as const, icono: 'calendario' as const }
+    : { texto: atencion.estado === 'INTERRUMPIDA' ? 'Interrumpida' : 'Completada', tono: 'neutro' as const, icono: 'check' as const };
+  return (
+    <Tarjeta>
+      <Fila estilo={{ justifyContent: 'space-between' }}>
+        <Texto tipo="subtitulo">Última entrega</Texto>
+        <Etiqueta texto={estado.texto} tono={estado.tono} icono={estado.icono} />
+      </Fila>
+      <Texto>{cuando(atencion.fecha)} · {TURNO_CORTO[atencion.turno]}{atencion.cisternaPlaca ? ` · cisterna ${atencion.cisternaPlaca}` : ''}</Texto>
+      {mi?.verificadaGps ? (
+        <Fila estilo={{ gap: 6, flexWrap: 'nowrap', alignItems: 'flex-start' }}>
+          <Icono nombre="escudo" tamano={20} color={color.bien} />
+          <Text style={[estilos.leyenda, { color: color.bien, flex: 1 }]}>Verificada por GPS: la cisterna llegó a menos de 50 m de tu parada</Text>
+        </Fila>
+      ) : null}
+      {mi?.miCalificacion != null ? (
+        <Fila estilo={{ gap: 4 }} >
+          <Text style={estilos.leyenda} accessibilityLabel={`Tu calificación: ${mi.miCalificacion} de 5 estrellas`}>Tu calificación:</Text>
+          {[1, 2, 3, 4, 5].map((n) => <Icono key={n} nombre={n <= mi.miCalificacion! ? 'estrella' : 'estrellaVacia'} tamano={20} color={color.acento} />)}
+        </Fila>
+      ) : mi?.estado === 'ATENDIDA' ? (
+        <Boton texto="Calificar la entrega" icono="estrellaVacia" variante="secundario" alPresionar={alCalificar} />
+      ) : null}
     </Tarjeta>
   );
 }
 
 const estilos = StyleSheet.create({
-  mapa: { height: 300, borderRadius: 22, borderBottomLeftRadius: 0, overflow: 'hidden', backgroundColor: color.c5 },
-  destacada: { borderWidth: 3, borderColor: color.acento },
+  pantalla: { flex: 1, backgroundColor: color.fondo },
+  contenido: { padding: medida.margen, paddingTop: 4, gap: 16, paddingBottom: 24 },
+  cuando: { fontSize: 15, fontFamily: fuente.cuerpo, color: color.tintaSuave },
+  titular: { flexDirection: 'row', gap: 12, alignItems: 'center' },
+  grande: { fontSize: 34, lineHeight: 40, fontFamily: fuente.titular, color: color.tinta, letterSpacing: -0.5 },
+  leyenda: { fontSize: 15, fontFamily: fuente.cuerpo, color: color.cuerpo },
 });

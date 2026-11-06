@@ -59,7 +59,7 @@ services:
 
       # Orígenes del panel web y del panel público, separados por coma (actualizar al desplegar el web)
       - key: CORS_ORIGINS
-        value: http://localhost:5173,https://agua-ya-web.vercel.app
+        value: http://localhost:5173,https://agua-ya-web.vercel.app,https://epsel-rediseno.vercel.app
 
       # OTP: "log" deja el código solo en los logs de Render (demo). Con las credenciales, cambiar a "twilio".
       - key: OTP_PROVIDER

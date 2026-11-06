@@ -103,7 +103,7 @@ class DatosReferencialesTest {
     @CsvSource({
             "10000001, Admin2026!, ADMIN",
             "20000001, Conductor2026!, CONDUCTOR",
-            "30000001, Vecino2026!, VECINO"
+            "30000001, 1234, VECINO"
     })
     void lasCuentasDePruebaPuedenIngresar(String dni, String password, String rol) throws Exception {
         mockMvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)

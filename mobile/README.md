@@ -12,18 +12,36 @@ La app usa el backend de Render (`https://aguaya-backend.onrender.com`). Para us
 
 ## Cuentas de prueba (datos de V3)
 
+Todos entran por la misma pantalla de ingreso.
+
 | Rol | Cómo entra |
 |---|---|
-| Conductor | DNI `20000001`, `20000002` o `20000003`, contraseña `Conductor2026!` |
-| Vecino | DNI `30000001` y siguientes: se pide el código por SMS. Con `OTP_PROVIDER=log` el código sale en los logs del backend; en dev (`exponer-codigo`) la app lo escribe sola |
+| Vecino | DNI `30000001` a `30000012` y la clave `1234` (V11). Los de P.J. Atusparias son `30000004`, `30000005` y `30000006` |
+| Conductor | Toca «Soy conductor de cisterna». DNI `20000001`, `20000002` o `20000003`, contraseña `Conductor2026!` |
 
-Para que el conductor vea algo, el administrador debe programar una ruta **para hoy** en el panel web y asignarle cisterna y conductor.
+Un vecino nuevo se registra con DNI, celular y código SMS, y elige su clave de 4 números. El SMS solo vuelve a usarse
+si olvida la clave («¿Olvidaste tu clave?»). Con `OTP_PROVIDER=log` el código sale en los logs del backend; en dev
+(`exponer-codigo`) la app lo escribe sola.
+
+## Simular el recorrido de la cisterna
+
+Sin manejar de verdad: desde la raíz del repo,
+
+```bash
+node scripts/simular-ruta.mjs
+```
+
+Ingresa como el conductor `20000001`, inicia su ruta de hoy, registra un viaje y lleva el camión de parada en parada
+enviando posiciones (cada 3 s) y marcando cada entrega (la geocerca la valida). Se ve en vivo en el panel del admin
+(Mapa en vivo) y en la app del vecino (pestaña Mapa). Antes, el admin debe programar una ruta **para hoy** y asignarle
+ese conductor y una cisterna. Opciones: `--ruta ID`, `--cada SEGUNDOS`, `--sin-atender` (solo mueve el camión; las
+entregas se marcan en la app del conductor), `--api URL` (por defecto Render).
 
 ## Qué hace
 
-**Vecino:**
-- se registra con DNI, celular y código SMS; marca su casa con el GPS o moviendo el pin del mapa;
-- ve su próxima cisterna (día, turno y cuántas paradas faltan antes que la suya);
+**Vecino** (diseño del Figma «Vecino · móvil», pestañas Inicio, Mapa, Reportar y Mi cuenta):
+- se registra con DNI, celular, código SMS y una clave de 4 números; marca su casa con el GPS o moviendo el pin;
+- ve su próxima cisterna: día, turno, cuántas paradas faltan antes de la suya (tira de paradas y gota de avance) y la placa del camión;
 - ve el camión en el mapa mientras reparte en su sector (se actualiza cada 15 s);
 - califica la última entrega, reporta problemas y sigue sus reportes.
 

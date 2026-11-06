@@ -719,6 +719,16 @@ a.carpeta:focus-visible { outline-offset: -3px; box-shadow: inset 0 0 0 6px var(
   background: var(--c4); color: var(--tinta); border-radius: var(--gota); font-size: var(--t-entrada); font-weight: 800;
 }
 @media (min-width: 60em) { .aguaya-caja { grid-template-columns: 6fr 5fr; gap: 4rem; } }
+.aguaya-sobretitulo { font-size: var(--t-pequeno); font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c4); }
+.aguaya-pasos { max-width: 40ch; }
+.aguaya-nota { padding: 0.75rem 1rem; background: var(--c2); border-radius: 18px 18px 18px 0; max-width: 40ch; }
+
+/* Anuncio corto de la app en otras páginas */
+.anuncio-aguaya {
+  display: grid; gap: 0.5rem; justify-items: start; margin-top: 2rem; padding: 1.5rem 1.75rem;
+  background: var(--c5); border-left: 6px solid var(--c3); border-radius: 0 28px 28px 0;
+}
+.anuncio-aguaya-titulo { font-size: var(--t-entrada); font-weight: 800; }
 
 /* ================================================================== Atención, trámites y nosotros */
 .alerta-cobro {

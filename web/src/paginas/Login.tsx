@@ -3,6 +3,7 @@ import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 
 import { useSesion } from '../auth/ContextoSesion';
 import { MensajeError } from '../componentes/Estado';
+import { WEB_PUBLICA_URL } from '../utilidades';
 
 export function Login() {
   const { usuario, iniciarSesion } = useSesion();
@@ -73,8 +74,8 @@ export function Login() {
           <button type="submit" className="boton boton-grande" disabled={enviando || dni.length !== 8 || !password}>
             {enviando ? 'Ingresando…' : 'Ingresar'}
           </button>
-          <a href="/transparencia" className="enlace-suave">
-            Ver el panel público de transparencia
+          <a href={WEB_PUBLICA_URL} className="enlace-suave">
+            Ir a la web de EPSEL
           </a>
           <p className="login-nota">Propuesta académica (UTP). Los datos son referenciales.</p>
         </form>

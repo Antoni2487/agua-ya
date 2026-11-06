@@ -13,13 +13,14 @@ import { RutaDetalle } from './paginas/admin/RutaDetalle';
 import { Rutas } from './paginas/admin/Rutas';
 import { Login } from './paginas/Login';
 import { NoEncontrada } from './paginas/NoEncontrada';
-import { Transparencia } from './paginas/publico/Transparencia';
+import { WEB_PUBLICA_URL } from './utilidades';
 
 export function App() {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/login" replace />} />
-      <Route path="/transparencia" element={<Transparencia />} />
+      {/* El panel público de transparencia vive en la web de EPSEL rediseñada (rediseno-epsel/informacion.html) */}
+      <Route path="/transparencia" element={<IrAWebPublica />} />
       <Route path="/login" element={<Login />} />
       <Route
         path="/admin"
@@ -43,4 +44,10 @@ export function App() {
       <Route path="*" element={<NoEncontrada />} />
     </Routes>
   );
+}
+
+/** Enlaces viejos a /transparencia: la información pública ahora está en la web de EPSEL rediseñada. */
+function IrAWebPublica() {
+  window.location.replace(`${WEB_PUBLICA_URL}/informacion.html#cifras`);
+  return null;
 }
