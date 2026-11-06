@@ -10,6 +10,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -92,5 +93,16 @@ class ProveedorDniMiApiTest {
                 new DniProperties("miapi", URL, "", 30)))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("DNI_API_TOKEN");
+    }
+
+    @Test
+    void springLoCreaConElConstructorPublico() {
+        // En Render fallaba con "No default constructor found": Spring debe elegir el constructor del builder
+        new ApplicationContextRunner()
+                .withPropertyValues("aguaya.dni.provider=miapi")
+                .withBean(RestClient.Builder.class, RestClient::builder)
+                .withBean(DniProperties.class, () -> PROPIEDADES)
+                .withBean(ProveedorDniMiApi.class)
+                .run(contexto -> assertThat(contexto).hasSingleBean(ProveedorDniMiApi.class));
     }
 }
