@@ -17,6 +17,32 @@ La **tarea principal** debe ser **la misma tarea del GOMS del PA1**. Cópiala ta
 
 Prepara la ruta de Atusparias en el panel del admin antes de cada sesión ([guion-exposicion.md](guion-exposicion.md#lista-del-día)).
 
+## GOMS: qué se hace exactamente
+
+El GOMS no se "llena" en la prueba: **ya está hecho en el PA1**. En el PA3 se hacen tres cosas:
+
+1. **Rehacer el GOMS sobre la app real.** Cambiaron algunos pasos respecto al Figma. Ya está hecho en la tabla de abajo.
+2. **Calcular el tiempo ideal con KLM**, igual que en el PA2: cada "pensar o reconocer" (M) vale 1,35 s y cada "apuntar y tocar" (P + clic) vale 1,30 s.
+3. **En la prueba, medir con cronómetro el tiempo real** y contar los toques. Después se compara con el tiempo ideal: diferencia (%) = (real − KLM) ÷ KLM × 100.
+
+| Tarea | Pasos en la app real (operadores) | KLM PA3 | KLM PA2 (Figma) |
+|---|---|---|---|
+| **T1 Vecino:** ¿dónde está el camión y cuánto falta? | M: leer en Inicio "Faltan N paradas" · P+clic: pestaña **Mapa** · M: reconocer el camión | M + (P+clic) + M = **4,00 s** | 5,35 s |
+| **T2 Vecino:** reportar que la cisterna no llegó | P+clic: pestaña **Reportar** · M: reconocer las opciones · P+clic: **No llegó** · P+clic: **Enviar reporte** · M: ver "Reporte enviado" | 3 × 1,30 + 2 × 1,35 = **6,60 s** | 5,30 s |
+| **T3 Conductor:** registrar una entrega (reemplaza "avisar demora", que ya no existe) | M: reconocer la parada siguiente · P+clic: **Entregué el agua** · M: ver "Atendida" | M + (P+clic) + M = **4,00 s** | 4,00 s (demora) |
+
+**Regla de selección (T1):** si solo quiere saber cuánto falta, le basta Inicio: 1 M = 1,35 s. Si además quiere ver dónde está, abre Mapa.
+
+**Qué se anota por persona:**
+- si completó la tarea sin ayuda (sí/no);
+- el tiempo real en segundos;
+- los toques reales, para comparar con los pasos del GOMS;
+- los errores, por ejemplo si tocó la pestaña equivocada o volvió atrás.
+
+Con eso se llena la eficiencia y la efectividad de la tabla comparativa.
+
+**Nota para el informe:** T2 tiene un toque más que en el Figma. En el Figma, elegir el motivo enviaba el reporte; en la app hay que tocar "Enviar reporte". Así se puede agregar un comentario y se evita enviar por un toque accidental (prevención de errores), y por eso ya no hace falta "Deshacer". Se puede discutir en las conclusiones.
+
 ## Protocolo (15–25 min por persona)
 
 | Fase | Qué hace el grupo | Qué se anota |
