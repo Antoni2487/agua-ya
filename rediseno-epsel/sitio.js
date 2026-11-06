@@ -6,7 +6,11 @@
 // URL del backend de AguaYa (panel público de transparencia). Con ?datos=ejemplo se usan datos de ejemplo.
 const API = window.EPSEL_API ?? 'https://aguaya-backend.onrender.com';
 const ESPERA_MS = 6000;
-const SOLO_EJEMPLO = new URLSearchParams(location.search).get('datos') === 'ejemplo';
+// Web del vecino de AguaYa. Mientras esté vacía, "Entrar a AguaYa" lleva a ¿Pasa hoy la cisterna?
+const AGUAYA_WEB = '';
+// WhatsApp de atención de EPSEL (#TeEscucha), el mismo que publica su sitio
+const WHATSAPP_EPSEL = '51942813797';
+const SOLO_EJEMPLO =new URLSearchParams(location.search).get('datos') === 'ejemplo';
 
 const hoy = new Date();
 const fechaCorta = new Intl.DateTimeFormat('es-PE', { weekday: 'long', day: 'numeric', month: 'long' });
@@ -112,39 +116,68 @@ function iniciarMenu() {
   escritorio.addEventListener('change', cerrarTodo);
 }
 
-/* ---------------------------------------------------------------- Avisos (de ejemplo: EPSEL los publica como comunicados) */
+/* ---------------------------------------------------------------- Avisos
+   Comunicados publicados por EPSEL entre el 29 de octubre y el 5 de noviembre de 2026. En el sitio actual son
+   imágenes sin texto alternativo; aquí se copiaron a texto para que se puedan leer, buscar y filtrar.
+   desde/hasta: fechas en que rige el aviso (hasta = null mientras siga vigente). */
 const TIPO_AVISO = {
   corte: 'Corte de agua',
-  baja: 'Poca presión',
-  cisterna: 'Cisterna de apoyo',
-  normal: 'Servicio normal',
+  obra: 'Trabajos en la red',
+  horario: 'Horario por turnos',
 };
 const AVISOS = [
-  { tipo: 'corte', distritos: ['José Leonardo Ortiz'], dia: 0, texto: 'De 8:00 a.m. a 4:00 p.m. en el P.J. Urrunaga y alrededores, por cambio de tubería.', consejo: 'En la tarde pasa una cisterna.' },
-  { tipo: 'baja', distritos: ['Chiclayo'], dia: 0, texto: 'De 2:00 p.m. a 8:00 p.m. en las partes altas de Cerropón, por limpieza del reservorio.', consejo: 'Guarda agua en la mañana.' },
-  { tipo: 'cisterna', distritos: ['Monsefú'], dia: 0, texto: 'Valle Hermoso recibe cisterna mientras se repara el pozo.', consejo: 'Revisa el día y el turno en «¿Pasa hoy la cisterna?».' },
-  { tipo: 'normal', distritos: ['Lambayeque', 'Ferreñafe'], dia: 0, texto: 'No hay cortes programados para hoy.' },
-  { tipo: 'corte', distritos: ['La Victoria'], dia: 1, texto: 'De 9:00 a.m. a 1:00 p.m. en la parte baja de la Urb. Santa Victoria, por conexión de la red nueva.', consejo: 'Llena tus baldes y tu tanque la noche anterior.' },
-  { tipo: 'baja', distritos: ['Pimentel'], dia: 2, texto: 'De 6:00 a.m. a 10:00 a.m. cerca del malecón, por mantenimiento de la bomba.' },
-  { tipo: 'corte', distritos: ['Chiclayo'], dia: 3, texto: 'De 8:00 a.m. a 2:00 p.m. en la Urb. Los Parques, por limpieza de buzones.', consejo: 'Cierra la llave de paso para que no entre aire a tu tubería.' },
+  { tipo: 'corte', lugares: ['Lambayeque'], desde: '2026-11-05', hasta: '2026-11-05',
+    texto: 'No habrá agua en el tercer turno (6:00 p.m. a 9:00 p.m.) en la ciudad de Lambayeque. La Junta de Usuarios del Valle Chancay-Lambayeque limpia el canal San Romualdo, que lleva el agua a la Planta N.º 2, y la planta produce menos.',
+    consejo: 'El primer y el segundo turno siguen normales: guarda agua antes de las 6:00 p.m.' },
+  { tipo: 'corte', lugares: ['Ferreñafe', 'Pueblo Nuevo'], desde: '2026-11-04', hasta: '2026-11-05',
+    texto: 'Corte por mantenimiento de la estación de bombeo de aguas residuales de Pueblo Nuevo: el miércoles 4, de 11:00 a.m. a 1:00 p.m. y de 5:00 a 7:00 p.m.; el jueves 5, de 6:00 a 8:00 a.m.',
+    consejo: 'Desde el segundo turno del jueves el agua vuelve poco a poco a su horario de siempre.' },
+  { tipo: 'corte', lugares: ['Ciudad Eten'], desde: '2026-11-04', hasta: null,
+    texto: 'Sin agua desde el miércoles 4 a las 11:15 a.m. por una avería en la tubería matriz de 4 pulgadas, en el cruce de las calles Miguel Grau y Juana Mendieta.',
+    consejo: 'Las cuadrillas reparan la tubería para devolver el servicio lo antes posible.' },
+  { tipo: 'corte', lugares: ['Posope Alto'], desde: '2026-11-04', hasta: null,
+    texto: 'Sin agua desde la madrugada del miércoles 4: un corte de luz en las redes de media tensión paró las bombas del pozo tubular N.º 1.',
+    consejo: 'EPSEL coordina con ENSA e instalará un grupo electrógeno para volver a llenar el reservorio.' },
+  { tipo: 'corte', lugares: ['Mocupe Tradicional'], desde: '2026-11-03', hasta: null,
+    texto: 'Sin agua desde el martes 3 a las 5:40 a.m.: una avería eléctrica en las redes de media tensión paró las bombas del pozo tubular.',
+    consejo: 'EPSEL coordina para que vuelva la luz y las bombas funcionen otra vez.' },
+  { tipo: 'obra', lugares: ['Íllimo'], desde: '2026-10-29', hasta: null,
+    texto: 'Se renueva el colector de desagüe de la avenida Panamericana, entre las calles La Capilla y 22 de Noviembre: 60 metros de tubería de concreto de más de 40 años se cambian por PVC, junto con las conexiones de las casas.',
+    consejo: 'Puede haber cortes cortos de agua mientras duren los trabajos: guarda agua con anticipación.' },
+  { tipo: 'horario', lugares: ['Motupe'], desde: '2026-10-01', hasta: null,
+    texto: 'El agua llega en 3 turnos, 8 horas al día: de 6:00 a 9:00 a.m., de 11:30 a.m. a 2:30 p.m. y de 4:00 a 6:00 p.m. Viene de los pozos Picaso y N.º 2 Santa Rosa.' },
 ];
-const DISTRITOS_AVISOS = ['Chiclayo', 'José Leonardo Ortiz', 'La Victoria', 'Pimentel', 'Monsefú', 'Lambayeque', 'Ferreñafe'];
-const avisoDe = (a, distrito) => a.distritos.some((d) => sinTildes(d) === sinTildes(distrito));
+const HOY_ISO = iso(hoy);
+const vigente = (a) => a.desde <= HOY_ISO && (a.hasta === null || a.hasta >= HOY_ISO);
+const LUGARES_AVISOS = [...new Set(AVISOS.flatMap((a) => a.lugares))].sort((a, b) => a.localeCompare(b, 'es'));
+const avisoDe = (a, lugar) => a.lugares.some((d) => sinTildes(d) === sinTildes(lugar));
 
-function itemAviso(a, conFecha) {
-  return elemento('li', { class: 'aviso', 'data-distritos': a.distritos.join('|') },
+function cuandoRige(a) {
+  const dia = (t) => fechaCorta.format(desdeIso(t));
+  if (a.tipo === 'horario') return 'Horario de todos los días';
+  if (a.hasta === a.desde) return nombreDelDia(a.desde);
+  if (a.hasta === null) return a.desde === HOY_ISO ? 'Desde hoy, hasta nuevo aviso' : `Desde el ${dia(a.desde)}, hasta nuevo aviso`;
+  return `Del ${dia(a.desde)} al ${dia(a.hasta)}`;
+}
+
+function itemAviso(a) {
+  return elemento('li', { class: 'aviso', 'data-distritos': a.lugares.join('|') },
     elemento('span', { class: `gota-vineta gota-${a.tipo}`, 'aria-hidden': 'true' }),
     elemento('div', {},
-      elemento('p', { class: 'aviso-titulo' }, elemento('strong', {}, TIPO_AVISO[a.tipo]), ' ', elemento('span', {}, a.distritos.join(' y '))),
-      conFecha && elemento('p', { class: 'aviso-dia' }, nombreDelDia(iso(sumarDias(a.dia)))),
+      elemento('p', { class: 'aviso-titulo' }, elemento('strong', {}, TIPO_AVISO[a.tipo]), ' ', elemento('span', {}, a.lugares.join(' y '))),
+      elemento('p', { class: 'aviso-dia' }, cuandoRige(a)),
       elemento('p', {}, a.consejo ? `${a.texto} ${a.consejo}` : a.texto)));
 }
 
-// Portada: solo los avisos de hoy
+// Portada: los avisos vigentes hoy (cortes y obras primero) y la cuenta en el atajo
 function pintarAvisosDeHoy() {
+  const deHoy = AVISOS.filter(vigente).sort((a, b) => (a.tipo === 'horario') - (b.tipo === 'horario'));
+  const cuenta = document.querySelector('[data-cuenta-avisos]');
+  const cortes = deHoy.filter((a) => a.tipo !== 'horario').length;
+  if (cuenta) cuenta.textContent = `${cortes} ${cortes === 1 ? 'aviso vigente' : 'avisos vigentes'} en ${new Set(deHoy.flatMap((a) => a.lugares)).size} lugares`;
   const lista = document.getElementById('lista-avisos');
   if (!lista || document.body.dataset.pagina === 'avisos') return;
-  lista.replaceChildren(...AVISOS.filter((a) => a.dia === 0).map((a) => itemAviso(a, false)));
+  lista.replaceChildren(...deHoy.slice(0, 4).map(itemAviso));
 }
 
 /* ---------------------------------------------------------------- Filtro por distrito (botones que se quedan presionados) */
@@ -168,20 +201,20 @@ function iniciarPaginaAvisos() {
   const listaProximos = document.getElementById('lista-proximos');
   const cuenta = document.getElementById('avisos-cuenta');
 
-  const pintar = (distrito) => {
-    const elegidos = AVISOS.filter((a) => !distrito || avisoDe(a, distrito));
-    const deHoy = elegidos.filter((a) => a.dia === 0);
-    const proximos = elegidos.filter((a) => a.dia > 0).sort((a, b) => a.dia - b.dia);
+  const pintar = (lugar) => {
+    const elegidos = AVISOS.filter((a) => !lugar || avisoDe(a, lugar));
+    const deHoy = elegidos.filter(vigente).sort((a, b) => (a.tipo === 'horario') - (b.tipo === 'horario'));
+    const proximos = elegidos.filter((a) => a.desde > HOY_ISO).sort((a, b) => a.desde.localeCompare(b.desde));
     const vacio = (texto) => elemento('li', { class: 'aviso aviso-vacio' },
       elemento('span', { class: 'gota-vineta gota-normal', 'aria-hidden': 'true' }), elemento('p', {}, texto));
-    const donde = distrito ? ` en ${distrito}` : '';
-    listaHoy.replaceChildren(...(deHoy.length ? deHoy.map((a) => itemAviso(a, false)) : [vacio(`No hay avisos para hoy${donde}. El servicio es normal.`)]));
-    listaProximos.replaceChildren(...(proximos.length ? proximos.map((a) => itemAviso(a, true)) : [vacio(`No hay cortes programados${donde} en los próximos días.`)]));
-    const total = deHoy.filter((a) => a.tipo !== 'normal').length + proximos.length;
-    cuenta.textContent = `${total === 1 ? '1 aviso' : `${total} avisos`}${donde || ' en todos los distritos'}.`;
+    const donde = lugar ? ` en ${lugar}` : '';
+    listaHoy.replaceChildren(...(deHoy.length ? deHoy.map(itemAviso) : [vacio(`No hay avisos para hoy${donde}. El servicio es normal.`)]));
+    listaProximos.replaceChildren(...(proximos.length ? proximos.map(itemAviso) : [vacio(`No hay cortes programados${donde} en los próximos días.`)]));
+    const total = deHoy.length + proximos.length;
+    cuenta.textContent = `${total === 1 ? '1 aviso' : `${total} avisos`}${donde || ' en total'}.`;
   };
   const inicial = new URLSearchParams(location.search).get('distrito') ?? '';
-  pintar(crearFiltro(document.getElementById('filtro-avisos'), DISTRITOS_AVISOS, pintar, inicial));
+  pintar(crearFiltro(document.getElementById('filtro-avisos'), LUGARES_AVISOS, pintar, inicial));
 }
 
 /* ---------------------------------------------------------------- Datos de ejemplo de las zonas (fechas relativas a hoy) */
@@ -302,14 +335,16 @@ function iniciarBuscador(datos) {
 
     const tarjetas = encontrados.slice(0, 4).map((s) => {
       const estado = estadoZona(s);
-      const avisosHoy = AVISOS.filter((a) => a.dia === 0 && a.tipo !== 'normal' && avisoDe(a, s.distrito));
+      const avisosHoy = AVISOS.filter((a) => vigente(a) && a.tipo !== 'horario' && avisoDe(a, s.distrito));
       const textoAviso = avisosHoy.length ? avisosHoy.map((a) => TIPO_AVISO[a.tipo]).join(', ') : 'sin cortes programados hoy';
       return elemento('article', { class: 'tarjeta-zona' },
         elemento('span', { class: `gota-grande ${estado.clase}`, 'aria-hidden': 'true' }),
         elemento('h3', {}, `${s.nombre}, ${s.distrito}`),
         elemento('p', { class: 'estado-zona' }, estado.largo),
         elemento('p', { class: 'detalle-zona' }, `Avisos en ${s.distrito}: ${textoAviso}. `,
-          elemento('a', { href: `avisos.html?distrito=${encodeURIComponent(s.distrito)}` }, `Ver los avisos de ${s.distrito}`)));
+          avisosHoy.length
+            ? elemento('a', { href: `avisos.html?distrito=${encodeURIComponent(s.distrito)}` }, `Ver los avisos de ${s.distrito}`)
+            : elemento('a', { href: 'avisos.html' }, 'Ver todos los comunicados')));
     });
     const mas = encontrados.length > 4 ? [elemento('p', {}, `Y ${encontrados.length - 4} zonas más. Escribe un nombre más exacto.`)] : [];
     const enlace = elemento('a', { class: 'enlace-flecha', href: enCisterna ? '#semana' : 'cisterna.html#semana' }, 'Ver la cisterna de toda la semana');
@@ -494,8 +529,36 @@ function iniciarFormulario() {
     const f = form.elements;
     const texto = [`Hola EPSEL, soy ${f.nombre.value.trim()}.`, `Motivo: ${f.motivo.value}.`,
       f.suministro.value.trim() && `Suministro: ${f.suministro.value.trim()}.`, f.mensaje.value.trim()].filter(Boolean).join('\n');
-    window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, '_blank', 'noopener');
+    window.open(`https://wa.me/${WHATSAPP_EPSEL}?text=${encodeURIComponent(texto)}`, '_blank', 'noopener');
   });
+}
+
+/* ---------------------------------------------------------------- Directorio de oficinas: se acorta mientras escribes */
+function iniciarOficinas() {
+  const input = document.getElementById('buscar-oficina');
+  if (!input) return;
+  const oficinas = [...document.querySelectorAll('#directorio [data-oficina]')];
+  const zonales = [...document.querySelectorAll('#directorio .zonal')];
+  const cuenta = document.getElementById('oficinas-cuenta');
+  const vacio = document.getElementById('oficinas-vacio');
+  const filtrar = () => {
+    const q = sinTildes(input.value);
+    let visibles = 0;
+    oficinas.forEach((li) => {
+      const si = !q || sinTildes(`${li.dataset.oficina} ${li.textContent}`).includes(q);
+      li.hidden = !si; if (si) visibles++;
+    });
+    // Si la búsqueda coincide con el nombre de la zonal, se ve toda la zonal
+    zonales.forEach((z) => {
+      const nombre = sinTildes(z.querySelector('h3').textContent);
+      if (q && nombre.includes(q)) z.querySelectorAll('[data-oficina]').forEach((li) => { if (li.hidden) { li.hidden = false; visibles++; } });
+      z.hidden = !z.querySelector('[data-oficina]:not([hidden])');
+    });
+    vacio.hidden = visibles > 0;
+    cuenta.textContent = q ? `${visibles === 1 ? '1 oficina' : `${visibles} oficinas`} para «${input.value.trim()}»` : `${oficinas.length} oficinas en ${zonales.length} zonas`;
+  };
+  input.addEventListener('input', filtrar);
+  filtrar();
 }
 
 /* ---------------------------------------------------------------- Aparición al desplazarse */
@@ -516,6 +579,7 @@ function iniciarMovimiento() {
 }
 
 /* ---------------------------------------------------------------- Inicio */
+if (AGUAYA_WEB) document.querySelectorAll('[data-aguaya]').forEach((a) => { a.href = AGUAYA_WEB; });
 document.querySelectorAll('[data-hoy]').forEach((el) => { el.textContent = `Hoy, ${fechaCorta.format(hoy)}`; });
 iniciarMenu();
 pintarAvisosDeHoy();
@@ -523,6 +587,7 @@ iniciarPaginaAvisos();
 iniciarAcordeon();
 iniciarIndice();
 iniciarFormulario();
+iniciarOficinas();
 iniciarInformacion();
 if (document.querySelector('.buscador, #lista-horarios')) {
   const sectores = pedir('sectores', sectoresDeEjemplo);

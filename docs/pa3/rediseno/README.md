@@ -1,8 +1,8 @@
 # Rediseño del sitio de EPSEL: resultados de axe y pruebas
 
-**Qué se probó:** las cuatro páginas del rediseño ([rediseno-epsel/](../../../rediseno-epsel/): portada, ¿Pasa hoy la cisterna?, Cortes y avisos e Información pública) con axe-core 4.10 (reglas WCAG 2.0, 2.1 y 2.2 A/AA + buenas prácticas), en Chrome, el 5 de noviembre de 2026. Es la misma herramienta y el mismo navegador de la [línea base del sitio actual](../linea-base/README.md).
+**Qué se probó:** las siete páginas del rediseño ([rediseno-epsel/](../../../rediseno-epsel/): portada, ¿Pasa hoy la cisterna?, Cortes y avisos, Atención y reclamos, Pagos y trámites, Información pública y Nosotros) con axe-core 4.10 (reglas WCAG 2.0, 2.1 y 2.2 A/AA + buenas prácticas), en Chrome, el 5 de noviembre de 2026. Es la misma herramienta y el mismo navegador de la [línea base del sitio actual](../linea-base/README.md).
 
-**Cómo repetirlo:** `node probar-rediseno.mjs file:///…/rediseno-epsel/index.html <carpeta-salida>` (portada) y `node probar-paginas.mjs file:///…/rediseno-epsel/ <carpeta-salida>` (las otras tres). Los reportes de axe están en [axe/](axe/).
+**Cómo repetirlo:** `node probar-rediseno.mjs file:///…/rediseno-epsel/index.html <carpeta-salida>` (portada) y `node probar-paginas.mjs file:///…/rediseno-epsel/ <carpeta-salida>` (las otras seis, más una revisión de enlaces e imágenes locales rotos en las siete). Los reportes de axe están en [axe/](axe/). De dónde salió cada contenido y los hallazgos nuevos del sitio actual están en [contenido-epsel.md](contenido-epsel.md).
 
 ## Antes y después (portada)
 
@@ -56,15 +56,19 @@ axe se corrió en cinco estados: escritorio (1440 px), escritorio con el menú a
 
 | Página | Estados probados con axe | Violaciones | Peso aprox. |
 |---|---|---|---|
-| ¿Pasa hoy la cisterna? (`cisterna.html`) | escritorio, escritorio con resultado de búsqueda, celular, celular con menú abierto | **0** | 200 KB |
-| Cortes y avisos (`avisos.html`) | escritorio, celular, celular con menú abierto | **0** | 160 KB |
-| Información pública (`informacion.html`) | escritorio, celular, celular con menú abierto | **0** | 240 KB |
+| ¿Pasa hoy la cisterna? (`cisterna.html`) | escritorio, escritorio con resultado de búsqueda, celular, celular con menú abierto | **0** | 290 KB |
+| Cortes y avisos (`avisos.html`) | escritorio, celular, celular con menú abierto | **0** | 270 KB |
+| Atención y reclamos (`atencion.html`) | escritorio, celular, celular con menú abierto | **0** | 220 KB |
+| Pagos y trámites (`tramites.html`) | escritorio, celular, celular con menú abierto | **0** | 200 KB |
+| Información pública (`informacion.html`) | escritorio, celular, celular con menú abierto | **0** | 270 KB |
+| Nosotros (`nosotros.html`) | escritorio, celular, celular con menú abierto | **0** | 210 KB |
 
-Las tres se abren con `?datos=ejemplo` para que el resultado no dependa del backend.
+Las seis se abren con `?datos=ejemplo` para que el resultado no dependa del backend.
 
 ### Pruebas funcionales (todas pasan)
 
-- **En las tres:**
+- **En las siete:** ningún enlace ni imagen local roto, incluidas las anclas `página.html#sección`.
+- **En las seis interiores:**
   - un solo `h1`;
   - las migas "Estás en" y el menú marcan la página actual con `aria-current="page"`;
   - el primer Tab enfoca "Ir al contenido principal";
@@ -73,16 +77,30 @@ Las tres se abren con `?datos=ejemplo` para que el resultado no dependa del back
   - la semana muestra 7 días, empezando por "Hoy";
   - cada visita trae su placa;
   - el filtro por distrito deja solo ese distrito, marca `aria-pressed="true"` y anuncia la cuenta con `role="status"`;
-  - el buscador encuentra "atusparias" y enlaza a los avisos de su distrito;
+  - el buscador encuentra "atusparias" y enlaza a los comunicados;
   - con menos de 3 letras muestra un error con `aria-invalid`.
 - **Cortes y avisos:**
-  - el filtro deja solo los avisos del distrito;
+  - el filtro deja solo los avisos de la localidad;
+  - el comunicado real de Lambayeque (sin agua en el tercer turno) está en texto;
   - si no hay avisos, lo dice con texto;
-  - `avisos.html?distrito=Monsefú` abre ya filtrado.
+  - `avisos.html?distrito=Motupe` abre ya filtrado.
+- **Atención y reclamos:**
+  - el directorio tiene las 27 oficinas reales;
+  - "reque" deja solo Reque, y "ferrenafe" (sin tilde) muestra toda la zonal;
+  - la cuenta se anuncia con `role="status"`;
+  - sin resultados lo dice con texto y da un teléfono;
+  - los teléfonos de emergencia se pueden tocar para llamar;
+  - el formulario abre WhatsApp con el número oficial de EPSEL.
+- **Pagos y trámites:**
+  - la oficina virtual enlaza a los 4 servicios reales de EPSEL;
+  - los requisitos de conexión nueva se ven abiertos.
 - **Información pública:**
   - la tabla muestra las 5 zonas, cada fila con su encabezado (`th scope="row"`);
   - cambiar el periodo (7, 30 o 90 días) cambia las cifras y se anuncia a los lectores de pantalla.
-- **Celular (390 px), en las tres:**
+- **Nosotros:**
+  - la historia tiene 7 hitos;
+  - las 5 entidades relacionadas enlazan a su sitio.
+- **Celular (390 px), en las seis:**
   - sin desplazamiento horizontal de la página;
   - 0 controles menores de 44 px;
   - 0 textos menores de 14 px.

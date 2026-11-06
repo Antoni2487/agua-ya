@@ -72,73 +72,93 @@
     "saved": "2026-11-05T18:39:15.986Z"
   },
   {
-    "file": "assets/monsefu-plaza.webp",
+    "file": "assets/epsel-cuadrilla.webp",
     "media": "image",
-    "ref": "openverse:baf8d90c-4f21-4642-a755-55b903cf568b",
-    "title": "Plaza de Armas de Monsefú",
-    "creator": "LLs",
-    "creatorUrl": "https://commons.wikimedia.org/wiki/User:LLs",
-    "date": null,
-    "license": "CC BY-SA 4.0",
-    "licenseCode": "by-sa",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
-    "creditRequired": true,
-    "page": "https://commons.wikimedia.org/w/index.php?curid=76015914",
-    "via": "Wikimedia Commons",
-    "image": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e5/Plaza_de_Armas_de_Monsef%C3%BA.jpg/1280px-Plaza_de_Armas_de_Monsef%C3%BA.jpg",
-    "width": 1280,
-    "height": 960,
-    "bytes": 219204,
-    "credit": "\"Plaza de Armas de Monsefú\" by LLs, CC BY-SA 4.0, via Wikimedia Commons",
+    "title": "Cuadrilla trabajando en un buzón",
+    "creator": "EPSEL S.A.",
+    "license": "Imagen de EPSEL S.A.",
+    "page": "https://www.epsel.com.pe/sue/",
+    "credit": "Foto: EPSEL S.A. (portada de www.epsel.com.pe, 5 de noviembre de 2026)",
     "notes": [
-      "Share-alike: an altered version (recoloured, combined with other pictures) must be shared under the same licence."
+      "Usada en una propuesta académica de rediseño del propio sitio de EPSEL. Redimensionada y pasada a WebP."
     ],
-    "saved": "2026-11-05T18:39:22.300Z"
+    "saved": "2026-11-05"
   },
   {
-    "file": "assets/cano.webp",
+    "file": "assets/epsel-cisterna.webp",
     "media": "image",
-    "ref": "openverse:4715b34c-ebd4-4b8d-8519-ae4800f153aa",
-    "title": "Zapallal- water tap (4217700166)",
-    "creator": "SuSanA Secretariat",
-    "creatorUrl": "https://www.flickr.com/people/23116228@N07",
-    "date": null,
-    "license": "CC BY 2.0",
-    "licenseCode": "by",
-    "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
-    "creditRequired": true,
-    "page": "https://commons.wikimedia.org/w/index.php?curid=36536632",
-    "via": "Wikimedia Commons",
-    "image": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/aa/Zapallal-_water_tap_%284217700166%29.jpg/1280px-Zapallal-_water_tap_%284217700166%29.jpg",
-    "width": 1280,
-    "height": 954,
-    "bytes": 266732,
-    "credit": "\"Zapallal- water tap (4217700166)\" by SuSanA Secretariat, CC BY 2.0, via Wikimedia Commons",
-    "notes": [],
-    "saved": "2026-11-05T18:39:29.175Z"
+    "title": "Camión cisterna de EPSEL junto a un reservorio",
+    "creator": "EPSEL S.A.",
+    "license": "Imagen de EPSEL S.A.",
+    "page": "https://www.epsel.com.pe/sue/",
+    "credit": "Foto: EPSEL S.A. (portada de www.epsel.com.pe, 5 de noviembre de 2026)",
+    "notes": [
+      "Usada en una propuesta académica de rediseño del propio sitio de EPSEL. Redimensionada y pasada a WebP."
+    ],
+    "saved": "2026-11-05"
   },
   {
-    "file": "assets/cisterna-baldes.webp",
+    "file": "assets/epsel-obra.webp",
     "media": "image",
-    "ref": "openverse:86d63d7a-1ef0-4efe-844c-cae9075e13b8",
-    "title": "MINISTERIO DE DEFENSA Y EJERCITO DISTRIBUYEN AGUA EN SAN JUAN DE LUIRGANCHO",
-    "creator": "Galería de fotografías del Ministerio de Defensa",
-    "creatorUrl": "https://www.flickr.com/photos/92793865@N07",
-    "date": null,
-    "license": "CC BY 2.0",
-    "licenseCode": "by",
-    "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
-    "creditRequired": true,
-    "page": "https://www.flickr.com/photos/92793865@N07/51432818327",
-    "via": "Flickr",
-    "image": "https://live.staticflickr.com/65535/51432818327_a5002841c7_b.jpg",
-    "width": 1024,
-    "height": 713,
-    "bytes": 292702,
-    "credit": "\"MINISTERIO DE DEFENSA Y EJERCITO DISTRIBUYEN AGUA EN SAN JUAN DE LUIRGANCHO\" by Galería de fotografías del Ministerio de Defensa, CC BY 2.0, via Flickr",
+    "title": "Obra en la red con retroexcavadora y camión",
+    "creator": "EPSEL S.A.",
+    "license": "Imagen de EPSEL S.A.",
+    "page": "https://www.epsel.com.pe/sue/",
+    "credit": "Foto: EPSEL S.A. (portada de www.epsel.com.pe, 5 de noviembre de 2026)",
     "notes": [
-      "Lima (San Juan de Lurigancho), no Lambayeque. Redimensionada a 1024 px y pasada a WebP."
+      "Usada en una propuesta académica de rediseño del propio sitio de EPSEL. Redimensionada y pasada a WebP."
     ],
-    "saved": "2026-11-06T01:48:26.888Z"
+    "saved": "2026-11-05"
+  },
+  {
+    "file": "assets/epsel-equipo.webp",
+    "media": "image",
+    "title": "Equipo de EPSEL",
+    "creator": "EPSEL S.A.",
+    "license": "Imagen de EPSEL S.A.",
+    "page": "https://www.epsel.com.pe/sue/",
+    "credit": "Foto: EPSEL S.A. (portada de www.epsel.com.pe, 5 de noviembre de 2026)",
+    "notes": [
+      "Usada en una propuesta académica de rediseño del propio sitio de EPSEL. Redimensionada y pasada a WebP."
+    ],
+    "saved": "2026-11-05"
+  },
+  {
+    "file": "assets/epsel-grifo.webp",
+    "media": "image",
+    "title": "Trabajador junto a un grifo contra incendios",
+    "creator": "EPSEL S.A.",
+    "license": "Imagen de EPSEL S.A.",
+    "page": "https://www.epsel.com.pe/sue/",
+    "credit": "Foto: EPSEL S.A. (portada de www.epsel.com.pe, 5 de noviembre de 2026)",
+    "notes": [
+      "Usada en una propuesta académica de rediseño del propio sitio de EPSEL. Redimensionada y pasada a WebP."
+    ],
+    "saved": "2026-11-05"
+  },
+  {
+    "file": "assets/epsel-conexion.webp",
+    "media": "image",
+    "title": "Conexión de agua en zanja",
+    "creator": "EPSEL S.A.",
+    "license": "Imagen de EPSEL S.A.",
+    "page": "https://www.epsel.com.pe/sue/",
+    "credit": "Foto: EPSEL S.A. (portada de www.epsel.com.pe, 5 de noviembre de 2026)",
+    "notes": [
+      "Usada en una propuesta académica de rediseño del propio sitio de EPSEL. Redimensionada y pasada a WebP."
+    ],
+    "saved": "2026-11-05"
+  },
+  {
+    "file": "assets/logo-epsel.webp",
+    "media": "image",
+    "title": "Logo de EPSEL S.A.",
+    "creator": "EPSEL S.A.",
+    "license": "Marca de EPSEL S.A.",
+    "credit": "Logo de EPSEL S.A.",
+    "notes": [
+      "Fondo exterior vuelto transparente y recortado. Solo para la propuesta académica."
+    ],
+    "saved": "2026-11-05"
   }
 ]

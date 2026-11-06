@@ -6,12 +6,26 @@
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { chromium } from 'playwright-core';
 import AxeBuilder from '@axe-core/playwright';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 
 const [base, salida] = process.argv.slice(2);
 mkdirSync(salida, { recursive: true });
+
+// Enlaces e imágenes locales que no existen (assets/… y página.html#ancla)
+const carpeta = fileURLToPath(base);
+const paginasHtml = readdirSync(carpeta).filter((f) => f.endsWith('.html'));
+const rotos = [];
+for (const f of paginasHtml) {
+  const html = readFileSync(`${carpeta}/${f}`, 'utf8');
+  for (const [, ref] of html.matchAll(/(?:src|href)="([^"#:?]+\.(?:html|webp|svg|css|js))(?:#[^"]+)?"/g)) if (!existsSync(`${carpeta}/${ref}`)) rotos.push(`${f} → ${ref}`);
+  for (const [, ref, ancla] of html.matchAll(/href="([a-z]+\.html)#([^"]+)"/g)) if (existsSync(`${carpeta}/${ref}`) && !readFileSync(`${carpeta}/${ref}`, 'utf8').includes(`id="${ancla}"`)) rotos.push(`${f} → ${ref}#${ancla}`);
+  for (const [, ancla] of html.matchAll(/href="#([^"]+)"/g)) if (!html.includes(`id="${ancla}"`)) rotos.push(`${f} → #${ancla}`);
+}
 const b = await chromium.launch({ executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe' });
 let fallas = 0;
 const ok = (c, m) => { if (!c) fallas++; console.log(`${c ? 'OK  ' : 'FALLA'} ${m}`); };
+ok(rotos.length === 0, `enlaces e imágenes locales que no existen en las ${paginasHtml.length} páginas: ${rotos.length}${rotos.length ? ` → ${rotos.join(' | ')}` : ''}`);
 const etiquetas = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'];
 const axe = async (p, nombre) => {
   const r = await new AxeBuilder({ page: p }).withTags(etiquetas).analyze();
@@ -38,14 +52,14 @@ const medir = (p) => p.evaluate(() => {
     const r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0 && getComputedStyle(e).visibility !== 'hidden';
   });
   // Los enlaces dentro de un párrafo son la excepción "en línea" de WCAG 2.5.8
-  const chicos = visibles.filter((e) => !(e.tagName === 'A' && e.closest('p, td, li > p'))
+  const chicos = visibles.filter((e) => !(e.tagName === 'A' && e.closest('p, td, dd, .pasos li, .lista-simple li'))
     && (e.getBoundingClientRect().height < 44 || e.getBoundingClientRect().width < 44));
   const textos = [...document.querySelectorAll('body *')].filter((e) => [...e.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())
     && !e.closest('.solo-lectores, svg') && parseFloat(getComputedStyle(e).fontSize) < 14);
   return { scroll: document.documentElement.scrollWidth > innerWidth, chicos: chicos.map((e) => e.outerHTML.slice(0, 80)), textos: textos.length };
 });
 
-for (const [pagina, nombre] of [['cisterna.html', 'cisterna'], ['avisos.html', 'avisos'], ['informacion.html', 'informacion']]) {
+for (const [pagina, nombre] of [['cisterna.html', 'cisterna'], ['avisos.html', 'avisos'], ['informacion.html', 'informacion'], ['atencion.html', 'atencion'], ['tramites.html', 'tramites'], ['nosotros.html', 'nosotros']]) {
   console.log(`\n== ${pagina}`);
   const p = await abrir(pagina, 1440);
   await axe(p, `${nombre}-escritorio`);
@@ -68,20 +82,21 @@ for (const [pagina, nombre] of [['cisterna.html', 'cisterna'], ['avisos.html', '
     ok((await p.locator('#semana-cuenta').innerText()).includes('Monsefú'), 'la cuenta anuncia el filtro (role=status)');
     await p.fill('#zona', 'atusparias'); await p.keyboard.press('Enter'); await p.waitForTimeout(200);
     ok((await p.locator('#resultado').innerText()).includes('Atusparias'), 'el buscador encuentra Atusparias');
-    ok(await p.locator('#resultado a[href^="avisos.html?distrito="]').count() > 0, 'el resultado enlaza a los avisos del distrito');
+    ok(await p.locator('#resultado a[href^="avisos.html"]').count() > 0, 'el resultado enlaza a los comunicados');
     await p.fill('#zona', 'xx'); await p.keyboard.press('Enter');
     ok(await p.locator('#zona').getAttribute('aria-invalid') === 'true', 'menos de 3 letras: error con aria-invalid');
     await axe(p, 'cisterna-escritorio-resultado');
   }
   if (nombre === 'avisos') {
     const todos = await p.locator('#lista-avisos .aviso, #lista-proximos .aviso').count();
-    await p.getByRole('button', { name: 'Chiclayo' }).click();
-    const chiclayo = await p.locator('#lista-avisos .aviso-titulo span, #lista-proximos .aviso-titulo span').allInnerTexts();
-    ok(chiclayo.length > 0 && chiclayo.length < todos && chiclayo.every((d) => d.includes('Chiclayo')), 'el filtro deja solo los avisos de Chiclayo');
+    await p.getByRole('button', { name: 'Lambayeque', exact: true }).click();
+    const lamb = await p.locator('#lista-avisos .aviso-titulo span, #lista-proximos .aviso-titulo span').allInnerTexts();
+    ok(lamb.length > 0 && lamb.length < todos && lamb.every((d) => d.includes('Lambayeque')), 'el filtro deja solo los avisos de Lambayeque');
+    ok((await p.locator('#lista-avisos').innerText()).includes('tercer turno'), 'el comunicado real de Lambayeque está en texto');
     await p.getByRole('button', { name: 'Ferreñafe' }).click();
     ok((await p.locator('#lista-proximos').innerText()).includes('No hay cortes programados en Ferreñafe'), 'sin avisos: lo dice con texto');
-    const q = await abrir(pagina, 1440, '&distrito=Monsef%C3%BA');
-    ok(await q.getByRole('button', { name: 'Monsefú' }).getAttribute('aria-pressed') === 'true', 'avisos.html?distrito=Monsefú abre con ese filtro');
+    const q = await abrir(pagina, 1440, '&distrito=Motupe');
+    ok(await q.getByRole('button', { name: 'Motupe' }).getAttribute('aria-pressed') === 'true', 'avisos.html?distrito=Motupe abre con ese filtro');
     await q.context().close();
   }
   if (nombre === 'informacion') {
@@ -93,6 +108,30 @@ for (const [pagina, nombre] of [['cisterna.html', 'cisterna'], ['avisos.html', '
     ok(antes !== despues, `cambiar el periodo cambia las cifras (${antes} → ${despues})`);
     ok((await p.locator('#cifras-estado').innerText()).includes('7 días'), 'el cambio de periodo se anuncia (role=status)');
     ok(!(await p.locator('.numero-cifra').allInnerTexts()).some((t) => t.includes('…')), 'no queda ninguna cifra cargando');
+  }
+  if (nombre === 'atencion') {
+    const total = await p.locator('#directorio [data-oficina]').count();
+    ok(total === 27, `el directorio tiene las 27 oficinas reales (${total})`);
+    await p.fill('#buscar-oficina', 'reque');
+    ok(await p.locator('#directorio [data-oficina]:visible').count() === 1, 'buscar «reque» deja solo la oficina de Reque');
+    ok((await p.locator('#oficinas-cuenta').innerText()).includes('1 oficina'), 'la cuenta se anuncia (role=status)');
+    await p.fill('#buscar-oficina', 'ferrenafe');
+    ok(await p.locator('#directorio [data-oficina]:visible').count() === 4, 'buscar «ferrenafe» (sin tilde) muestra la zonal completa');
+    await p.fill('#buscar-oficina', 'xyz');
+    ok(await p.locator('#oficinas-vacio').isVisible(), 'sin resultados: lo dice con texto y da un teléfono');
+    await p.fill('#buscar-oficina', '');
+    ok(await p.locator('a[href="tel:+51932070554"]').count() > 0, 'el teléfono de emergencias se puede tocar para llamar');
+    await p.evaluate(() => { window.open = (url) => { window.abierto = url; }; });
+    await p.fill('#r-nombre', 'Ana'); await p.selectOption('#r-motivo', 'Fuga o tubería rota'); await p.click('#escribenos button[type=submit]');
+    ok((await p.evaluate(() => window.abierto ?? '')).startsWith('https://wa.me/51942813797?text='), 'el formulario abre WhatsApp con el número oficial de EPSEL');
+  }
+  if (nombre === 'tramites') {
+    ok(await p.locator('#oficina-virtual a[href*="epsel.com.pe/sue/Sicdesa"]').count() === 4, 'la oficina virtual enlaza a los 4 servicios reales');
+    ok(await p.locator('#tramites details[open] summary').innerText().then((s) => s.includes('Conexión nueva')), 'los requisitos de conexión nueva se ven abiertos');
+  }
+  if (nombre === 'nosotros') {
+    ok(await p.locator('.linea-tiempo li').count() === 7, 'la historia tiene 7 hitos');
+    ok(await p.locator('#entidades a').count() === 5, 'las 5 entidades relacionadas enlazan a su sitio');
   }
   ok(p.errores.length === 0, `sin errores de JavaScript${p.errores.length ? `: ${p.errores.join(' | ')}` : ''}`);
   await p.context().close();
