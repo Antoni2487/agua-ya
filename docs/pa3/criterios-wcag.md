@@ -47,6 +47,20 @@ En la app no hay Tab ni `:focus`: el equivalente es **TalkBack** (Android) o **V
 - **Fuente del sistema al máximo.** Puede que algún texto se corte.
 - **El mapa.** Es visual por naturaleza. Para el lector, el mapa tiene una descripción en texto y la hoja de abajo dice cuántas paradas faltan. Si alguien no ve el mapa, no pierde información.
 
+### Cómo analizar la app (WAVE y axe no sirven en una app nativa)
+
+WAVE y axe analizan páginas web. La app no es una página: se dibuja con componentes nativos de Android. Su equivalente es **Accessibility Scanner**, la app gratuita de Google en Play Store, que revisa:
+- el tamaño de los toques (48 dp);
+- el contraste;
+- las etiquetas que faltan.
+
+**Pasos:**
+1. Instalar Accessibility Scanner y darle permiso.
+2. Abrir AguaYa y tocar el botón azul del Scanner en cada pantalla: Acceso, Inicio del vecino, Mapa, Reportar y Calificar, y en el conductor Mis rutas y la ruta.
+3. Hacer una captura del resultado de cada una.
+
+Esas capturas son la evidencia de la app. **Las 3 pantallas mínimas de la rúbrica igual se cumplen con la web**: la web rediseñada tiene 7 páginas y el panel del admin también se puede analizar con axe.
+
 ## Reporte automatizado (deliverable 4: mínimo 3 pantallas)
 
 Ya existe el reporte de axe sobre el sistema real: [rediseno/README.md](rediseno/README.md), con los JSON en `rediseno/axe/`. Da **0 violaciones en las 7 páginas** y en sus estados de escritorio, celular y menú abierto.
