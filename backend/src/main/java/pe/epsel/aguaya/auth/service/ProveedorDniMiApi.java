@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -40,6 +41,7 @@ public class ProveedorDniMiApi implements ProveedorDni {
     private final RestClient restClient;
     private final String url;
 
+    @Autowired
     public ProveedorDniMiApi(RestClient.Builder builder, DniProperties properties) {
         this(builder.requestFactory(fabrica(properties.timeoutSegundos())).build(), properties);
     }
