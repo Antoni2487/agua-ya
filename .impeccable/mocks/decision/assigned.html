@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=390">
+<title>Friso de Túcume</title>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--marino:#0E2A5C;--adobe:#E6D9C3;--adobe2:#D8C7AA;--agua:#1B8FD2;--agua-osc:#0A5BB5;--barro:#9C4417;--tinta:#1B2433;--suave:#4A5568}
+*{box-sizing:border-box;margin:0}
+body{width:390px;height:844px;overflow:hidden;font-family:'Atkinson Hyperlegible',system-ui,sans-serif;background:#F4EEE3;color:var(--tinta);font-size:16px}
+header{background:var(--marino);color:#fff;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 16px}
+.marca{display:flex;align-items:center;gap:8px;font-weight:700;font-size:22px;letter-spacing:-.3px}
+.marca b{color:#5CC6F2}
+.menu{width:44px;height:44px;border:2px solid rgba(255,255,255,.35);border-radius:10px;display:grid;place-items:center}
+.greca{height:14px;background:
+ linear-gradient(90deg,var(--marino) 0 25%,transparent 0) 0 0/28px 7px,
+ linear-gradient(90deg,transparent 0 50%,var(--marino) 0 75%,transparent 0) 0 7px/28px 7px,#F4EEE3}
+main{padding:14px 16px}
+.hola{font-size:16px;color:var(--suave)}
+.hola strong{color:var(--tinta)}
+.tarjeta{margin-top:12px;background:var(--adobe);border-radius:4px;padding:18px 16px 16px;border-top:6px solid var(--agua-osc)}
+.fila{display:flex;justify-content:space-between;align-items:center}
+.cuando{font-size:15px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--marino)}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--marino);color:#fff;font-size:14px;font-weight:700;padding:6px 10px;border-radius:999px}
+.chip i{width:8px;height:8px;border-radius:50%;background:#5CC6F2;display:block}
+h1{font-size:40px;line-height:1.02;margin-top:14px;color:var(--marino);letter-spacing:-.8px}
+h1 span{display:block;font-size:22px;letter-spacing:0;color:var(--tinta);margin-top:4px;font-weight:400}
+.friso{margin-top:18px;height:74px;display:flex;align-items:flex-end;gap:3px;position:relative}
+.p{flex:1;border:2px solid var(--marino);border-bottom-width:3px}
+.a{background:linear-gradient(var(--agua),var(--agua-osc));border-color:var(--agua-osc)}
+.pend{border-style:dashed;background:rgba(255,255,255,.35)}
+.yo{border:3px solid var(--barro);background:#fff}
+.cis{position:absolute;left:calc(9/24*100% - 6px);top:-4px;font-size:11px;font-weight:700;background:var(--marino);color:#fff;padding:2px 5px;border-radius:3px}
+.marcayo{position:absolute;left:calc(12/24*100% - 2px);top:-4px;font-size:11px;font-weight:700;color:var(--barro)}
+.leyenda{display:flex;gap:14px;margin-top:10px;font-size:14px;color:var(--tinta)}
+.leyenda span{display:flex;align-items:center;gap:6px}
+.leyenda i{width:14px;height:14px;display:block;border:2px solid var(--marino)}
+.placa{margin-top:16px;display:flex;align-items:center;gap:10px;background:#fff;border:2px solid var(--marino);border-radius:6px;padding:8px 10px}
+.placa b{font-size:20px;letter-spacing:2px;border-right:2px solid var(--adobe2);padding-right:10px}
+.placa small{font-size:14px;color:var(--suave)}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;height:56px;border-radius:6px;font-size:18px;font-weight:700;margin-top:14px}
+.prim{background:var(--marino);color:#fff}
+.sec{border:2px solid var(--marino);color:var(--marino);background:transparent;margin-top:10px;height:52px}
+.ultima{margin-top:16px;padding-top:12px;border-top:2px dashed var(--adobe2);font-size:15px;color:var(--suave);display:flex;justify-content:space-between}
+footer{position:absolute;bottom:0;width:390px;padding:10px 16px;font-size:14px;color:var(--suave);display:flex;gap:8px;align-items:center}
+</style></head><body>
+<header><div class="marca"><svg width="22" height="28" viewBox="0 0 22 28"><path d="M11 0C11 0 0 13 0 18a11 10 0 0 0 22 0C22 13 11 0 11 0z" fill="#5CC6F2"/></svg>Agua<b>Ya</b></div><div class="menu"><svg width="20" height="14"><path d="M0 1h20M0 7h20M0 13h20" stroke="#fff" stroke-width="2"/></svg></div></header>
+<div class="greca"></div>
+<main>
+<p class="hola">Hola, <strong>Carmen</strong> · Cerropón, Chiclayo</p>
+<section class="tarjeta">
+ <div class="fila"><span class="cuando">Hoy · turno mañana</span><span class="chip"><i></i>En camino</span></div>
+ <h1>Faltan 3 paradas<span>antes de la tuya (parada 13 de 24)</span></h1>
+ <div class="friso">
+  <div class="p a" style="height:30%"></div><div class="p a" style="height:50%"></div><div class="p a" style="height:70%"></div><div class="p a" style="height:90%"></div><div class="p a" style="height:70%"></div><div class="p a" style="height:50%"></div><div class="p a" style="height:30%"></div><div class="p a" style="height:50%"></div><div class="p a" style="height:70%"></div>
+  <div class="p pend" style="height:90%"></div><div class="p pend" style="height:70%"></div><div class="p pend" style="height:50%"></div>
+  <div class="p yo" style="height:30%"></div>
+  <div class="p" style="height:50%"></div><div class="p" style="height:70%"></div><div class="p" style="height:90%"></div><div class="p" style="height:70%"></div><div class="p" style="height:50%"></div><div class="p" style="height:30%"></div><div class="p" style="height:50%"></div><div class="p" style="height:70%"></div><div class="p" style="height:90%"></div><div class="p" style="height:70%"></div><div class="p" style="height:50%"></div>
+  <span class="cis">▲ aquí</span><span class="marcayo">TU CASA</span>
+ </div>
+ <div class="leyenda"><span><i style="background:#1B8FD2;border-color:#0A5BB5"></i>Atendidas: 9</span><span><i style="border-style:dashed"></i>Antes de ti: 3</span><span><i style="border-color:#9C4417;border-width:3px"></i>Tu casa</span></div>
+ <div class="placa"><b>AYA-101</b><small>Cisterna de 12 000 L<br>Reconócela por su placa</small></div>
+</section>
+<a class="btn prim">Ver la cisterna en el mapa</a>
+<a class="btn sec">Reportar un problema</a>
+<p class="ultima"><span>Última entrega: lun 2 nov</span><span>Calificaste ★★★★</span></p>
+</main>
+<footer>Servicio de EPSEL S.A. · Datos referenciales</footer>
+</body></html>

@@ -1,0 +1,625 @@
+{
+  "url": "https://www.epsel.com.pe/sue/",
+  "fecha": "2026-11-05T01:55:16.496Z",
+  "axe": "4.10.3",
+  "reglasEvaluadas": {
+    "type": "tag",
+    "values": [
+      "wcag2a",
+      "wcag2aa",
+      "wcag21a",
+      "wcag21aa",
+      "best-practice"
+    ]
+  },
+  "conteo": {
+    "violaciones": 9,
+    "aprobadas": 37,
+    "revisar": 3
+  },
+  "violaciones": [
+    {
+      "id": "aria-command-name",
+      "impacto": "serious",
+      "ayuda": "ARIA commands must have an accessible name",
+      "wcag": [
+        "wcag2a",
+        "wcag412"
+      ],
+      "enlace": "https://dequeuniversity.com/rules/axe/4.10/aria-command-name?application=playwright",
+      "elementos": [
+        {
+          "selector": "iframe .pzNkMb-euCgFf-LgbsSe",
+          "html": "<div role=\"button\" class=\"U26fgb JRtysb ZDSs1 pzNkMb-euCgFf-LgbsSe\" jscontroller=\"iSvg6e\" jsaction=\"click:cOuCgd; mousedown:UX7yZ; mouseup:lbsD7e; mouseenter:tfO1Yc; mouseleave:JywGue; focus:AHmuwe; b",
+          "resumen": "Fix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+        }
+      ]
+    },
+    {
+      "id": "aria-prohibited-attr",
+      "impacto": "serious",
+      "ayuda": "Elements must only use permitted ARIA attributes",
+      "wcag": [
+        "wcag2a",
+        "wcag412"
+      ],
+      "enlace": "https://dequeuniversity.com/rules/axe/4.10/aria-prohibited-attr?application=playwright",
+      "elementos": [
+        {
+          "selector": "iframe .i4ewOd-pzNkMb-xl07Ob-haAclf",
+          "html": "<div class=\"i4ewOd-pzNkMb-xl07Ob-haAclf i4ewOd-pzNkMb-bMcfAe\" data-tooltip=\"Compartir\" aria-label=\"Compartir\">",
+          "resumen": "Fix all of the following:\n  aria-label attribute cannot be used on a div with no valid role attribute."
+        },
+        {
+          "selector": "iframe .i4ewOd-pzNkMb-n9oEIb",
+          "html": "<div class=\"i4ewOd-pzNkMb-n9oEIb i4ewOd-pzNkMb-bMcfAe\" data-tooltip=\"Ampliar el mapa\" aria-label=\"Ampliar el mapa\"><div class=\"i4ewOd-pzNkMb-LgbsSe\"></div></div>",
+          "resumen": "Fix all of the following:\n  aria-label attribute cannot be used on a div with no valid role attribute."
+        },
+        {
+          "selector": "iframe .nJjxad-bEDTcc-LgbsSe",
+          "html": "<div class=\"nJjxad-LgbsSe nJjxad-bEDTcc-LgbsSe\" data-tooltip=\"Acercar\" aria-label=\"Acercar\"></div>",
+          "resumen": "Fix all of the following:\n  aria-label attribute cannot be used on a div with no valid role attribute."
+        },
+        {
+          "selector": "iframe .nJjxad-m9bMae-LgbsSe",
+          "html": "<div class=\"nJjxad-LgbsSe nJjxad-m9bMae-LgbsSe\" data-tooltip=\"Alejar\" aria-label=\"Alejar\"></div>",
+          "resumen": "Fix all of the following:\n  aria-label attribute cannot be used on a div with no valid role attribute."
+        }
+      ]
+    },
+    {
+      "id": "color-contrast",
+      "impacto": "serious",
+      "ayuda": "Elements must meet minimum color contrast ratio thresholds",
+      "wcag": [
+        "wcag2aa",
+        "wcag143"
+      ],
+      "enlace": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=playwright",
+      "elementos": [
+        {
+          "selector": "a[href$=\"PortalTransparencia.aspx\"]",
+          "html": "<a class=\"btn btn-danger\" href=\"PortalTransparencia.aspx\"><i class=\"glyphicon glyphicon-zoom-in\">&nbsp;</i>Transparencia</a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 3.96 (foreground color: #ffffff, background color: #d9534f, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": "p > .btn-primary.btn",
+          "html": "<a class=\"btn btn-primary\" href=\"https://www.epsel.com.pe/Intranet/WFrmLogueo.aspx\"><i class=\"glyphicon glyphicon-level-up\">&nbsp;</i>Intranet</a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 3.24 (foreground color: #ffffff, background color: #f85a16, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": "p > .btn-success.btn",
+          "html": "<a class=\"btn btn-success\" href=\"https://api.whatsapp.com/send/?phone=51942813797&amp;text=Me+interesa+comunicarme+con+Epsel+S.A.+&amp;app_absent=0\">",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 2.48 (foreground color: #ffffff, background color: #5cb85c, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".dropdown:nth-child(1) > .dropdown-toggle[data-toggle=\"dropdown\"][href=\"#\"]",
+          "html": "<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\"><i class=\"glyphicon glyphicon-align-center\">&nbsp;</i>Nosotros<span class=\"caret\"></span></a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 3.2 (foreground color: #ffffff, background color: #0092ff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".dropdown:nth-child(2) > .dropdown-toggle[data-toggle=\"dropdown\"][href=\"#\"]",
+          "html": "<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\"><i class=\"glyphicon glyphicon-book\">&nbsp;</i>Orientación al Cliente<span class=\"caret\"></span></a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 3.2 (foreground color: #ffffff, background color: #0092ff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".dropdown:nth-child(3) > .dropdown-toggle[data-toggle=\"dropdown\"][href=\"#\"]",
+          "html": "<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\"><i class=\"glyphicon glyphicon-briefcase\">&nbsp;</i>Ciclo Operacional<span class=\"caret\"></span></a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 3.2 (foreground color: #ffffff, background color: #0092ff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".dropdown:nth-child(4) > .dropdown-toggle[data-toggle=\"dropdown\"][href=\"#\"]",
+          "html": "<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\"><i class=\"glyphicon glyphicon-globe\">&nbsp;</i>Gobernanza y Gobernabilidad<span class=\"caret\"></span></a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 3.2 (foreground color: #ffffff, background color: #0092ff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".dropdown:nth-child(5) > .dropdown-toggle[data-toggle=\"dropdown\"][href=\"#\"]",
+          "html": "<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\"><i class=\"glyphicon glyphicon-open-file\">&nbsp;</i>VMA<span class=\"caret\"></span></a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 3.2 (foreground color: #ffffff, background color: #0092ff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".dropdown:nth-child(6) > .dropdown-toggle[data-toggle=\"dropdown\"][href=\"#\"]",
+          "html": "<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\"><i class=\"glyphicon glyphicon-info-sign\">&nbsp;</i>Integridad<span class=\"caret\"></span></a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 3.2 (foreground color: #ffffff, background color: #0092ff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".left.active.item > .carousel-caption > .btn-danger.btn[runat=\"server\"]",
+          "html": "<a runat=\"server\" class=\"btn btn-danger\" href=\"PortalNoticia.aspx?IdNoticia=4960\">Leer más</a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 3.96 (foreground color: #ffffff, background color: #d9534f, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".col-lg-6:nth-child(2) > p:nth-child(2)",
+          "html": "<p style=\"text-align: justify;\">Estamos adscritos al Ministerio de Vivienda, Construcción y Saneamiento (MVCS). </p>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 4.18 (foreground color: #777777, background color: #f8f7f7, font size: 12.6pt (16.8px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".col-lg-6:nth-child(2) > p:nth-child(3)",
+          "html": "<p style=\"text-align: justify;\">",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 4.18 (foreground color: #777777, background color: #f8f7f7, font size: 12.6pt (16.8px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": "iframe li:nth-child(2) > a[target=\"_blank\"]",
+          "html": "<a href=\"//www.google.com/intl/es_419/help/terms_maps.html\" target=\"_blank\">Condiciones</a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 3.56 (foreground color: #4285f4, background color: #ffffff, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".left.active.item > .carrusel-noticia > .carrusel-noticia-fondo > .carrusel-noticia-fecha-mg > .carrusel-noticia-fecha-mes",
+          "html": "<div class=\"carrusel-noticia-fecha-mes\">Nov.</div>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 3.83 (foreground color: #ffffff, background color: #ff006e, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".left.active.item > .carrusel-noticia > .carrusel-noticia-fondo > .carrusel-noticia-fecha-mg > .carrusel-noticia-fecha-anio",
+          "html": "<div class=\"carrusel-noticia-fecha-anio\">2026</div>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 3.83 (foreground color: #ffffff, background color: #ff006e, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": "#sldEducacion > .carousel-inner > .left.active.item > .carrusel-noticia > .carrusel-noticia-fondo > .carrusel-noticia-mas > .btn-success.btn[runat=\"server\"]",
+          "html": "<a runat=\"server\" class=\"btn btn-success\" href=\"PortalNoticia.aspx?IdNoticia=4964\">Leer más...</a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 2.48 (foreground color: #ffffff, background color: #5cb85c, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".left.active.item > .carrusel-noticia > .carrusel-noticia-fondo > .carrusel-noticia-fecha-bl > .carrusel-noticia-fecha-mes",
+          "html": "<div class=\"carrusel-noticia-fecha-mes\">Jul.</div>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 3.2 (foreground color: #ffffff, background color: #0092ff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".left.active.item > .carrusel-noticia > .carrusel-noticia-fondo > .carrusel-noticia-fecha-bl > .carrusel-noticia-fecha-anio",
+          "html": "<div class=\"carrusel-noticia-fecha-anio\">2026</div>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 3.2 (foreground color: #ffffff, background color: #0092ff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": "#sldOrientacion > .carousel-inner > .left.active.item > .carrusel-noticia > .carrusel-noticia-fondo > .carrusel-noticia-mas > .btn-success.btn[runat=\"server\"]",
+          "html": "<a runat=\"server\" class=\"btn btn-success\" href=\"PortalNoticia.aspx?IdNoticia=4687\">Leer más...</a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 2.48 (foreground color: #ffffff, background color: #5cb85c, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".left.active.item > .carrusel-noticia > .carrusel-noticia-fondo > .carrusel-noticia-fecha-rd > .carrusel-noticia-fecha-mes",
+          "html": "<div class=\"carrusel-noticia-fecha-mes\">Oct.</div>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 3.99 (foreground color: #ffffff, background color: #ff0000, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".left.active.item > .carrusel-noticia > .carrusel-noticia-fondo > .carrusel-noticia-fecha-rd > .carrusel-noticia-fecha-anio",
+          "html": "<div class=\"carrusel-noticia-fecha-anio\">2024</div>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 3.99 (foreground color: #ffffff, background color: #ff0000, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": "#sldBoletin > .carousel-inner > .left.active.item > .carrusel-noticia > .carrusel-noticia-fondo > .carrusel-noticia-mas > .btn-success.btn[runat=\"server\"]",
+          "html": "<a runat=\"server\" class=\"btn btn-success\" href=\"PortalNoticia.aspx?IdNoticia=2572\">Leer más...</a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 2.48 (foreground color: #ffffff, background color: #5cb85c, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".text-center > .btn-primary.btn",
+          "html": "<a class=\"btn btn-primary\" href=\"https://eps.center/central-virtual/epsel/dana/proceso-monitoreo/programaciones\"><i class=\"glyphicon glyphicon-level-up\">&nbsp;</i>Ingresa aquí</a>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 3.24 (foreground color: #ffffff, background color: #f85a16, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "selector": ".btn-info",
+          "html": "<button class=\"btn btn-info\" data-dismiss=\"modal\" aria-hidden=\"true\"><i class=\"glyphicon glyphicon-log-out\">&nbsp;</i>Cerrar</button>",
+          "resumen": "Fix any of the following:\n  Element has insufficient color contrast of 2.09 (foreground color: #ffffff, background color: #5bc0de, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        }
+      ]
+    },
+    {
+      "id": "frame-title",
+      "impacto": "serious",
+      "ayuda": "Frames must have an accessible name",
+      "wcag": [
+        "wcag2a",
+        "wcag412"
+      ],
+      "enlace": "https://dequeuniversity.com/rules/axe/4.10/frame-title?application=playwright",
+      "elementos": [
+        {
+          "selector": "iframe",
+          "html": "<iframe style=\"border: 0px solid #ffffff; width: 100%; height: 500px;\" src=\"https://www.google.com/maps/d/embed?mid=19OQBeuz0VmkDLhcmXtb2Zgwmy3uPj9_f\"></iframe>",
+          "resumen": "Fix any of the following:\n  Element has no title attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        }
+      ]
+    },
+    {
+      "id": "heading-order",
+      "impacto": "moderate",
+      "ayuda": "Heading levels should only increase by one",
+      "wcag": [],
+      "enlace": "https://dequeuniversity.com/rules/axe/4.10/heading-order?application=playwright",
+      "elementos": [
+        {
+          "selector": ".left.active.item > .carousel-caption > h4",
+          "html": "<h4>EPSEL ATIENDE COLAPSO DE DESAGÜE EN EL SECTOR SAN FRANCISCO LA GARITA DE PIMENTEL</h4>",
+          "resumen": "Fix any of the following:\n  Heading order invalid"
+        }
+      ]
+    },
+    {
+      "id": "html-has-lang",
+      "impacto": "serious",
+      "ayuda": "<html> element must have a lang attribute",
+      "wcag": [
+        "wcag2a",
+        "wcag311"
+      ],
+      "enlace": "https://dequeuniversity.com/rules/axe/4.10/html-has-lang?application=playwright",
+      "elementos": [
+        {
+          "selector": "html",
+          "html": "<html>",
+          "resumen": "Fix any of the following:\n  The <html> element does not have a lang attribute"
+        }
+      ]
+    },
+    {
+      "id": "image-alt",
+      "impacto": "critical",
+      "ayuda": "Images must have alternative text",
+      "wcag": [
+        "wcag2a",
+        "wcag111"
+      ],
+      "enlace": "https://dequeuniversity.com/rules/axe/4.10/image-alt?application=playwright",
+      "elementos": [
+        {
+          "selector": ".horizontal > img[src$=\"Epsel_350_240.png\"]",
+          "html": "<img src=\"Iconos/Epsel_350_240.png\" style=\"width: 170px; height: 120px; margin-right: 5px;\">",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": ".navbar-brand > img[src$=\"Epsel_350_240.png\"]",
+          "html": "<img style=\"width: 85px; height: 55px; margin-top: -20px;\" src=\"Iconos/Epsel_350_240.png\">",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": ".col-lg-12:nth-child(2) > .cabecera-01 > img",
+          "html": "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAA7AAAAOwBeShxvQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAS/SURBVFiFrZZtbFRFFIaf",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": ".lnk-01[href$=\"PortalAguaPotable.aspx\"] > .grupo-01 > img",
+          "html": "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABAEAQAAABQ8GUWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAAAGAAAABgAPBr",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": ".lnk-01[href$=\"PortalAlcantarillado.aspx\"] > .grupo-01 > img",
+          "html": "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABAEAQAAABQ8GUWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAAAGAAAABgAPBr",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": ".lnk-01[href$=\"PortalPotabilizacion.aspx\"] > .grupo-01 > img",
+          "html": "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABAEAQAAABQ8GUWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAAAGAAAABgAPBr",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": ".col-lg-12:nth-child(3) > .cabecera-01 > img",
+          "html": "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAA7AAAAOwBeShxvQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAc6SURBVFiFzZdrbBzVFcd/",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": "a[href$=\"PortalOficinaVirtual.aspx\"] > .grupo-01 > img",
+          "html": "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABAEAQAAABQ8GUWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAAAGAAAABgAPBr",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": "a[href$=\"PortalSeguimiento.aspx\"] > .grupo-01 > img",
+          "html": "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABAEAQAAABQ8GUWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAAAGAAAABgAPBr",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": "a[href$=\"PortalAplicacion.aspx\"] > .grupo-01 > img",
+          "html": "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABAEAQAAABQ8GUWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAAAGAAAABgAPBr",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": "a[href$=\"Cotizacion.aspx\"] > .grupo-01 > img",
+          "html": "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABAEAQAAABQ8GUWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAAAGAAAABgAPBr",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": ".col-lg-4:nth-child(6) > .lnk-01 > .grupo-01 > img",
+          "html": "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABAEAQAAABQ8GUWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAAAGAAAABgAPBr",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": "a[href$=\"PortalSugerencia.aspx\"] > .grupo-01 > img",
+          "html": "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABAEAQAAABQ8GUWAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAAAGAAAABgAPBr",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": ".col-lg-12:nth-child(4) > .cabecera-01 > img",
+          "html": "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAA7AAAAOwBeShxvQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAATaSURBVFiF5ZdpbFRlFIaf",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": "img[src$=\"Otass_Noticia.png\"]",
+          "html": "<img style=\"width: 100%; height: 100%; margin-right: 5px;\" src=\"Imagenes/Otass_Noticia.png\">",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": ".col-lg-12:nth-child(5) > .cabecera-01 > img",
+          "html": "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAA7AAAAOwBeShxvQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAARiSURBVFiFxZZrTFtlGMf/",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": "img[src$=\"Ana.png\"]",
+          "html": "<img src=\"Imagenes/Ana.png\">",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": "img[src$=\"PCM-Vivienda.png\"]",
+          "html": "<img src=\"Imagenes/PCM-Vivienda.png\">",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": "img[src$=\"ElPeruPrimero.png\"]",
+          "html": "<img src=\"Imagenes/ElPeruPrimero.png\">",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": ".col-lg-12:nth-child(6) > .cabecera-01 > img",
+          "html": "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAA7AAAAOwBeShxvQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAUtSURBVFiFvZdpbFRVFMd/",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": ".cabecera-00 > img",
+          "html": "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAA7AAAAOwBeShxvQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAASHSURBVFiF1VZrbFRFFP5m",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": "#sldEducacion > .carousel-inner > .left.active.item > .carrusel-noticia > .carrusel-noticia-fondo > .contenedor-imagen > .contenedor-250 > .carrusel-noticia-imagen",
+          "html": "<img class=\"carrusel-noticia-imagen\" src=\"data:image/png;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkF",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": ".cabecera-01:nth-child(3) > img",
+          "html": "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAA7AAAAOwBeShxvQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAASHSURBVFiF1VZrbFRFFP5m",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": "#sldOrientacion > .carousel-inner > .left.active.item > .carrusel-noticia > .carrusel-noticia-fondo > .contenedor-imagen > .contenedor-250 > .carrusel-noticia-imagen",
+          "html": "<img class=\"carrusel-noticia-imagen\" src=\"data:image/png;base64,/9j/4AAQSkZJRgABAgAAZABkAAD/7AARRHVja3kAAQAEAAAAZAAA/+4AJkFkb2JlAGTAAAAAAQMAFQQDBgoNAAGzMAAFne4AB9ItAArJ+v/bAIQAAQEBAQEBAQEBAQEBAQEBAQEB",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": ".cabecera-01:nth-child(5) > img",
+          "html": "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAA7AAAAOwBeShxvQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAASHSURBVFiF1VZrbFRFFP5m",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": "#sldBoletin > .carousel-inner > .left.active.item > .carrusel-noticia > .carrusel-noticia-fondo > .contenedor-imagen > .contenedor-250 > .carrusel-noticia-imagen",
+          "html": "<img class=\"carrusel-noticia-imagen\" src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABXUAAAfQCAIAAAACRyt6AAAACXBIWXMAACUQAAAlEAEAcpReAAAEpWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSfv",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        },
+        {
+          "selector": ".fh5co-widget > .horizontal > img",
+          "html": "<img style=\"width: 85px; height: 55px; margin-right: 5px;\" src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAACzIAAAidCAYAAADmu+KpAAAKN2lDQ1BzUkdCIElFQzYxOTY2LTIuMQAAeJydlndUU9kWh8+9N71QkhCKlNBraFICSA",
+          "resumen": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impacto": "serious",
+      "ayuda": "Links must have discernible text",
+      "wcag": [
+        "wcag2a",
+        "wcag244",
+        "wcag412"
+      ],
+      "enlace": "https://dequeuniversity.com/rules/axe/4.10/link-name?application=playwright",
+      "elementos": [
+        {
+          "selector": ".icon-facebook",
+          "html": "<a href=\"https://www.facebook.com/\" class=\"icon-facebook\" target=\"_blank\"></a>",
+          "resumen": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+        },
+        {
+          "selector": ".icon-google3",
+          "html": "<a href=\"https://www.gmail.com/mail/help/intl/es/about.html?iframe\" class=\"icon-google3\" target=\"_blank\"></a>",
+          "resumen": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+        },
+        {
+          "selector": ".icon-instagram",
+          "html": "<a href=\"https://www.instagram.com/?hl=es\" class=\"icon-instagram\" target=\"_blank\"></a>",
+          "resumen": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+        },
+        {
+          "selector": ".icon-twitter",
+          "html": "<a href=\"https://twitter.com/login\" class=\"icon-twitter\" target=\"_blank\"></a>",
+          "resumen": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+        },
+        {
+          "selector": ".icon-youtube",
+          "html": "<a href=\"https://www.youtube.com/\" class=\"icon-youtube\" target=\"_blank\"></a>",
+          "resumen": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+        },
+        {
+          "selector": ".navbar-brand",
+          "html": "<a href=\"Index.aspx\" class=\"navbar-brand\">\n                            <img style=\"width: 85px; height: 55px; margin-top: -20px;\" src=\"Iconos/Epsel_350_240.png\">\n                        </a>",
+          "resumen": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+        },
+        {
+          "selector": ".left.active.item > .col-lg-4:nth-child(1) > .contenedor-imagen > .contenedor-250_150 > a",
+          "html": "<a href=\"https://www.ana.gob.pe/nosotros/la-autoridad/nosotros\">\n                                                <img src=\"Imagenes/Ana.png\">\n                                            </a>",
+          "resumen": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+        },
+        {
+          "selector": ".left.active.item > .col-lg-4:nth-child(2) > .contenedor-imagen > .contenedor-250_150 > a",
+          "html": "<a href=\"https://ww3.vivienda.gob.pe/transparencia/requerimientosMVCS.aspx\">\n                                                <img src=\"Imagenes/PCM-Vivienda.png\">\n                                     ",
+          "resumen": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+        },
+        {
+          "selector": "a[href$=\"inicio/\"]",
+          "html": "<a href=\"http://www.pcm.gob.pe/inicio/\">\n                                                <img src=\"Imagenes/ElPeruPrimero.png\">\n                                            </a>",
+          "resumen": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impacto": "moderate",
+      "ayuda": "All page content should be contained by landmarks",
+      "wcag": [],
+      "enlace": "https://dequeuniversity.com/rules/axe/4.10/region?application=playwright",
+      "elementos": [
+        {
+          "selector": ".content",
+          "html": "<div class=\"content fondo\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": "#sldBanner > .carousel-inner > .left.active.item",
+          "html": "<div class=\"item active\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".left[href$=\"#sldBanner\"][data-slide=\"prev\"]",
+          "html": "<a class=\"left carousel-control\" href=\"#sldBanner\" data-slide=\"prev\"><span class=\"glyphicon glyphicon-chevron-left\"></span><span class=\"sr-only\">Previous</span></a>",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".right[href$=\"#sldBanner\"][data-slide=\"next\"]",
+          "html": "<a class=\"right carousel-control\" href=\"#sldBanner\" data-slide=\"next\"><span class=\"glyphicon glyphicon-chevron-right\"></span><span class=\"sr-only\">Next</span></a>",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".col-lg-12:nth-child(2)",
+          "html": "<div class=\"col-lg-12\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".col-lg-12:nth-child(3)",
+          "html": "<div class=\"col-lg-12\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".col-lg-12:nth-child(4) > .cabecera-01",
+          "html": "<div class=\"cabecera-01\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".col-lg-12:nth-child(4) > .col-lg-6:nth-child(2)",
+          "html": "<div class=\"col-lg-6\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": "#sldOtass > .carousel-inner > .left.active.item",
+          "html": "<div class=\"item active\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".left[href$=\"#sldOtass\"][data-slide=\"prev\"]",
+          "html": "<a class=\"left carousel-control\" href=\"#sldOtass\" data-slide=\"prev\">\n                                <span class=\"glyphicon glyphicon-chevron-left\"></span>\n                                <span class=",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".right[href$=\"#sldOtass\"][data-slide=\"next\"]",
+          "html": "<a class=\"right carousel-control\" href=\"#sldOtass\" data-slide=\"next\">\n                                <span class=\"glyphicon glyphicon-chevron-right\"></span>\n                                <span clas",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".col-lg-12:nth-child(5) > .cabecera-01",
+          "html": "<div class=\"cabecera-01\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": "#sldReferencia > .carousel-inner > .left.active.item",
+          "html": "<div class=\"item active\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".col-lg-12:nth-child(6) > .cabecera-01",
+          "html": "<div class=\"cabecera-01\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": "iframe .i4ewOd-pzNkMb-xl07Ob-haAclf",
+          "html": "<div class=\"i4ewOd-pzNkMb-xl07Ob-haAclf i4ewOd-pzNkMb-bMcfAe\" data-tooltip=\"Compartir\" aria-label=\"Compartir\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": "iframe .i4ewOd-pzNkMb-n9oEIb",
+          "html": "<div class=\"i4ewOd-pzNkMb-n9oEIb i4ewOd-pzNkMb-bMcfAe\" data-tooltip=\"Ampliar el mapa\" aria-label=\"Ampliar el mapa\"><div class=\"i4ewOd-pzNkMb-LgbsSe\"></div></div>",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": "iframe .i4ewOd-pzNkMb-r4nke",
+          "html": "<div class=\"suEOdc i4ewOd-pzNkMb-r4nke\" data-tooltip=\"Centros de Atención y Recaudación\" aria-label=\"Centros de Atención y Recaudación\" style=\"max-width: 594px;\">Centros de Atención y Recaudación</div",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": "iframe .i4ewOd-pzNkMb-fI6EEc",
+          "html": "<div class=\"i4ewOd-pzNkMb-fI6EEc\" data-tooltip=\"Destacar este mapa para verlo en Google Maps\" aria-label=\"Destacar este mapa para verlo en Google Maps\"><div class=\"tk3N6e-fI6EEc\" role=\"checkbox\" aria-",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": "iframe .dIxMhd-bN97Pc-b3rLgd-MEDVr",
+          "html": "<span class=\"dIxMhd-bN97Pc-b3rLgd-MEDVr\">Este mapa se hizo con Google&nbsp;My&nbsp;Maps. <a href=\"//support.google.com/mymaps/answer/3024454?hl=en&amp;amp;ref_topic=3188329\" target=\"_blank\">Cómo crear",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": "iframe .nJjxad-bMcfAe-haAclf",
+          "html": "<div class=\"nJjxad-bMcfAe-haAclf nJjxad-HzV7m\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": "iframe .yePe5c-haAclf",
+          "html": "<div class=\"yePe5c-haAclf yePe5c-HzV7m yePe5c-hJDwNd\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": "iframe .Te60Vd-ZMv3u",
+          "html": "<div class=\"Te60Vd-ZMv3u dIxMhd-bN97Pc-b3rLgd\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": "iframe .QA0Szd-s2gQvd-bN97Pc:nth-child(3) > .QA0Szd-rymPhb:nth-child(1)",
+          "html": "<div class=\"QA0Szd-rymPhb\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": "iframe .QA0Szd-h9d3hd",
+          "html": "<div class=\"QA0Szd-ibnC6b QA0Szd-h9d3hd\"><div class=\"QA0Szd-ibnC6b-Bz112c\"></div><div class=\"QA0Szd-ibnC6b-fmcmS\">Ayuda</div></div>",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": "iframe .QA0Szd-N7Eqid",
+          "html": "<div class=\"QA0Szd-ibnC6b QA0Szd-N7Eqid\"><div class=\"QA0Szd-ibnC6b-Bz112c\"></div><div class=\"QA0Szd-ibnC6b-fmcmS\">Comentarios</div></div>",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": "iframe .QA0Szd-rymPhb:nth-child(3)",
+          "html": "<div class=\"QA0Szd-rymPhb\"><div class=\"QA0Szd-ibnC6b  QA0Szd-ndfHFb\"><div class=\"QA0Szd-ibnC6b-Bz112c\"></div><div class=\"QA0Szd-ibnC6b-qwU8Me-Bz112c\"></div><div class=\"QA0Szd-ibnC6b-fmcmS\">Google&nbsp",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".cabecera-00",
+          "html": "<div class=\"cabecera-00\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": "#sldEducacion > .carousel-inner > .left.active.item",
+          "html": "<div class=\"item active\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".cabecera-01:nth-child(3)",
+          "html": "<div class=\"cabecera-01\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": "#sldOrientacion > .carousel-inner > .left.active.item",
+          "html": "<div class=\"item active\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": ".cabecera-01:nth-child(5)",
+          "html": "<div class=\"cabecera-01\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        },
+        {
+          "selector": "#sldBoletin > .carousel-inner > .left.active.item",
+          "html": "<div class=\"item active\">",
+          "resumen": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    }
+  ]
+}

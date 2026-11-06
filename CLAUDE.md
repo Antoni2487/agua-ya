@@ -10,7 +10,8 @@
 AguaYa es un sistema de gestión logística del **abastecimiento de agua potable mediante camiones cisterna** para **EPSEL S.A.** (Entidad Prestadora de Servicios de Saneamiento de Lambayeque, Perú). Cubre Chiclayo y distritos aledaños (Monsefú, etc.).
 
 Tiene tres clientes:
-- **App móvil** (React Native / Expo) para **Vecinos** (hogares) y **Conductores** de cisterna.
+- **App móvil** (React Native / Expo) para **Conductores** de cisterna (necesita GPS en segundo plano).
+- **Web del vecino** (React / Vite, mobile-first, sin instalar nada) para **Vecinos** (hogares). Decisión del 4 nov 2026: el vecino de AA.HH. con celular gama baja abre un enlace mejor que instalar una app, y la web es medible con WAVE/axe (curso IHM, PA3).
 - **Panel web** (React / Vite) para el **Administrador** de EPSEL.
 - **Panel público de transparencia** (web, solo lectura, sin login).
 
@@ -80,7 +81,7 @@ Las **averías mecánicas en ruta NO son un problema recurrente documentado**. P
 |---|---|---|
 | `ADMIN` | Panel web | CRUD de sectores, puntos de llenado, cisternas, conductores, instituciones; programar rutas; ver planificación de capacidad; asignar; ver mapa en vivo; gestionar incidencias y reasignar paradas; ver calificaciones y reportes. |
 | `CONDUCTOR` | App móvil | Ver su ruta del día y paradas; iniciar/finalizar ruta y viajes; enviar posición GPS; marcar paradas atendidas (validado por geocerca); reportar incidencias. |
-| `VECINO` | App móvil | Registrarse; ver su próxima atención y la cisterna en camino; recibir push; reportar incidencias; calificar la entrega. |
+| `VECINO` | Web del vecino | Registrarse; ver su próxima atención y la cisterna en camino; recibir push; reportar incidencias; calificar la entrega. |
 | Público | Web pública | Ver panel de transparencia (sin login, solo datos agregados). |
 
 ---
@@ -113,8 +114,8 @@ aguaya/
 ├── .gitignore
 ├── docker-compose.yml
 ├── backend/          # Spring Boot
-├── mobile/           # Expo (Vecino + Conductor en una sola app, según rol)
-└── web/              # Vite: panel Admin + rutas públicas /transparencia
+├── mobile/           # Expo: app del Conductor
+└── web/              # Vite: web del vecino + panel Admin + rutas públicas /transparencia
 ```
 
 ### Backend: paquetes por funcionalidad

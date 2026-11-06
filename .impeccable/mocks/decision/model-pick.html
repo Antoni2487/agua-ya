@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=390">
+<title>Tablero de combi</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;900&family=Archivo+Narrow:wght@700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0}
+body{width:390px;height:844px;overflow:hidden;font-family:Archivo,sans-serif;background:#fff;color:#0E2A5C}
+header{height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:4px solid #0E2A5C}
+.m{font-weight:900;font-size:24px}.m b{color:#1B8FD2}
+.franja{background:#F5C400;padding:14px 16px;border-bottom:4px solid #0E2A5C}
+.franja small{font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:1px}
+.franja h1{font-family:'Archivo Narrow';font-size:36px;line-height:1;text-transform:uppercase;margin-top:4px}
+.franja p{font-size:16px;margin-top:6px}
+ol{list-style:none;padding:10px 16px 0}
+li{display:flex;align-items:center;gap:12px;height:44px;border-bottom:2px solid #E3E8EF;font-family:'Archivo Narrow';font-size:20px;text-transform:uppercase}
+li i{width:28px;font-style:normal;font-size:16px;color:#5B6B7C}
+li.ok{color:#8A97A8;text-decoration:line-through}
+li.aqui{background:#0E2A5C;color:#fff;margin:0 -16px;padding:0 16px}
+li.aqui i{color:#F5C400}
+li.yo{border:3px solid #C8102E;margin:4px -6px;padding:0 6px;color:#C8102E}
+.btn{position:absolute;left:16px;right:16px;bottom:24px;height:56px;background:#0E2A5C;color:#fff;font-weight:700;font-size:18px;display:grid;place-items:center;border-radius:4px}
+</style></head><body>
+<header><span class="m">Agua<b>Ya</b></span><span>☰</span></header>
+<div class="franja"><small>Hoy · Turno mañana · Cerropón</small><h1>Va por la parada 9</h1><p>La tuya es la 13: faltan 3 paradas</p></div>
+<ol>
+<li class="ok"><i>07</i>Puesto de Salud</li>
+<li class="ok"><i>08</i>Mz. C Lt. 4</li>
+<li class="aqui"><i>▶ 09</i>Cisterna AYA-101 aquí</li>
+<li><i>10</i>Mz. C Lt. 9</li>
+<li><i>11</i>Mz. D Lt. 2</li>
+<li><i>12</i>Mz. D Lt. 7</li>
+<li class="yo"><i>13</i>Tu casa · Mz. B Lt. 12</li>
+<li><i>14</i>Mz. E Lt. 1</li>
+<li><i>15</i>I.E. Cerropón</li>
+</ol>
+<a class="btn">Ver en el mapa</a>
+</body></html>
