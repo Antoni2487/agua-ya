@@ -33,11 +33,25 @@ export function Capacidad() {
   const c = capacidad.data;
   return (
     <section>
-      <h1>Planificación de capacidad</h1>
-      <p className="texto-suave intro">
-        Viajes = ⌈unidades de uso × dotación × días entre visitas ÷ capacidad de la cisterna⌉ · cisternas = ⌈viajes ÷ máximo de
-        viajes diarios⌉. Se comparan con las cisternas operativas y con autorización sanitaria vigente en la fecha.
-      </p>
+      <header className="cabecera-pagina">
+        <p className="sobretitulo">¿Alcanzan las cisternas?</p>
+        <h1>Planificación de capacidad</h1>
+      </header>
+      <div className="tarjeta explicacion">
+        <p>
+          Responde una pregunta antes de programar: <strong>¿cuántas cisternas hacen falta para darle a cada vivienda los
+          80 litros diarios que exige SUNASS, y cuántas tenemos listas ese día?</strong> Si faltan, el déficit es la
+          cantidad de camiones que EPSEL tendría que conseguir (alquilar, pedir apoyo o reprogramar sectores).
+        </p>
+        <details>
+          <summary>Cómo se calcula</summary>
+          <p className="texto-suave">
+            Viajes = ⌈unidades de uso × dotación × días entre visitas ÷ capacidad de la cisterna⌉ · cisternas = ⌈viajes ÷
+            máximo de viajes diarios⌉. Se comparan con las cisternas operativas y con autorización sanitaria vigente en la
+            fecha. «Simular» prueba con otra capacidad de camión (por ejemplo, si alquilaran cisternas de 20 000 L).
+          </p>
+        </details>
+      </div>
       <form
         className="filtros"
         onSubmit={(e) => {

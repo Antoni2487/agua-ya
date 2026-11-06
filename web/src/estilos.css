@@ -344,3 +344,8 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px
 .tabla th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; }
 .tabla tbody tr:hover td { background: #f8fbfe; }
 .etiqueta { padding: 0.15rem 0.65rem; border-radius: var(--gota); }
+
+/* Explicación al inicio de una página */
+.explicacion { display: grid; gap: 0.5rem; margin-bottom: 1.25rem; max-width: 80ch; }
+.explicacion p { margin: 0; }
+.explicacion summary { cursor: pointer; font-weight: 600; color: var(--azul); }
