@@ -1,8 +1,8 @@
-# Rediseño de la portada de EPSEL: resultados de axe y pruebas
+# Rediseño del sitio de EPSEL: resultados de axe y pruebas
 
-**Qué se probó:** la portada rediseñada ([rediseno-epsel/index.html](../../../rediseno-epsel/index.html)) con axe-core 4.10 (reglas WCAG 2.0, 2.1 y 2.2 A/AA + buenas prácticas), en Chrome, el 5 de noviembre de 2026. Es la misma herramienta y el mismo navegador de la [línea base del sitio actual](../linea-base/README.md).
+**Qué se probó:** las cuatro páginas del rediseño ([rediseno-epsel/](../../../rediseno-epsel/): portada, ¿Pasa hoy la cisterna?, Cortes y avisos e Información pública) con axe-core 4.10 (reglas WCAG 2.0, 2.1 y 2.2 A/AA + buenas prácticas), en Chrome, el 5 de noviembre de 2026. Es la misma herramienta y el mismo navegador de la [línea base del sitio actual](../linea-base/README.md).
 
-**Cómo repetirlo:** `node probar-rediseno.mjs file:///…/rediseno-epsel/index.html <carpeta-salida>`.
+**Cómo repetirlo:** `node probar-rediseno.mjs file:///…/rediseno-epsel/index.html <carpeta-salida>` (portada) y `node probar-paginas.mjs file:///…/rediseno-epsel/ <carpeta-salida>` (las otras tres). Los reportes de axe están en [axe/](axe/).
 
 ## Antes y después (portada)
 
@@ -17,7 +17,7 @@
 | Controles menores de 44 px (celular) | 34 de 54 | **0** |
 | Textos menores de 14 px | 0 | **0** (el cuerpo es de 17–19 px) |
 | Peso de la página | ≈ 85 MB | **≈ 0,8 MB** (fotos WebP + tipografía) |
-| Opciones del menú | 35 en 6 menús | **22 en 5 menús** |
+| Opciones del menú | 35 en 6 menús | **23 en 5 menús** |
 
 axe se corrió en cinco estados: escritorio (1440 px), escritorio con el menú abierto, escritorio con un resultado de búsqueda, celular (390 px) y celular con el menú abierto. En los cinco: **0 violaciones**.
 
@@ -26,7 +26,7 @@ axe se corrió en cinco estados: escritorio (1440 px), escritorio con el menú a
 - **Contraste del formulario del cupón (6 elementos):** axe no pudo calcular el fondo por los círculos de corte del cupón. Revisado: texto `#0b2545` sobre `#e1eef9`, **13,5:1**.
 - **Letras del logo del pie (5):** letras sueltas dibujadas en SVG. Revisado: `#f4f8fb` sobre azules de `#0b2545` a `#0a58a8`, **6,7:1 o más**.
 
-## Pruebas funcionales (todas pasan)
+## Pruebas funcionales de la portada (todas pasan)
 
 - El primer Tab enfoca "Ir al contenido principal".
 - El menú abre con Enter y con Espacio, marca `aria-expanded`, deja entrar con Tab a sus opciones y se cierra con Esc devolviendo el foco al botón.
@@ -51,3 +51,54 @@ axe se corrió en cinco estados: escritorio (1440 px), escritorio con el menú a
 | 3.1.1 Idioma de la página | `lang="es-PE"` |
 | 3.3.1 / 3.3.2 Errores y etiquetas | Etiquetas visibles, campos obligatorios marcados, errores con texto y `aria-describedby` |
 | 2.3.3 Movimiento | Con "reducir movimiento" activado no hay animaciones |
+
+## Páginas interiores
+
+| Página | Estados probados con axe | Violaciones | Peso aprox. |
+|---|---|---|---|
+| ¿Pasa hoy la cisterna? (`cisterna.html`) | escritorio, escritorio con resultado de búsqueda, celular, celular con menú abierto | **0** | 200 KB |
+| Cortes y avisos (`avisos.html`) | escritorio, celular, celular con menú abierto | **0** | 160 KB |
+| Información pública (`informacion.html`) | escritorio, celular, celular con menú abierto | **0** | 240 KB |
+
+Las tres se abren con `?datos=ejemplo` para que el resultado no dependa del backend.
+
+### Pruebas funcionales (todas pasan)
+
+- **En las tres:**
+  - un solo `h1`;
+  - las migas "Estás en" y el menú marcan la página actual con `aria-current="page"`;
+  - el primer Tab enfoca "Ir al contenido principal";
+  - no hay errores de JavaScript.
+- **¿Pasa hoy la cisterna?:**
+  - la semana muestra 7 días, empezando por "Hoy";
+  - cada visita trae su placa;
+  - el filtro por distrito deja solo ese distrito, marca `aria-pressed="true"` y anuncia la cuenta con `role="status"`;
+  - el buscador encuentra "atusparias" y enlaza a los avisos de su distrito;
+  - con menos de 3 letras muestra un error con `aria-invalid`.
+- **Cortes y avisos:**
+  - el filtro deja solo los avisos del distrito;
+  - si no hay avisos, lo dice con texto;
+  - `avisos.html?distrito=Monsefú` abre ya filtrado.
+- **Información pública:**
+  - la tabla muestra las 5 zonas, cada fila con su encabezado (`th scope="row"`);
+  - cambiar el periodo (7, 30 o 90 días) cambia las cifras y se anuncia a los lectores de pantalla.
+- **Celular (390 px), en las tres:**
+  - sin desplazamiento horizontal de la página;
+  - 0 controles menores de 44 px;
+  - 0 textos menores de 14 px.
+
+### Lo que axe deja "a revisar a mano" (revisado)
+
+- **Con el menú abierto en celular:** el panel tapa el contenido de abajo y axe no puede medir su contraste. Es el mismo contenido que pasa con el menú cerrado.
+- **Letras del logo del pie:** igual que en la portada, **6,7:1 o más**.
+
+### Criterios WCAG que suman las páginas interiores
+
+| Criterio | Dónde se ve |
+|---|---|
+| 1.3.1 Información y relaciones | Tabla con `caption`, `th scope="col"` y `th scope="row"`; cada día de la semana es una sección con su título |
+| 1.4.1 Uso del color | El estado de cada visita va en texto ("Repartiendo ahora", "Programada"); la barra de avance y el color de la gota solo acompañan |
+| 1.4.10 Reajuste | En celular, la tabla se desliza dentro de su caja (región con nombre y enfocable con Tab), nunca la página |
+| 2.4.8 Ubicación | Migas "Estás en" y menú con la página actual marcada |
+| 4.1.2 Nombre, función y valor | Filtros como botones con `aria-pressed` |
+| 4.1.3 Mensajes de estado | Cantidad de avisos y visitas, y periodo de las cifras, con `role="status"` |

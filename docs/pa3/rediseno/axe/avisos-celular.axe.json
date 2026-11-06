@@ -1,0 +1,18 @@
+{
+  "url": "file:///C:/Users/user/agua-ya/rediseno-epsel/avisos.html?datos=ejemplo",
+  "violaciones": [],
+  "aprobadas": 43,
+  "incompletas": [
+    {
+      "id": "color-contrast",
+      "nodos": [
+        ".enlace-flecha · Element's background color could not be determined due to a pseudo element",
+        "text[x=\"98.0\"] · Element content is too short to determine if it is actual text content",
+        "text[x=\"299.0\"] · Element content is too short to determine if it is actual text content",
+        "text[x=\"500.0\"] · Element content is too short to determine if it is actual text content",
+        "text[x=\"701.0\"] · Element content is too short to determine if it is actual text content",
+        "text[x=\"902.0\"] · Element content is too short to determine if it is actual text content"
+      ]
+    }
+  ]
+}

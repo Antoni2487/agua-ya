@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="es-PE">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Información pública · EPSEL (propuesta de rediseño)</title>
+  <meta name="description" content="Cifras del servicio de cisternas, cumplimiento por zona, metas, rendición de cuentas y cómo pedir información pública a EPSEL.">
+  <meta name="theme-color" content="#0b2545">
+  <link rel="icon" href="assets/gota.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilos.css">
+  <script>document.documentElement.classList.add('js');</script>
+  <script src="sitio.js" defer></script>
+</head>
+<body data-pagina="informacion">
+  <a class="saltar" href="#contenido">Ir al contenido principal</a>
+
+  <header class="cabecera">
+    <p class="aviso-propuesta">Propuesta académica de rediseño (UTP). No es el sitio oficial de EPSEL.</p>
+    <div class="cabecera-fila">
+      <a class="marca" href="index.html" aria-label="EPSEL, página de inicio">
+        <svg class="marca-gota" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M16 2C10 10 5 15.5 5 21a11 11 0 0 0 22 0C27 15.5 22 10 16 2z"/></svg>
+        <span class="marca-nombre">EPSEL</span>
+        <span class="marca-detalle">Agua potable y alcantarillado de Lambayeque</span>
+      </a>
+
+      <button class="boton-menu" type="button" aria-expanded="false" aria-controls="navegacion">
+        <span class="boton-menu-icono" aria-hidden="true"></span>Menú
+      </button>
+
+      <nav id="navegacion" class="navegacion" aria-label="Principal">
+        <ul class="menu">
+          <li class="menu-item">
+            <button class="menu-boton" type="button" aria-expanded="false" aria-controls="sub-agua">Agua en tu zona</button>
+            <ul class="submenu" id="sub-agua">
+              <li><a href="avisos.html">Cortes y avisos</a></li>
+              <li><a href="cisterna.html">¿Pasa hoy la cisterna?</a></li>
+              <li><a href="cisterna.html#semana">La cisterna esta semana</a></li>
+              <li><a href="index.html#recorrido">De dónde viene tu agua</a></li>
+              <li><a href="index.html#limpieza">Cómo limpiamos el agua</a></li>
+            </ul>
+          </li>
+          <li class="menu-item">
+            <button class="menu-boton" type="button" aria-expanded="false" aria-controls="sub-pagos">Pagos y trámites</button>
+            <ul class="submenu" id="sub-pagos">
+              <li><a href="index.html#donde-pagar">Dónde pagar tu recibo</a></li>
+              <li><a href="index.html#oficina-virtual">Oficina virtual</a></li>
+              <li><a href="index.html#tramites">Trámites: nueva conexión y otros</a></li>
+              <li><a href="index.html#vma">Para empresas: desagüe no doméstico (VMA)</a></li>
+            </ul>
+          </li>
+          <li class="menu-item">
+            <button class="menu-boton" type="button" aria-expanded="false" aria-controls="sub-atencion">Atención y reclamos</button>
+            <ul class="submenu" id="sub-atencion">
+              <li><a href="index.html#reclamo">Cómo hacer un reclamo</a></li>
+              <li><a href="index.html#oficinas">Oficinas y horarios</a></li>
+              <li><a href="index.html#escribenos">Escríbenos por WhatsApp</a></li>
+              <li><a href="index.html#denuncias">Denuncias y sugerencias</a></li>
+            </ul>
+          </li>
+          <li class="menu-item">
+            <button class="menu-boton menu-actual" type="button" aria-expanded="false" aria-controls="sub-informacion">Información pública</button>
+            <ul class="submenu" id="sub-informacion">
+              <li><a href="informacion.html" aria-current="page">Las cisternas en cifras</a></li>
+              <li><a href="informacion.html#zonas">Cumplimiento por zona</a></li>
+              <li><a href="informacion.html#metas">Metas y resultados</a></li>
+              <li><a href="informacion.html#rendicion">Rendición de cuentas</a></li>
+              <li><a href="informacion.html#pedir-informacion">Pedir información pública</a></li>
+              <li><a href="informacion.html#integridad">Integridad y denuncias de corrupción</a></li>
+            </ul>
+          </li>
+          <li class="menu-item">
+            <button class="menu-boton" type="button" aria-expanded="false" aria-controls="sub-nosotros">Nosotros</button>
+            <ul class="submenu" id="sub-nosotros">
+              <li><a href="index.html#quienes-somos">Quiénes somos</a></li>
+              <li><a href="index.html#directivos">Directivos y organización</a></li>
+              <li><a href="index.html#cobertura">Dónde damos servicio</a></li>
+              <li><a href="index.html#noticias">Noticias</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+
+      <a class="boton boton-cisterna" href="cisterna.html">¿Pasa hoy la cisterna?</a>
+    </div>
+  </header>
+
+  <main id="contenido" tabindex="-1">
+    <section class="pagina-cabeza" aria-labelledby="titulo-pagina">
+      <div class="pagina-cabeza-texto">
+      <nav class="migas" aria-label="Estás en">
+        <ol><li><a href="index.html">Inicio</a></li><li><span aria-current="page">Información pública</span></li></ol>
+      </nav>
+      <h1 id="titulo-pagina">Información pública</h1>
+      <p class="portada-bajada">Cuánto cumple EPSEL con las cisternas, lo que hace con el dinero de todos y cómo pedir cualquier documento.</p>
+      </div>
+      <img class="foto-gota pagina-foto" src="assets/chiclayo-plaza.webp" width="1100" height="619" fetchpriority="high"
+           alt="Jardín de la Plaza de Armas de Chiclayo con el nombre de la ciudad escrito con piedras.">
+    </section>
+
+    <section class="seccion seccion-pegada" id="cifras" aria-labelledby="titulo-cifras">
+      <div class="avisos-cabeza">
+        <h2 id="titulo-cifras">Las cisternas en cifras</h2>
+        <p class="avisos-fecha" id="cifras-periodo"></p>
+      </div>
+      <div class="filtro" role="group" aria-labelledby="filtro-periodo-titulo">
+        <p class="filtro-titulo" id="filtro-periodo-titulo">Periodo</p>
+        <div class="filtro-botones">
+          <button type="button" class="filtro-boton" data-periodo="7" aria-pressed="false">Últimos 7 días</button>
+          <button type="button" class="filtro-boton" data-periodo="30" aria-pressed="true">Últimos 30 días</button>
+          <button type="button" class="filtro-boton" data-periodo="90" aria-pressed="false">Últimos 90 días</button>
+        </div>
+      </div>
+      <p class="solo-lectores" id="cifras-estado" role="status"></p>
+
+      <div class="cifras">
+        <div class="numero cifra-1" data-cifra="cumplimiento"><p class="numero-cifra">…</p><p class="numero-texto">Paradas atendidas.</p></div>
+        <div class="numero cifra-2" data-cifra="litros"><p class="numero-cifra">…</p><p class="numero-texto">Litros repartidos.</p></div>
+        <div class="numero cifra-3" data-cifra="rutas"><p class="numero-cifra">…</p><p class="numero-texto">Rutas completas.</p></div>
+        <div class="numero cifra-4" data-cifra="calificacion"><p class="numero-cifra">…</p><p class="numero-texto">Calificación de los vecinos.</p></div>
+        <div class="numero cifra-5" data-cifra="incidencias"><p class="numero-cifra">…</p><p class="numero-texto">Reportes resueltos.</p></div>
+        <div class="numero cifra-6" data-cifra="flota"><p class="numero-cifra">…</p><p class="numero-texto">Cisternas listas hoy.</p></div>
+      </div>
+      <p class="nota-datos" id="nota-cifras" hidden></p>
+      <p class="nota-fuente">Fuente: sistema de cisternas AguaYa, con datos sin nombres ni direcciones de vecinos. Se cuentan las paradas de las rutas ya terminadas.</p>
+    </section>
+
+    <section class="seccion" id="zonas" aria-labelledby="titulo-zonas">
+      <h2 id="titulo-zonas" class="titulo-mediano">Cumplimiento por zona</h2>
+      <p class="seccion-bajada">Las zonas con menos paradas atendidas aparecen primero.</p>
+      <div class="tabla-caja" role="region" aria-label="Tabla de cumplimiento por zona (en celular, deslízala hacia los lados)" tabindex="0">
+        <table class="tabla">
+          <caption class="solo-lectores">Cumplimiento, calificación y visitas de la cisterna por zona en el periodo elegido</caption>
+          <thead>
+            <tr><th scope="col">Zona</th><th scope="col">Paradas atendidas</th><th scope="col">Calificación</th><th scope="col">Última visita</th><th scope="col">Próxima visita</th></tr>
+          </thead>
+          <tbody id="tabla-zonas">
+            <tr><td colspan="5">Cargando las zonas…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="campo-color oscuro" style="--fondo-seccion: var(--c2); --tinta-seccion: var(--blanco)">
+    <section class="seccion" aria-labelledby="titulo-documentos">
+      <h2 id="titulo-documentos" class="titulo-mediano">Documentos de la empresa</h2>
+      <div class="documentos">
+        <article id="metas">
+          <h3>Metas y resultados</h3>
+          <p>Cuántas casas tienen agua y desagüe en cada distrito, cuántas horas al día llega el agua y qué metas fijó SUNASS.</p>
+          <p class="dato-pendiente">Documento por enlazar.</p>
+        </article>
+        <article id="rendicion">
+          <h3>Rendición de cuentas</h3>
+          <p>Cuánto dinero entró cada año, en qué se gastó y qué obras se hicieron.</p>
+          <p class="dato-pendiente">Documento por enlazar.</p>
+        </article>
+        <article id="gestion">
+          <h3>Cómo se gestiona EPSEL</h3>
+          <p>El plan de la empresa, quiénes forman el directorio y las decisiones que toman.</p>
+          <p class="dato-pendiente">Documento por enlazar.</p>
+        </article>
+        <article id="integridad">
+          <h3>Integridad y denuncias de corrupción</h3>
+          <p>Si sabes de un cobro indebido o de una cisterna desviada, denúncialo. Tu identidad se protege.</p>
+          <a class="enlace-flecha" href="index.html#denuncias">Hacer una denuncia</a>
+        </article>
+      </div>
+    </section>
+    </div>
+
+    <section class="seccion banda" id="pedir-informacion" aria-labelledby="titulo-pedir">
+      <div class="cupon cupon-simple">
+        <div class="cupon-izquierda">
+          <h2 id="titulo-pedir">Pide información</h2>
+          <p class="enunciado">Cualquier persona puede pedir un documento de EPSEL, sin decir para qué.</p>
+        </div>
+        <div class="cupon-derecha">
+          <ol class="pasos pasos-claros">
+            <li>Escribe qué documento necesitas y tus datos para responderte.</li>
+            <li>Entrégalo en mesa de partes o envíalo por el formulario virtual.</li>
+            <li>EPSEL te responde en un plazo de hasta 10 días hábiles (Ley 27806).</li>
+          </ol>
+          <p class="dato-pendiente">Formulario y correo de mesa de partes: por confirmar con EPSEL.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <svg class="pie-marca" viewBox="0 0 1001 360" role="img" aria-labelledby="pie-marca-titulo" preserveAspectRatio="xMidYMax meet"><title id="pie-marca-titulo">EPSEL</title><rect x="0" y="0" width="196" height="360" rx="44" fill="var(--c1)"/><rect x="0" y="316" width="44" height="44" fill="var(--c1)"/><text x="98.0" y="336" text-anchor="middle" fill="#f4f8fb" font-size="232" font-weight="800" font-family="Schibsted Grotesk, system-ui, sans-serif">E</text><rect x="201" y="64" width="196" height="296" rx="44" fill="var(--c2)"/><rect x="201" y="316" width="44" height="44" fill="var(--c2)"/><text x="299.0" y="336" text-anchor="middle" fill="#f4f8fb" font-size="232" font-weight="800" font-family="Schibsted Grotesk, system-ui, sans-serif">P</text><rect x="402" y="28" width="196" height="332" rx="44" fill="var(--c3)"/><rect x="402" y="316" width="44" height="44" fill="var(--c3)"/><text x="500.0" y="336" text-anchor="middle" fill="#f4f8fb" font-size="232" font-weight="800" font-family="Schibsted Grotesk, system-ui, sans-serif">S</text><rect x="603" y="108" width="196" height="252" rx="44" fill="var(--c2)"/><rect x="603" y="316" width="44" height="44" fill="var(--c2)"/><text x="701.0" y="336" text-anchor="middle" fill="#f4f8fb" font-size="232" font-weight="800" font-family="Schibsted Grotesk, system-ui, sans-serif">E</text><rect x="804" y="50" width="196" height="310" rx="44" fill="var(--c1)"/><rect x="804" y="316" width="44" height="44" fill="var(--c1)"/><text x="902.0" y="336" text-anchor="middle" fill="#f4f8fb" font-size="232" font-weight="800" font-family="Schibsted Grotesk, system-ui, sans-serif">L</text></svg>
+    <div class="pie-columnas">
+      <nav aria-label="Pie de página">
+        <ul class="pie-enlaces">
+          <li><a href="avisos.html">Cortes y avisos</a></li>
+          <li><a href="cisterna.html">¿Pasa hoy la cisterna?</a></li>
+          <li><a href="index.html#donde-pagar">Dónde pagar</a></li>
+          <li><a href="index.html#reclamo">Hacer un reclamo</a></li>
+          <li><a href="informacion.html" aria-current="page">Información pública</a></li>
+          <li><a href="index.html#nosotros">Nosotros</a></li>
+        </ul>
+      </nav>
+      <div class="pie-contacto">
+        <p><strong>EPSEL S.A.</strong> Empresa Prestadora de Servicios de Saneamiento de Lambayeque.</p>
+        <p>Supervisada por SUNASS.</p>
+      </div>
+    </div>
+    <div class="pie-final">
+      <p>Propuesta académica de rediseño, curso Interacción Humano-Computador, UTP Chiclayo. No es el sitio oficial de EPSEL. Avisos, horarios y cifras de ejemplo cuando el sistema de cisternas no responde.</p>
+      <a class="boton boton-pie" href="#">Acceso del personal</a>
+    </div>
+    <p class="creditos">Fotos: «Reservorio Tinajones», EdsonFuentesMera, CC BY-SA 4.0 · «Reservorio de Tinajones», Josefito123, CC BY-SA 4.0 · «Zapallal: water tap», SuSanA Secretariat, CC BY 2.0 · «Chiclayo, Plaza de Armas», Burkhard Mücke, CC BY-SA 4.0 · «Plaza de Armas de Monsefú», LLs, CC BY-SA 4.0, vía Wikimedia Commons · «Ministerio de Defensa y Ejército distribuyen agua en San Juan de Lurigancho», Ministerio de Defensa del Perú, CC BY 2.0, vía Flickr.</p>
+  </footer>
+</body>
+</html>
