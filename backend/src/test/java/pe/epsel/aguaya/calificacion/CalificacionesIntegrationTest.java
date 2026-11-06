@@ -45,7 +45,12 @@ class CalificacionesIntegrationTest extends EscenarioRutaHoy {
 
         mockMvc.perform(conToken(vecina, get("/api/vecino/proxima-atencion")))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.proxima.miParada.miCalificacion").value(5));
+                .andExpect(jsonPath("$.proxima.miParada.miCalificacion").value(5))
+                // El vecino reconoce la cisterna por su placa y ve si su entrega se verificó por GPS
+                .andExpect(jsonPath("$.proxima.cisternaPlaca").isNotEmpty())
+                .andExpect(jsonPath("$.proxima.capacidadLitros").isNumber())
+                .andExpect(jsonPath("$.proxima.miParada.verificadaGps").value(true))
+                .andExpect(jsonPath("$.proxima.miParada.atendidaEn").isNotEmpty());
 
         String admin = login("10000001", "Admin2026!");
         mockMvc.perform(conToken(admin, get("/api/admin/calificaciones?sectorId=" + e.sectorId())))

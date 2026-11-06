@@ -1,6 +1,7 @@
 package pe.epsel.aguaya.ruta.dto;
 
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -17,7 +18,9 @@ import pe.epsel.aguaya.ruta.entity.TipoParada;
 public record AtencionVecinoResponse(Atencion proxima, Atencion ultima) {
 
     /**
-     * @param miParada nula si el vecino se registró después de programar la ruta
+     * @param cisternaPlaca     placa de la cisterna asignada (para que el vecino la reconozca); nula si aún no se asigna
+     * @param capacidadLitros   capacidad de esa cisterna
+     * @param miParada          nula si el vecino se registró después de programar la ruta
      */
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public record Atencion(
@@ -27,12 +30,16 @@ public record AtencionVecinoResponse(Atencion proxima, Atencion ultima) {
             EstadoRuta estado,
             long totalParadas,
             long paradasAtendidas,
+            String cisternaPlaca,
+            Integer capacidadLitros,
             MiParada miParada) {
     }
 
     /**
      * @param pendientesAntes  paradas pendientes que la cisterna atenderá antes que la suya
      * @param miCalificacion   estrellas que ya dio a esta entrega; nula si aún no califica
+     * @param verificadaGps    la entrega se validó con la geocerca (regla 4)
+     * @param atendidaEn       cuándo se atendió; nula si aún no
      */
     public record MiParada(
             Long paradaId,
@@ -42,6 +49,8 @@ public record AtencionVecinoResponse(Atencion proxima, Atencion ultima) {
             int orden,
             EstadoParada estado,
             long pendientesAntes,
-            Integer miCalificacion) {
+            Integer miCalificacion,
+            boolean verificadaGps,
+            OffsetDateTime atendidaEn) {
     }
 }
