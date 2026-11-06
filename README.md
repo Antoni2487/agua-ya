@@ -68,4 +68,4 @@ Las instrucciones de cada cliente se agregan en su carpeta a medida que se confi
 
 ## Documentación para el equipo
 
-El contexto completo del proyecto (alcance, modelo de datos, reglas de negocio, API) está en [`CLAUDE.md`](CLAUDE.md).
+El contexto completo del proyecto (alcance, modelo de datos, reglas de negocio, API) está en [`docs/especificacion.md`](docs/especificacion.md).

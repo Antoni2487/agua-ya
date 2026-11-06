@@ -1,7 +1,6 @@
-# CLAUDE.md — AguaYa
+# AguaYa — Especificación del sistema
 
-> Contexto completo del proyecto para Claude Code. Léelo entero antes de escribir código.
-> Si algo de este archivo choca con lo que pide el usuario en la sesión, **pregunta antes de actuar**.
+> Alcance, modelo de datos, reglas de negocio, API y forma de trabajo del equipo.
 
 ---
 
@@ -108,7 +107,6 @@ Las **averías mecánicas en ruta NO son un problema recurrente documentado**. P
 
 ```
 aguaya/
-├── CLAUDE.md
 ├── README.md
 ├── .gitignore
 ├── docker-compose.yml
@@ -367,16 +365,6 @@ Respuestas paginadas con `page`, `size`, `totalElements`. Swagger documenta todo
 
 **CI** (GitHub Actions): `backend.yml` corre `./mvnw verify` (Testcontainers con Postgres real) y construye la imagen Docker de Render en cada push y PR que toque `backend/`; `web.yml` corre tipos, tests y build en cada push y PR que toque `web/`. No se mergea a `develop` ni a `main` con el CI en rojo. Si fallan tests, los reportes quedan como artefacto `surefire-reports` de la corrida.
 
-### Reglas para Claude Code
-- Antes de empezar una tarea: verifica la rama actual. Si estás en `main` o `develop`, **crea la rama `feature/*` correspondiente** desde `develop` actualizado.
-- Nunca hagas `push --force` sobre `main`/`develop`, nunca hagas merge a `main` sin que el usuario lo pida explícitamente.
-- No hagas push ni abras PR sin confirmación del usuario.
-- Toda modificación de esquema = **nueva migración Flyway** (`V{n}__descripcion.sql`). Nunca edites una migración ya mergeada.
-- Corre `./mvnw verify` (o los tests relevantes) antes de declarar una tarea terminada.
-- No agregues dependencias pesadas sin justificar. No implementes nada de la sección "NO incluye".
-- Si un requisito es ambiguo, pregunta. No inventes reglas de negocio.
-- Comunica en español, de forma breve y directa.
-
 ---
 
 ## 13. Entornos y configuración
@@ -403,7 +391,7 @@ Marcar como **datos referenciales** (comentario en la migración y en README).
 ## 15. Plan de trabajo
 
 ### Sprint 0 (hoy)
-1. **Repo base**: estructura del monorepo, README, `.gitignore`, `CLAUDE.md`, rama `develop`. (El usuario configura protecciones de rama en GitHub.)
+1. **Repo base**: estructura del monorepo, README, `.gitignore`, especificación, rama `develop`. (El usuario configura protecciones de rama en GitHub.)
 2. **`feature/backend-setup`**: proyecto Spring Boot (Java 21), perfiles, docker-compose con Postgres, Flyway `V1__esquema_inicial.sql` con **todo** el modelo de la sección 7, Swagger, handler global de errores, endpoint de health. PR → `develop`.
 3. **`feature/auth`**: entidades de persona, OTP de registro (local + Twilio Verify), registro de vecino, login con DNI + contraseña, JWT + refresh, seguridad por roles. Tests de servicio. PR → `develop`.
 4. **`feature/seed-data`**: `V3` con datos referenciales. PR → `develop`.
