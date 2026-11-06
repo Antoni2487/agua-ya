@@ -56,8 +56,10 @@ export function Transparencia() {
     <div className="publico">
       <header className="barra">
         <span className="marca">
-          <img src="/gota.svg" alt="" width={22} height={22} />
-          AguaYa <small>Transparencia</small>
+          <img src="/logo-epsel.webp" alt="EPSEL S.A." width={70} height={48} className="marca-logo" />
+          <span className="marca-texto">
+            AguaYa <small>Transparencia del servicio de cisternas</small>
+          </span>
         </span>
         <Link to="/login" className="enlace-barra">
           Ingreso EPSEL
