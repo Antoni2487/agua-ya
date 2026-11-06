@@ -113,3 +113,27 @@ La explicación de cada parte del código está en [guia-del-codigo.md](guia-del
 - [ ] En la app, dejar abierta la sesión del vecino `30000004`.
 - [ ] Ensayar el simulador con **otro sector y otro conductor** (`--dni 20000002`): una ruta completada ya no se puede borrar ni repetir el mismo día. Si una ruta queda EN_CURSO tras un Ctrl+C, el simulador la retoma.
 - [ ] Brillo al máximo y zoom del navegador al 125 % para que se lea desde atrás.
+
+---
+
+## Video demo (deliverable 3: 3 min)
+
+La rúbrica pide "el flujo completo navegable + navegación por teclado". Es **un solo video** que junta la web y el celular.
+
+**Cómo grabar (todo gratis):**
+1. **Celular en la PC:** instalar [scrcpy](https://github.com/Genymobile/scrcpy), activar la depuración USB en el celular, conectarlo por cable y correr `scrcpy`. La pantalla del celular aparece en una ventana de la PC.
+2. **Grabar la PC:** usar **OBS Studio**, o **Win + Alt + R** (Xbox Game Bar, que solo graba una ventana a la vez). Con OBS se graban el navegador y la ventana de scrcpy en una sola toma.
+3. **Mostrar las teclas:** activar en OBS un plugin de teclas en pantalla, o simplemente decir en voz alta "Tab… Enter…". El profesor tiene que notar que no se usa el mouse.
+4. **Editar:** con **Clipchamp** (viene en Windows 11) recortar los silencios y poner títulos cortos ("Solo teclado", "Verificada por GPS").
+
+**Guion del video:**
+
+| Tiempo | Qué se ve | Qué se dice |
+|---|---|---|
+| 0:00–0:15 | Portada de la web rediseñada | Problema: el vecino no sabe cuándo llega la cisterna |
+| 0:15–1:15 | Web **solo con teclado**: skip link, menú con Enter y Esc, error del buscador, "¿Pasa hoy la cisterna?" | Nombrar cada criterio mientras se muestra |
+| 1:15–1:30 | axe DevTools en esa página: 0 problemas | "Antes eran 100 elementos con fallas" |
+| 1:30–2:40 | Admin con la ruta de hoy → simulador en marcha → el camión se mueve en el panel y en el celular → "Atendida · Verificada por GPS" → el vecino califica | El flujo completo de AguaYa |
+| 2:40–3:00 | TalkBack leyendo el Inicio del vecino | Accesibilidad en la app |
+
+**El conductor:** el simulador hace su papel. Si quieres mostrar su app, entra con `20000001` y arranca el simulador con `--sin-atender`: el camión se mueve solo y la entrega se marca con el botón de la app del conductor.
