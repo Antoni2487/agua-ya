@@ -10,8 +10,7 @@
 AguaYa es un sistema de gestión logística del **abastecimiento de agua potable mediante camiones cisterna** para **EPSEL S.A.** (Entidad Prestadora de Servicios de Saneamiento de Lambayeque, Perú). Cubre Chiclayo y distritos aledaños (Monsefú, etc.).
 
 Tiene tres clientes:
-- **App móvil** (React Native / Expo) para **Conductores** de cisterna (necesita GPS en segundo plano).
-- **Web del vecino** (React / Vite, mobile-first, sin instalar nada) para **Vecinos** (hogares). Decisión del 4 nov 2026: el vecino de AA.HH. con celular gama baja abre un enlace mejor que instalar una app, y la web es medible con WAVE/axe (curso IHM, PA3).
+- **App móvil AguaYa** (React Native / Expo, en `mobile/`) para **Conductores** de cisterna y **Vecinos** (hogares): una sola app que muestra las pantallas de cada rol según la sesión. Decisión del 5 nov 2026: el vecino también usa la app (se descarta la web del vecino del 4 nov). El backend de Web Push queda disponible pero la app usa Expo Push.
 - **Panel web** (React / Vite) para el **Administrador** de EPSEL.
 - **Panel público de transparencia** (web, solo lectura, sin login).
 
@@ -81,7 +80,7 @@ Las **averías mecánicas en ruta NO son un problema recurrente documentado**. P
 |---|---|---|
 | `ADMIN` | Panel web | CRUD de sectores, puntos de llenado, cisternas, conductores, instituciones; programar rutas; ver planificación de capacidad; asignar; ver mapa en vivo; gestionar incidencias y reasignar paradas; ver calificaciones y reportes. |
 | `CONDUCTOR` | App móvil | Ver su ruta del día y paradas; iniciar/finalizar ruta y viajes; enviar posición GPS; marcar paradas atendidas (validado por geocerca); reportar incidencias. |
-| `VECINO` | Web del vecino | Registrarse; ver su próxima atención y la cisterna en camino; recibir push; reportar incidencias; calificar la entrega. |
+| `VECINO` | App móvil | Registrarse; ver su próxima atención y la cisterna en camino; recibir push; reportar incidencias; calificar la entrega. |
 | Público | Web pública | Ver panel de transparencia (sin login, solo datos agregados). |
 
 ---
@@ -97,7 +96,7 @@ Las **averías mecánicas en ruta NO son un problema recurrente documentado**. P
 | Tiempo real | WebSocket + STOMP |
 | OTP | Interfaz `ProveedorOtp`: impl `ProveedorOtpLocal` (dev, código en log) e impl `ProveedorOtpTwilio` (prod, Twilio Verify por API REST) |
 | DNI | Interfaz `ProveedorDni`: impl `ProveedorDniLocal` (dev/tests, nombres de prueba; `00000000` simula DNI inexistente) e impl `ProveedorDniMiApi` (prod, miapi.cloud por API REST) |
-| Push | Web Push estándar (VAPID + cifrado RFC 8291 con la JDK, sin librerías) para la web del vecino; Expo Push API (HTTP) para la app |
+| Push | Web Push estándar (VAPID + cifrado RFC 8291 con la JDK, sin librerías) (disponible, sin cliente por ahora); Expo Push API (HTTP) para la app del vecino y del conductor |
 | Tests | JUnit 5, Spring Boot Test, Testcontainers (Postgres) |
 | Móvil | React Native + Expo, `expo-location`, `react-native-maps`, `expo-notifications` |
 | Web | React + Vite, Leaflet + OpenStreetMap (sin API key) |
@@ -115,7 +114,7 @@ aguaya/
 ├── docker-compose.yml
 ├── backend/          # Spring Boot
 ├── mobile/           # Expo: app del Conductor
-└── web/              # Vite: web del vecino + panel Admin + rutas públicas /transparencia
+└── web/              # Vite: panel Admin + rutas públicas /transparencia
 ```
 
 ### Backend: paquetes por funcionalidad
@@ -248,9 +247,9 @@ Fase 0 (base): repo, setup backend, auth + OTP, datos semilla.
 ## 10. Flujos clave
 
 ### Registro del vecino
-1. Web: DNI + celular → `POST /api/auth/otp/solicitar` (avisa antes del SMS si el DNI o el teléfono ya tienen cuenta).
+1. App: DNI + celular → `POST /api/auth/otp/solicitar` (avisa antes del SMS si el DNI o el teléfono ya tienen cuenta).
 2. El proveedor OTP envía el código por SMS. En dev (`ProveedorOtpLocal`): 6 dígitos, hash en BD, vence en 5 min, máx. 3 intentos y 3 envíos/hora por teléfono. En prod (Twilio Verify) Twilio genera, envía y valida el código con sus propios límites.
-3. Web: código → `POST /api/auth/registro/vecino` con DNI, teléfono, código, latitud/longitud y `direccion_referencia` opcional. El backend verifica el código, consulta el DNI (`ProveedorDni`, fuera de la transacción porque puede tardar) y responde con la sesión abierta.
+3. App: código → `POST /api/auth/registro/vecino` con DNI, teléfono, código, latitud/longitud y `direccion_referencia` opcional. El backend verifica el código, consulta el DNI (`ProveedorDni`, fuera de la transacción porque puede tardar) y responde con la sesión abierta.
 4. Ubicación: la web la toma sola del GPS del celular (Geolocation API), sin que el vecino marque el mapa. Si niega el permiso o la precisión es peor que el radio de la geocerca, se le muestra el mapa con el pin para corregirlo (alternativa obligatoria por accesibilidad). **El dato que manda es el pin** (en asentamientos las direcciones son informales: "Mz. B Lt. 12, AA.HH. X").
 
 ### Login
@@ -273,7 +272,7 @@ Fase 0 (base): repo, setup backend, auth + OTP, datos semilla.
 - Tópicos: `/topic/rutas/{id}/posicion`, `/topic/admin/incidencias`, `/topic/admin/rutas` (eventos RUTA_INICIADA, VIAJE_INICIADO, VIAJE_FINALIZADO, PARADA_ATENDIDA, PARADA_NO_ATENDIDA, RUTA_COMPLETADA, RUTA_INTERRUMPIDA, PARADAS_REASIGNADAS).
 
 ### Notificaciones
-- Vecino: avisos de ruta iniciada, cisterna cerca, parada atendida y reasignación. Salen por **Web Push** a la web del vecino y, si hay app registrada, por Expo.
+- Vecino: avisos de ruta iniciada, cisterna cerca, parada atendida y reasignación. Salen por Expo Push a la app (y por Web Push si hubiera un navegador suscrito).
 - Web Push: la web pide la clave VAPID pública a `GET /api/public/web-push/clave-publica`, suscribe el navegador y la registra con `POST /api/vecino/web-push` (cuerpo = `PushSubscription.toJSON()`); la da de baja con `DELETE /api/vecino/web-push` al cerrar sesión. Una suscripción es de una sola persona (si otra la registra pasa a ella). Solo se aceptan endpoints `https` de los servicios de push de los navegadores (`fcm.googleapis.com`, `push.services.mozilla.com`, `notify.windows.com`, `push.apple.com`; 400 `SUSCRIPCION_INVALIDA`): el backend les hace POST, así se evita SSRF. En iPhone solo funciona con la web agregada a la pantalla de inicio (iOS 16.4+).
 - Expo (app): la app registra su token con `POST /api/dispositivos` (VECINO o CONDUCTOR; un token es de una sola persona, si otra lo registra pasa a ella) y lo da de baja con `DELETE /api/dispositivos` al cerrar sesión.
 - Destinatarios: solo vecinos activos, cada uno por su parada (su hogar o el punto de entrega más cercano; regla 9). **Ruta iniciada**: vecinos con parada pendiente. **Cisterna cerca**: cuando una posición GPS queda a ≤ `aguaya.push.radio-cercania-metros` (def. 500 m) de una parada pendiente; una sola vez por parada (`parada.aviso_cercania_en`). **Entrega registrada**: al atender la parada (invita a calificar). **Reasignación** (RF07): a los vecinos de las paradas copiadas, con la nueva fecha y turno.
