@@ -77,9 +77,9 @@ services:
       - key: DNI_API_TOKEN
         sync: false
 
-      # Web Push a la web del vecino; el par de claves VAPID se carga en el panel de Render
+      # Web Push: sin cliente web por ahora (el vecino usa la app). Para activarlo: "vapid" + las claves VAPID en el panel
       - key: WEB_PUSH_PROVIDER
-        value: vapid
+        value: log
       - key: WEB_PUSH_CLAVE_PUBLICA
         sync: false
       - key: WEB_PUSH_CLAVE_PRIVADA
