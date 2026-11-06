@@ -209,6 +209,7 @@ html:not(.js) .navegacion { position: static; box-shadow: none; }
    de la foto) y la pila de carpetas montada encima de su borde inferior */
 .portada-banda {
   position: relative; isolation: isolate; overflow: hidden; color: var(--blanco);
+  background-color: var(--c1); /* debajo de la foto: si no carga (o para WAVE, que no ve el velo) el texto blanco sigue a 15,6:1 */
   padding: clamp(3.5rem, 8vw, 7rem) var(--margen) clamp(8rem, 13vw, 11rem);
 }
 .portada-foto { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; }
@@ -547,8 +548,10 @@ a.carpeta:focus-visible { outline-offset: -3px; box-shadow: inset 0 0 0 6px var(
 .oscuro .cupon :focus-visible { outline-color: var(--tinta); box-shadow: 0 0 0 6px var(--foco); }
 
 /* ------------------------------------------------------------------ Movimiento (solo transform y opacidad) */
-.js .aparece { opacity: 0; transform: translateY(24px); transition: opacity 600ms ease, transform 700ms var(--curva); transition-delay: var(--retraso, 0ms); }
-.js .aparece.visible { opacity: 1; transform: none; }
+/* Solo se desliza: el texto nunca está transparente, así se lee aunque el script no lo marque como visible
+   y los analizadores de contraste (WAVE) lo miden con su color real */
+.js .aparece { transform: translateY(24px); transition: transform 700ms var(--curva); transition-delay: var(--retraso, 0ms); }
+.js .aparece.visible { transform: none; }
 .js .carpetas .carpeta { animation: subir 700ms var(--curva) both; animation-delay: calc(var(--orden, 0) * 80ms + 150ms); }
 .js .carpetas .carpeta-1 { --orden: 0; } .js .carpetas .carpeta-2 { --orden: 1; } .js .carpetas .carpeta-3 { --orden: 2; }
 .js .carpetas .carpeta-4 { --orden: 3; } .js .carpetas .carpeta-frente { --orden: 4; }
