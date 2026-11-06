@@ -31,43 +31,54 @@ export function Login() {
 
   return (
     <div className="pantalla-login">
-      <form className="tarjeta login" onSubmit={enviar} noValidate>
-        <h1>
-          <img src="/gota.svg" alt="" width={28} height={28} /> AguaYa
-        </h1>
-        <p className="texto-suave">Panel del Administrador · EPSEL</p>
-        <label>
-          DNI
-          <input
-            name="dni"
-            inputMode="numeric"
-            autoComplete="username"
-            maxLength={8}
-            pattern="\d{8}"
-            required
-            value={dni}
-            onChange={(e) => setDni(e.target.value.replace(/\D/g, ''))}
-          />
-        </label>
-        <label>
-          Contraseña
-          <input
-            name="password"
-            type="password"
-            autoComplete="current-password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </label>
-        {error !== null && <MensajeError error={error} />}
-        <button type="submit" className="boton" disabled={enviando || dni.length !== 8 || !password}>
-          {enviando ? 'Ingresando…' : 'Ingresar'}
-        </button>
-        <a href="/transparencia" className="enlace-suave">
-          Ver el panel público de transparencia
-        </a>
-      </form>
+      <section className="login-portada" aria-hidden="true">
+        <img src="/epsel-cisterna.webp" alt="" />
+        <div className="login-portada-texto">
+          <p className="login-sobretitulo">EPSEL S.A. · Lambayeque</p>
+          <p className="login-lema">Cada cisterna, a tiempo y donde se necesita.</p>
+          <p>Programa rutas, sigue cada camión en el mapa y verifica cada entrega con GPS.</p>
+        </div>
+      </section>
+      <main className="login-lado">
+        <form className="login" onSubmit={enviar} noValidate>
+          <img src="/logo-epsel.webp" alt="EPSEL S.A." width={132} height={90} className="login-logo" />
+          <h1>
+            AguaYa <span>Panel del administrador</span>
+          </h1>
+          <label>
+            DNI
+            <input
+              name="dni"
+              inputMode="numeric"
+              autoComplete="username"
+              maxLength={8}
+              pattern="\d{8}"
+              required
+              value={dni}
+              onChange={(e) => setDni(e.target.value.replace(/\D/g, ''))}
+            />
+          </label>
+          <label>
+            Contraseña
+            <input
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </label>
+          {error !== null && <MensajeError error={error} />}
+          <button type="submit" className="boton boton-grande" disabled={enviando || dni.length !== 8 || !password}>
+            {enviando ? 'Ingresando…' : 'Ingresar'}
+          </button>
+          <a href="/transparencia" className="enlace-suave">
+            Ver el panel público de transparencia
+          </a>
+          <p className="login-nota">Propuesta académica (UTP). Los datos son referenciales.</p>
+        </form>
+      </main>
     </div>
   );
 }
