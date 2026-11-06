@@ -35,9 +35,9 @@
           <li class="menu-item">
             <button class="menu-boton" type="button" aria-expanded="false" aria-controls="sub-agua">Agua en tu zona</button>
             <ul class="submenu" id="sub-agua">
-              <li><a href="#avisos">Cortes y avisos de hoy</a></li>
-              <li><a href="#buscar">¿Pasa hoy la cisterna?</a></li>
-              <li><a href="#horarios">Horarios de abastecimiento</a></li>
+              <li><a href="avisos.html">Cortes y avisos</a></li>
+              <li><a href="cisterna.html">¿Pasa hoy la cisterna?</a></li>
+              <li><a href="cisterna.html#semana">La cisterna esta semana</a></li>
               <li><a href="#recorrido">De dónde viene tu agua</a></li>
               <li><a href="#limpieza">Cómo limpiamos el agua</a></li>
             </ul>
@@ -63,11 +63,12 @@
           <li class="menu-item">
             <button class="menu-boton" type="button" aria-expanded="false" aria-controls="sub-informacion">Información pública</button>
             <ul class="submenu" id="sub-informacion">
-              <li><a href="#metas">Metas y resultados</a></li>
-              <li><a href="#rendicion">Rendición de cuentas</a></li>
-              <li><a href="#pedir-informacion">Pedir información pública</a></li>
-              <li><a href="#gestion">Cómo se gestiona EPSEL</a></li>
-              <li><a href="#integridad">Integridad y denuncias de corrupción</a></li>
+              <li><a href="informacion.html">Las cisternas en cifras</a></li>
+              <li><a href="informacion.html#zonas">Cumplimiento por zona</a></li>
+              <li><a href="informacion.html#metas">Metas y resultados</a></li>
+              <li><a href="informacion.html#rendicion">Rendición de cuentas</a></li>
+              <li><a href="informacion.html#pedir-informacion">Pedir información pública</a></li>
+              <li><a href="informacion.html#integridad">Integridad y denuncias de corrupción</a></li>
             </ul>
           </li>
           <li class="menu-item">
@@ -82,7 +83,7 @@
         </ul>
       </nav>
 
-      <a class="boton boton-cisterna" href="#buscar">¿Pasa hoy la cisterna?</a>
+      <a class="boton boton-cisterna" href="cisterna.html">¿Pasa hoy la cisterna?</a>
     </div>
   </header>
 
@@ -97,7 +98,7 @@
 
       <div class="carpetas">
         <a class="carpeta carpeta-1" href="#nosotros"><span class="pestana">Nosotros</span></a>
-        <a class="carpeta carpeta-2" href="#informacion"><span class="pestana">Información pública</span></a>
+        <a class="carpeta carpeta-2" href="informacion.html"><span class="pestana">Información pública</span></a>
         <a class="carpeta carpeta-3" href="#atencion"><span class="pestana">Atención y reclamos</span></a>
         <a class="carpeta carpeta-4" href="#pagos"><span class="pestana">Pagos y trámites</span></a>
 
@@ -127,35 +128,10 @@
           <p class="avisos-fecha" data-hoy>Hoy</p>
         </div>
         <ul class="lista-gotas" id="lista-avisos">
-          <li class="aviso" data-distrito="José Leonardo Ortiz">
-            <span class="gota-vineta gota-corte" aria-hidden="true"></span>
-            <div>
-              <p class="aviso-titulo"><strong>Corte de agua</strong> <span>José Leonardo Ortiz</span></p>
-              <p>De 8:00 a.m. a 4:00 p.m. en el P.J. Urrunaga y alrededores, por cambio de tubería. En la tarde pasa una cisterna.</p>
-            </div>
-          </li>
-          <li class="aviso" data-distrito="Chiclayo">
-            <span class="gota-vineta gota-baja" aria-hidden="true"></span>
-            <div>
-              <p class="aviso-titulo"><strong>Poca presión</strong> <span>Chiclayo</span></p>
-              <p>De 2:00 p.m. a 8:00 p.m. en las partes altas de Cerropón, por limpieza del reservorio. Guarda agua en la mañana.</p>
-            </div>
-          </li>
-          <li class="aviso" data-distrito="Monsefú">
-            <span class="gota-vineta gota-cisterna" aria-hidden="true"></span>
-            <div>
-              <p class="aviso-titulo"><strong>Cisterna de apoyo</strong> <span>Monsefú</span></p>
-              <p>Valle Hermoso recibe cisterna mientras se repara el pozo. Revisa el día y el turno en la lista de al lado.</p>
-            </div>
-          </li>
-          <li class="aviso" data-distrito="Lambayeque">
-            <span class="gota-vineta gota-normal" aria-hidden="true"></span>
-            <div>
-              <p class="aviso-titulo"><strong>Servicio normal</strong> <span>Lambayeque y Ferreñafe</span></p>
-              <p>No hay cortes programados para hoy.</p>
-            </div>
-          </li>
+          <li class="aviso"><span class="gota-vineta" aria-hidden="true"></span>
+            <div><p>Revisa los cortes de hoy en <a href="avisos.html">Cortes y avisos</a>.</p></div></li>
         </ul>
+        <a class="enlace-flecha enlace-seccion" href="avisos.html">Ver todos los avisos y los de los próximos días</a>
       </div>
 
       <div class="avisos-columna" id="horarios">
@@ -168,6 +144,7 @@
             <div><p>Cargando los horarios de cada zona…</p></div></li>
         </ul>
         <p class="nota-datos" id="nota-datos" hidden></p>
+        <a class="enlace-flecha enlace-seccion" href="cisterna.html#semana">Ver día por día y la placa de cada cisterna</a>
       </div>
     </section>
 
@@ -361,11 +338,11 @@
       </div>
       <div class="indice" data-indice>
         <ul class="indice-lista">
-          <li id="metas"><a href="#metas" data-vista="v-metas"><span class="indice-nombre">Metas y resultados</span><span class="indice-texto">Cuántas casas tienen agua y desagüe, y cuántas horas al día.</span></a></li>
-          <li id="rendicion"><a href="#rendicion" data-vista="v-rendicion"><span class="indice-nombre">Rendición de cuentas</span><span class="indice-texto">En qué se gastó el presupuesto de cada año.</span></a></li>
-          <li id="pedir-informacion"><a href="#pedir-informacion" data-vista="v-pedir"><span class="indice-nombre">Pedir información pública</span><span class="indice-texto">Pide cualquier documento; la ley da 10 días hábiles para responder.</span></a></li>
-          <li id="gestion"><a href="#gestion" data-vista="v-gestion"><span class="indice-nombre">Cómo se gestiona EPSEL</span><span class="indice-texto">Planes, directorio y decisiones de la empresa.</span></a></li>
-          <li id="integridad"><a href="#integridad" data-vista="v-integridad"><span class="indice-nombre">Integridad y denuncias de corrupción</span><span class="indice-texto">Denuncia un acto de corrupción de forma segura.</span></a></li>
+          <li><a href="informacion.html#metas" data-vista="v-metas"><span class="indice-nombre">Metas y resultados</span><span class="indice-texto">Cuántas casas tienen agua y desagüe, y cuántas horas al día.</span></a></li>
+          <li><a href="informacion.html#rendicion" data-vista="v-rendicion"><span class="indice-nombre">Rendición de cuentas</span><span class="indice-texto">En qué se gastó el presupuesto de cada año.</span></a></li>
+          <li><a href="informacion.html#pedir-informacion" data-vista="v-pedir"><span class="indice-nombre">Pedir información pública</span><span class="indice-texto">Pide cualquier documento; la ley da 10 días hábiles para responder.</span></a></li>
+          <li><a href="informacion.html#gestion" data-vista="v-gestion"><span class="indice-nombre">Cómo se gestiona EPSEL</span><span class="indice-texto">Planes, directorio y decisiones de la empresa.</span></a></li>
+          <li><a href="informacion.html#integridad" data-vista="v-integridad"><span class="indice-nombre">Integridad y denuncias de corrupción</span><span class="indice-texto">Denuncia un acto de corrupción de forma segura.</span></a></li>
         </ul>
         <div class="indice-vista" aria-hidden="true">
           <div class="vista activa" id="v-metas"><p class="vista-cifra">Agua y desagüe</p><p>Cobertura por distrito y horas de servicio al día.</p></div>
@@ -389,7 +366,7 @@
           <p>Chiclayo, José Leonardo Ortiz, La Victoria, Pimentel, Monsefú, Reque, Lambayeque, Ferreñafe y otros distritos de la región.</p>
         </div>
         <div class="nosotros-enlaces">
-          <a class="enlace-flecha" id="directivos" href="#gestion">Directivos y organización</a>
+          <a class="enlace-flecha" id="directivos" href="informacion.html#gestion">Directivos y organización</a>
           <a class="enlace-flecha" id="noticias" href="#avisos">Noticias y avisos</a>
         </div>
       </div>
@@ -414,11 +391,11 @@
     <div class="pie-columnas">
       <nav aria-label="Pie de página">
         <ul class="pie-enlaces">
-          <li><a href="#avisos">Cortes y avisos</a></li>
-          <li><a href="#buscar">¿Pasa hoy la cisterna?</a></li>
+          <li><a href="avisos.html">Cortes y avisos</a></li>
+          <li><a href="cisterna.html">¿Pasa hoy la cisterna?</a></li>
           <li><a href="#donde-pagar">Dónde pagar</a></li>
           <li><a href="#reclamo">Hacer un reclamo</a></li>
-          <li><a href="#informacion">Información pública</a></li>
+          <li><a href="informacion.html">Información pública</a></li>
           <li><a href="#nosotros">Nosotros</a></li>
         </ul>
       </nav>
@@ -428,10 +405,10 @@
       </div>
     </div>
     <div class="pie-final">
-      <p>Propuesta académica de rediseño, curso Interacción Humano-Computador, UTP Chiclayo. No es el sitio oficial de EPSEL. Avisos y horarios de ejemplo.</p>
+      <p>Propuesta académica de rediseño, curso Interacción Humano-Computador, UTP Chiclayo. No es el sitio oficial de EPSEL. Avisos, horarios y cifras de ejemplo cuando el sistema de cisternas no responde.</p>
       <a class="boton boton-pie" href="#">Acceso del personal</a>
     </div>
-    <p class="creditos">Fotos: «Reservorio Tinajones», EdsonFuentesMera, CC BY-SA 4.0 · «Reservorio de Tinajones», Josefito123, CC BY-SA 4.0 · «Zapallal: water tap», SuSanA Secretariat, CC BY 2.0 · «Chiclayo, Plaza de Armas», Burkhard Mücke, CC BY-SA 4.0 · «Plaza de Armas de Monsefú», LLs, CC BY-SA 4.0. Todas vía Wikimedia Commons.</p>
+    <p class="creditos">Fotos: «Reservorio Tinajones», EdsonFuentesMera, CC BY-SA 4.0 · «Reservorio de Tinajones», Josefito123, CC BY-SA 4.0 · «Zapallal: water tap», SuSanA Secretariat, CC BY 2.0 · «Chiclayo, Plaza de Armas», Burkhard Mücke, CC BY-SA 4.0 · «Plaza de Armas de Monsefú», LLs, CC BY-SA 4.0, vía Wikimedia Commons · «Ministerio de Defensa y Ejército distribuyen agua en San Juan de Lurigancho», Ministerio de Defensa del Perú, CC BY 2.0, vía Flickr.</p>
   </footer>
 </body>
 </html>
