@@ -1,5 +1,5 @@
 /** Web pública de EPSEL rediseñada (rediseno-epsel), con la información de las cisternas para todos (VITE_WEB_PUBLICA_URL). */
-export const WEB_PUBLICA_URL = (import.meta.env.VITE_WEB_PUBLICA_URL ?? 'https://epsel-rediseno.vercel.app').replace(/\/$/, '');
+export const WEB_PUBLICA_URL = (import.meta.env.VITE_WEB_PUBLICA_URL ?? 'https://agua-ya-rediseno-epsel.vercel.app').replace(/\/$/, '');
 
 import type {
   EstadoParada, EstadoRuta, Incidencia, Rol, TipoEventoRuta, TipoIncidencia, TipoParada, Turno,
