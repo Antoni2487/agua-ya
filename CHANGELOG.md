@@ -3,6 +3,26 @@
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); versiones con
 [SemVer](https://semver.org/lang/es/).
 
+## [0.3.0] - 2026-11-06 · Avance 3 (SIE) y PA3 (IHM)
+
+Las tres piezas del producto: web de EPSEL rediseñada, panel del admin y app móvil para el vecino y el conductor.
+
+### Añadido
+- **Panel del admin (Vite)**: rutas, asignación, mapa en vivo, incidencias, reasignación, capacidad explicada, calificaciones y catálogos, con el diseño de EPSEL.
+- **App móvil (Expo)**: el vecino ve su próxima cisterna, el camión en el mapa, reporta y califica; el conductor opera su ruta con GPS.
+- **Web de EPSEL rediseñada** (`rediseno-epsel/`, propuesta académica): accesible (axe: 0 violaciones en 7 páginas), liviana (0,8 MB), con la información pública de las cisternas y el anuncio de la app.
+- El vecino ingresa con DNI + clave de 4 dígitos (V11); el SMS solo para registrarse o restablecerla; bloqueo de 15 min tras 5 intentos.
+- La próxima atención del vecino trae placa y capacidad de la cisterna y si la entrega se verificó por GPS.
+- Web Push para navegadores (disponible) y Expo Push para la app.
+- `scripts/simular-ruta.mjs`: recorrido simulado de una cisterna para las demos.
+- Documentación del PA3 en `docs/pa3/` y especificación en `docs/especificacion.md`.
+
+### Cambiado
+- El panel público de transparencia del Vite se retira: `/transparencia` redirige a la web rediseñada.
+
+### Corregido
+- Arranque en Render: constructor de `ProveedorDniMiApi` y Web Push en modo log sin claves VAPID.
+
 ## [0.2.0] - 2026-10-29 · Avance 2 (SIE)
 
 Backend desplegado en Render y optimizado. Sin cambios en las reglas de negocio.

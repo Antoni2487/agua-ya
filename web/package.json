@@ -1,7 +1,7 @@
 {
   "name": "aguaya-web",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.3.0",
   "type": "module",
   "description": "Panel del Administrador de EPSEL y panel público de transparencia de AguaYa",
   "scripts": {
