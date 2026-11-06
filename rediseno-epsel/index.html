@@ -21,8 +21,7 @@
     <p class="aviso-propuesta">Propuesta académica de rediseño (UTP). No es el sitio oficial de EPSEL.</p>
     <div class="cabecera-fila">
       <a class="marca" href="index.html" aria-label="EPSEL, página de inicio">
-        <svg class="marca-gota" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M16 2C10 10 5 15.5 5 21a11 11 0 0 0 22 0C27 15.5 22 10 16 2z"/></svg>
-        <span class="marca-nombre">EPSEL</span>
+        <img class="marca-logo" src="assets/logo-epsel.webp" width="358" height="247" alt="">
         <span class="marca-detalle">Agua potable y alcantarillado de Lambayeque</span>
       </a>
 
@@ -37,7 +36,7 @@
             <ul class="submenu" id="sub-agua">
               <li><a href="avisos.html">Cortes y avisos</a></li>
               <li><a href="cisterna.html">¿Pasa hoy la cisterna?</a></li>
-              <li><a href="cisterna.html#semana">La cisterna esta semana</a></li>
+              <li><a href="#aguaya">AguaYa: la cisterna en tu celular</a></li>
               <li><a href="#recorrido">De dónde viene tu agua</a></li>
               <li><a href="#limpieza">Cómo limpiamos el agua</a></li>
             </ul>
@@ -45,19 +44,20 @@
           <li class="menu-item">
             <button class="menu-boton" type="button" aria-expanded="false" aria-controls="sub-pagos">Pagos y trámites</button>
             <ul class="submenu" id="sub-pagos">
-              <li><a href="#donde-pagar">Dónde pagar tu recibo</a></li>
-              <li><a href="#oficina-virtual">Oficina virtual</a></li>
-              <li><a href="#tramites">Trámites: nueva conexión y otros</a></li>
-              <li><a href="#vma">Para empresas: desagüe no doméstico (VMA)</a></li>
+              <li><a href="tramites.html">Dónde pagar tu recibo</a></li>
+              <li><a href="tramites.html#oficina-virtual">Oficina virtual: duplicado y saldo</a></li>
+              <li><a href="tramites.html#tramites">Conexión nueva y otros trámites</a></li>
+              <li><a href="tramites.html#vma">Para empresas: desagüe no doméstico (VMA)</a></li>
             </ul>
           </li>
           <li class="menu-item">
             <button class="menu-boton" type="button" aria-expanded="false" aria-controls="sub-atencion">Atención y reclamos</button>
             <ul class="submenu" id="sub-atencion">
-              <li><a href="#reclamo">Cómo hacer un reclamo</a></li>
-              <li><a href="#oficinas">Oficinas y horarios</a></li>
-              <li><a href="#escribenos">Escríbenos por WhatsApp</a></li>
-              <li><a href="#denuncias">Denuncias y sugerencias</a></li>
+              <li><a href="atencion.html">Oficinas y teléfonos</a></li>
+              <li><a href="atencion.html#emergencias">Emergencias: fugas y atoros</a></li>
+              <li><a href="atencion.html#reclamo">Cómo hacer un reclamo</a></li>
+              <li><a href="atencion.html#escribenos">Escríbenos por WhatsApp</a></li>
+              <li><a href="atencion.html#denuncias">Denuncias y sugerencias</a></li>
             </ul>
           </li>
           <li class="menu-item">
@@ -65,8 +65,7 @@
             <ul class="submenu" id="sub-informacion">
               <li><a href="informacion.html">Las cisternas en cifras</a></li>
               <li><a href="informacion.html#zonas">Cumplimiento por zona</a></li>
-              <li><a href="informacion.html#metas">Metas y resultados</a></li>
-              <li><a href="informacion.html#rendicion">Rendición de cuentas</a></li>
+              <li><a href="informacion.html#transparencia">Portal de Transparencia</a></li>
               <li><a href="informacion.html#pedir-informacion">Pedir información pública</a></li>
               <li><a href="informacion.html#integridad">Integridad y denuncias de corrupción</a></li>
             </ul>
@@ -74,10 +73,11 @@
           <li class="menu-item">
             <button class="menu-boton" type="button" aria-expanded="false" aria-controls="sub-nosotros">Nosotros</button>
             <ul class="submenu" id="sub-nosotros">
-              <li><a href="#quienes-somos">Quiénes somos</a></li>
-              <li><a href="#directivos">Directivos y organización</a></li>
-              <li><a href="#cobertura">Dónde damos servicio</a></li>
-              <li><a href="#noticias">Noticias</a></li>
+              <li><a href="nosotros.html">Quiénes somos</a></li>
+              <li><a href="nosotros.html#historia">Historia</a></li>
+              <li><a href="nosotros.html#direccion">Alta dirección</a></li>
+              <li><a href="nosotros.html#cobertura">Dónde damos servicio</a></li>
+              <li><a href="nosotros.html#entidades">Entidades relacionadas</a></li>
             </ul>
           </li>
         </ul>
@@ -91,9 +91,13 @@
 
     <!-- Portada: la pregunta del vecino y las cinco carpetas del menú -->
     <section class="portada" aria-labelledby="titulo-portada">
-      <div class="portada-texto">
-        <h1 id="titulo-portada">¿Hay agua hoy en tu zona?</h1>
-        <p class="portada-bajada">EPSEL lleva el agua potable a Chiclayo, Lambayeque y Ferreñafe. Escribe tu zona y te decimos si hoy hay corte o si pasa la cisterna.</p>
+      <div class="portada-banda">
+        <img class="portada-foto" src="assets/epsel-cuadrilla.webp" width="1376" height="768" fetchpriority="high"
+             alt="Una cuadrilla de EPSEL con cascos naranjas trabaja en un buzón al costado de una avenida.">
+        <div class="portada-texto">
+          <h1 id="titulo-portada">¿Hay agua hoy en tu zona?</h1>
+          <p class="portada-bajada">EPSEL lleva el agua potable y el desagüe a Chiclayo, Lambayeque y Ferreñafe. Escribe tu zona y te decimos si hoy hay corte o si pasa la cisterna.</p>
+        </div>
       </div>
 
       <div class="carpetas">
@@ -116,22 +120,45 @@
             <datalist id="lista-zonas"></datalist>
           </form>
           <div class="resultado" id="resultado" role="status" aria-live="polite"></div>
+
+          <ul class="atajos" aria-label="Lo más buscado">
+            <li><a href="avisos.html"><strong>Comunicados de hoy</strong><span data-cuenta-avisos>Cortes y trabajos por distrito</span></a></li>
+            <li><a href="cisterna.html"><strong>¿Pasa hoy la cisterna?</strong><span>Día, turno y placa</span></a></li>
+            <li><a href="#donde-pagar"><strong>Paga tu recibo</strong><span>BCP, BBVA, Interbank, Yape y más</span></a></li>
+            <li><a href="https://api.whatsapp.com/send/?phone=51942813797" rel="noopener"><strong>WhatsApp 942 813 797</strong><span>Tu gerente te escucha</span></a></li>
+          </ul>
         </div>
       </div>
     </section>
 
-    <!-- Agua en tu zona: avisos y horarios -->
+    <!-- Anuncio de AguaYa: reemplaza al aviso emergente de seguimiento de cisternas del sitio actual -->
+    <section class="seccion aguaya" id="aguaya" aria-labelledby="titulo-aguaya">
+      <div class="aguaya-caja">
+        <div class="aguaya-texto">
+          <h2 id="titulo-aguaya">Conoce AguaYa</h2>
+          <p class="enunciado">La cisterna en tu celular: mira cuándo llega la cisterna a tu casa y recibe un aviso cuando esté cerca. Sin instalar nada: entras con tu DNI y un código por SMS.</p>
+          <a class="boton boton-grande boton-claro" href="cisterna.html" data-aguaya>Entrar a AguaYa</a>
+        </div>
+        <ul class="aguaya-lista">
+          <li><span class="aguaya-numero" aria-hidden="true">1</span><p><strong>Tu próxima cisterna</strong> con día, turno y placa.</p></li>
+          <li><span class="aguaya-numero" aria-hidden="true">2</span><p><strong>El camión en el mapa</strong> mientras reparte en tu zona.</p></li>
+          <li><span class="aguaya-numero" aria-hidden="true">3</span><p><strong>Reporta y califica</strong> si no llegó o si te dieron poca agua.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Comunicados de hoy y la cisterna esta semana -->
     <section class="seccion avisos" id="avisos" aria-labelledby="titulo-avisos">
       <div class="avisos-columna">
         <div class="avisos-cabeza">
-          <h2 id="titulo-avisos">Cortes y avisos de hoy</h2>
+          <h2 id="titulo-avisos">Comunicados de hoy</h2>
           <p class="avisos-fecha" data-hoy>Hoy</p>
         </div>
         <ul class="lista-gotas" id="lista-avisos">
           <li class="aviso"><span class="gota-vineta" aria-hidden="true"></span>
             <div><p>Revisa los cortes de hoy en <a href="avisos.html">Cortes y avisos</a>.</p></div></li>
         </ul>
-        <a class="enlace-flecha enlace-seccion" href="avisos.html">Ver todos los avisos y los de los próximos días</a>
+        <a class="enlace-flecha enlace-seccion" href="avisos.html">Ver todos los comunicados</a>
       </div>
 
       <div class="avisos-columna" id="horarios">
@@ -152,14 +179,14 @@
     <section class="seccion recorrido" id="recorrido" aria-labelledby="titulo-recorrido">
       <div class="recorrido-intro">
         <h2 id="titulo-recorrido">De dónde viene tu agua</h2>
-        <p>El agua que sale de tu caño hace un viaje largo: baja de la sierra por el río Chancay, se guarda en Tinajones, reposa en las lagunas Boró y se limpia en la planta antes de llegar a tu casa.</p>
+        <p>El agua de Chiclayo baja de la sierra por el río Chancay, se guarda en Tinajones, reposa en las lagunas Boró y se limpia en las plantas de EPSEL antes de llegar a tu casa.</p>
       </div>
 
       <div class="acordeon" data-acordeon>
         <div class="etapa etapa-1 abierta">
           <h3 class="etapa-cabeza"><button type="button" aria-expanded="true" aria-controls="etapa-1">Tinajones</button></h3>
           <div class="etapa-cuerpo" id="etapa-1">
-            <p>El reservorio Tinajones guarda hasta <strong>320 millones de metros cúbicos</strong> de agua del río Chancay. Su espejo de agua mide 20 km², como unas 2800 canchas de fútbol.</p>
+            <p>El reservorio Tinajones guarda hasta <strong>320 millones de metros cúbicos</strong> del río Chancay y de los ríos Conchano y Chotano. Tiene 37 metros de hondo y un espejo de agua de 20 km².</p>
             <img class="foto-gota" src="assets/tinajones.webp" width="1100" height="735" loading="lazy"
                  alt="El reservorio Tinajones entre cerros, con el agua azul y ramas secas en la orilla.">
           </div>
@@ -167,7 +194,7 @@
         <div class="etapa etapa-2">
           <h3 class="etapa-cabeza"><button type="button" aria-expanded="false" aria-controls="etapa-2">Río y canales</button></h3>
           <div class="etapa-cuerpo" id="etapa-2" hidden>
-            <p>Desde Tinajones el agua vuelve al río Chancay y se reparte en el canal Taymi. En la toma Bola de Oro se separa el agua para la ciudad de la que va al campo.</p>
+            <p>Desde Tinajones el agua baja por el canal Taymi. En la toma Bola de Oro se separan unos 1400 litros por segundo que van, por el canal Las Mercedes, a las lagunas Boró.</p>
             <img class="foto-gota" src="assets/tinajones-orilla.webp" width="1100" height="825" loading="lazy"
                  alt="Orilla del reservorio Tinajones con plantas acuáticas y cerros al fondo en un día nublado.">
           </div>
@@ -175,7 +202,7 @@
         <div class="etapa etapa-3">
           <h3 class="etapa-cabeza"><button type="button" aria-expanded="false" aria-controls="etapa-3">Lagunas Boró</button></h3>
           <div class="etapa-cuerpo" id="etapa-3" hidden>
-            <p>Las lagunas Boró I y Boró II dejan que la tierra del agua se asiente. Boró II guarda un millón y medio de metros cúbicos: es la reserva de la ciudad cuando el río baja.</p>
+            <p>En las lagunas Boró I y Boró II la tierra del agua se asienta en el fondo. Juntas guardan <strong>2 millones de metros cúbicos</strong>: la reserva de la ciudad cuando el río baja.</p>
             <svg class="dibujo" viewBox="0 0 320 200" role="img" aria-labelledby="dibujo-boro">
               <title id="dibujo-boro">Dibujo: el agua entra a la laguna con tierra y sale clara porque la tierra se queda en el fondo.</title>
               <rect x="0" y="70" width="320" height="130" fill="#a9d2f0"/>
@@ -187,14 +214,14 @@
           </div>
         </div>
         <div class="etapa etapa-4" id="limpieza">
-          <h3 class="etapa-cabeza"><button type="button" aria-expanded="false" aria-controls="etapa-4">La planta</button></h3>
+          <h3 class="etapa-cabeza"><button type="button" aria-expanded="false" aria-controls="etapa-4">Las plantas</button></h3>
           <div class="etapa-cuerpo" id="etapa-4" hidden>
-            <p>La Planta N.º 1 limpia hasta <strong>700 litros por segundo</strong> en cinco pasos:</p>
+            <p>La Planta N.º 1 limpia <strong>700 litros por segundo</strong> y la N.º 2, <strong>750</strong>. En cinco pasos:</p>
             <ol class="pasos">
               <li><strong>Coagulación:</strong> se agrega sulfato de aluminio para que la tierra se junte.</li>
               <li><strong>Floculación:</strong> el agua se mueve despacio y la tierra forma grumos.</li>
               <li><strong>Decantación:</strong> los grumos pesan y caen al fondo.</li>
-              <li><strong>Filtración:</strong> el agua pasa por capas de arena.</li>
+              <li><strong>Filtración:</strong> el agua pasa por capas de antracita, arena y grava.</li>
               <li><strong>Desinfección:</strong> se agrega cloro para eliminar los microbios.</li>
             </ol>
           </div>
@@ -202,9 +229,9 @@
         <div class="etapa etapa-5">
           <h3 class="etapa-cabeza"><button type="button" aria-expanded="false" aria-controls="etapa-5">Tu casa</button></h3>
           <div class="etapa-cuerpo" id="etapa-5" hidden>
-            <p>El agua limpia baja por las tuberías hasta tu caño. Donde la red no llega, como en los cerros y laderas, EPSEL la lleva en camiones cisterna.</p>
-            <img class="foto-gota" src="assets/cano.webp" width="1100" height="820" loading="lazy"
-                 alt="Una vecina junto a la caja de agua de su casa en un cerro, con una manguera y un balde.">
+            <p>El agua limpia se guarda en reservorios y baja por las tuberías hasta tu caño. Donde la red no llega, EPSEL la lleva en camiones cisterna.</p>
+            <img class="foto-gota" src="assets/epsel-cisterna.webp" width="1400" height="788" loading="lazy"
+                 alt="Un camión cisterna de EPSEL estacionado junto a un reservorio, con trabajadores al lado.">
           </div>
         </div>
       </div>
@@ -222,8 +249,8 @@
         <h2 id="titulo-numeros">El agua en números</h2>
         <div class="numeros-par">
           <div class="numero numero-oscuro">
-            <p class="numero-cifra">700 l/s</p>
-            <p class="numero-texto">limpia la Planta N.º 1 de Chiclayo.</p>
+            <p class="numero-cifra">1450 l/s</p>
+            <p class="numero-texto">limpian juntas las dos plantas de Chiclayo.</p>
           </div>
           <div class="numero numero-claro">
             <p class="numero-cifra">80 litros</p>
@@ -238,30 +265,31 @@
     <section class="seccion pagos" id="pagos" aria-labelledby="titulo-pagos">
       <div class="pagos-texto">
         <h2 id="titulo-pagos">Pagos y trámites</h2>
-        <p class="enunciado">Paga tu recibo cerca de tu casa, pide una conexión nueva o revisa tu deuda sin hacer cola.</p>
-        <p>Ten a la mano tu <strong>número de suministro</strong>: está arriba, a la derecha, en tu recibo.</p>
+        <p class="enunciado">Paga tu recibo con tu número de suministro, sin hacer cola.</p>
+        <p><strong>EPSEL no cobra a domicilio.</strong> Paga solo en sus oficinas o en bancos y agentes autorizados.</p>
+        <a class="enlace-flecha" href="tramites.html">Ver todo sobre pagos y trámites</a>
       </div>
       <div class="pagos-lista">
-        <details id="donde-pagar" class="desplegable">
+        <details id="donde-pagar" class="desplegable" open>
           <summary>Dónde pagar tu recibo</summary>
           <ul class="lista-gotas lista-simple">
-            <li><span class="gota-vineta" aria-hidden="true"></span>Agentes y bodegas autorizadas de tu barrio.</li>
-            <li><span class="gota-vineta" aria-hidden="true"></span>Bancos y cajas: dando tu número de suministro.</li>
-            <li><span class="gota-vineta" aria-hidden="true"></span>Desde el celular, con la app de pagos de tu banco.</li>
-            <li><span class="gota-vineta" aria-hidden="true"></span>En las oficinas de EPSEL (mira <a href="#oficinas">oficinas y horarios</a>).</li>
+            <li><span class="gota-vineta" aria-hidden="true"></span><p>BCP, BBVA, Interbank, Scotiabank y Banco de la Nación.</p></li>
+            <li><span class="gota-vineta" aria-hidden="true"></span><p>Agentes Western Union y Niubiz, y Yape.</p></li>
+            <li><span class="gota-vineta" aria-hidden="true"></span><p>Con tarjeta Visa en la <a href="tramites.html#oficina-virtual">oficina virtual</a>.</p></li>
+            <li><span class="gota-vineta" aria-hidden="true"></span><p>En los <a href="atencion.html#oficinas">centros de atención de EPSEL</a>.</p></li>
           </ul>
         </details>
         <details id="oficina-virtual" class="desplegable">
           <summary>Oficina virtual</summary>
-          <p>Mira tus recibos, tu deuda y tu consumo con tu número de suministro, sin ir a una oficina.</p>
+          <p>Saca un duplicado de tu recibo, consulta tu saldo, paga o pide una cita desde el celular. <a href="tramites.html#oficina-virtual">Entrar a la oficina virtual</a>.</p>
         </details>
         <details id="tramites" class="desplegable">
-          <summary>Trámites: nueva conexión y otros</summary>
-          <p>Para una conexión nueva de agua o desagüe lleva tu DNI y un documento de tu casa (título, constancia de posesión o contrato). También puedes pedir cambio de nombre o cierre del servicio.</p>
+          <summary>Conexión nueva y otros trámites</summary>
+          <p>Para una conexión nueva lleva tu DNI, un documento de la casa (partida registral, título de COFOPRI o constancia de posesión) y un croquis. <a href="tramites.html#tramites">Ver todos los requisitos</a>.</p>
         </details>
         <details id="vma" class="desplegable">
           <summary>Para empresas: desagüe no doméstico (VMA)</summary>
-          <p>Los negocios e industrias que echan agua usada a la red deben cumplir los Valores Máximos Admisibles (VMA). Aquí verás qué se mide y cómo se cobra si se pasan.</p>
+          <p>Los negocios e industrias que echan agua usada al desagüe deben cumplir los Valores Máximos Admisibles. <a href="tramites.html#vma">Qué son y qué normas aplican</a>.</p>
         </details>
       </div>
     </section>
@@ -275,15 +303,16 @@
           <h2 id="titulo-atencion">Atención y reclamos</h2>
           <p class="cupon-subtitulo">Cómo hacer un reclamo</p>
           <ol class="pasos pasos-claros">
-            <li>Ten tu recibo y tu DNI.</li>
-            <li>Cuéntanos qué pasó: cobro alto, fuga, falta de agua u otro.</li>
-            <li>Te damos un número de reclamo para seguirlo.</li>
-            <li>EPSEL te responde por escrito en el plazo que fija SUNASS.</li>
+            <li>Ten tu DNI con una copia y, si es por cobro, tu recibo.</li>
+            <li>Preséntalo en la <a href="https://www.epsel.com.pe/sue/SicdesaRbq.aspx" rel="noopener">oficina virtual</a> o en Av. Grau 451, Chiclayo.</li>
+            <li>Guarda tu número de reclamo para seguirlo.</li>
+            <li>EPSEL te responde en los plazos que fija SUNASS.</li>
           </ol>
+          <a class="enlace-flecha" href="atencion.html#reclamo">Quién puede reclamar y qué llevar</a>
         </div>
         <form class="cupon-derecha" id="escribenos" action="#" data-formulario-reclamo novalidate>
           <h3 class="cupon-form-titulo">Escríbenos por WhatsApp</h3>
-          <p class="cupon-form-ayuda">Llena esto y se abrirá WhatsApp con tu mensaje listo. Los campos con * son obligatorios.</p>
+          <p class="cupon-form-ayuda">Llena esto y se abrirá WhatsApp con tu mensaje listo para el 942 813 797 (#TeEscucha). Los campos con * son obligatorios.</p>
           <div class="campo">
             <label for="r-nombre">Tu nombre *</label>
             <input id="r-nombre" name="nombre" autocomplete="name" required aria-describedby="r-nombre-error">
@@ -316,14 +345,14 @@
 
       <div class="atencion-extra">
         <div id="oficinas">
-          <h3>Oficinas y horarios</h3>
-          <p>Lunes a viernes de 8:00 a.m. a 4:30 p.m. Oficinas en Chiclayo, Lambayeque y Ferreñafe.</p>
-          <p class="dato-pendiente">Teléfono y direcciones: por confirmar con EPSEL.</p>
+          <h3>Oficinas y teléfonos</h3>
+          <p>Local comercial: Av. Grau 451, Chiclayo, <a href="tel:+5174273609">(074) 273609</a>. Hay oficinas en 25 localidades de Chiclayo, Lambayeque y Ferreñafe.</p>
+          <a class="enlace-flecha" href="atencion.html#oficinas">Buscar la oficina de mi localidad</a>
         </div>
-        <div id="denuncias">
-          <h3>Denuncias y sugerencias</h3>
-          <p>¿Viste una conexión clandestina o una cisterna desviada? Cuéntanos. Puedes hacerlo sin dar tu nombre.</p>
-          <a class="enlace-flecha" href="#escribenos">Enviar una denuncia</a>
+        <div>
+          <h3>Emergencias: fugas y atoros</h3>
+          <p>Llama al <a href="tel:+51932070554">932 070 554</a> o al <a href="tel:+51942413905">942 413 905</a>.</p>
+          <a class="enlace-flecha" href="atencion.html#denuncias">Denuncias y sugerencias</a>
         </div>
       </div>
     </section>
@@ -334,21 +363,19 @@
     <section class="seccion informacion" id="informacion" aria-labelledby="titulo-informacion">
       <div class="informacion-cabeza">
         <h2 id="titulo-informacion">Información pública</h2>
-        <p>Lo que EPSEL hace con el dinero de todos, sus metas y cómo pedir cualquier documento.</p>
+        <p>Cuánto cumple EPSEL con las cisternas, lo que hace con el dinero de todos y cómo pedir cualquier documento.</p>
       </div>
       <div class="indice" data-indice>
         <ul class="indice-lista">
-          <li><a href="informacion.html#metas" data-vista="v-metas"><span class="indice-nombre">Metas y resultados</span><span class="indice-texto">Cuántas casas tienen agua y desagüe, y cuántas horas al día.</span></a></li>
-          <li><a href="informacion.html#rendicion" data-vista="v-rendicion"><span class="indice-nombre">Rendición de cuentas</span><span class="indice-texto">En qué se gastó el presupuesto de cada año.</span></a></li>
+          <li><a href="informacion.html" data-vista="v-cifras"><span class="indice-nombre">Las cisternas en cifras</span><span class="indice-texto">Cuántas paradas se atendieron, litros repartidos y calificación de los vecinos.</span></a></li>
+          <li><a href="informacion.html#transparencia" data-vista="v-transparencia"><span class="indice-nombre">Portal de Transparencia</span><span class="indice-texto">Presupuesto, rendición de cuentas e indicadores de gestión.</span></a></li>
           <li><a href="informacion.html#pedir-informacion" data-vista="v-pedir"><span class="indice-nombre">Pedir información pública</span><span class="indice-texto">Pide cualquier documento; la ley da 10 días hábiles para responder.</span></a></li>
-          <li><a href="informacion.html#gestion" data-vista="v-gestion"><span class="indice-nombre">Cómo se gestiona EPSEL</span><span class="indice-texto">Planes, directorio y decisiones de la empresa.</span></a></li>
           <li><a href="informacion.html#integridad" data-vista="v-integridad"><span class="indice-nombre">Integridad y denuncias de corrupción</span><span class="indice-texto">Denuncia un acto de corrupción de forma segura.</span></a></li>
         </ul>
         <div class="indice-vista" aria-hidden="true">
-          <div class="vista activa" id="v-metas"><p class="vista-cifra">Agua y desagüe</p><p>Cobertura por distrito y horas de servicio al día.</p></div>
-          <div class="vista" id="v-rendicion"><p class="vista-cifra">Presupuesto</p><p>Ingresos, gastos y obras de cada año.</p></div>
+          <div class="vista activa" id="v-cifras"><p class="vista-cifra">En vivo</p><p>Datos del sistema de cisternas, sin nombres de vecinos.</p></div>
+          <div class="vista" id="v-transparencia"><p class="vista-cifra">Presupuesto</p><p>Ingresos, gastos y obras de cada año.</p></div>
           <div class="vista" id="v-pedir"><p class="vista-cifra">10 días hábiles</p><p>Plazo para responder tu pedido de información.</p></div>
-          <div class="vista" id="v-gestion"><p class="vista-cifra">Planes</p><p>El plan de la empresa y lo que avanzó.</p></div>
           <div class="vista" id="v-integridad"><p class="vista-cifra">Denuncia segura</p><p>Tu identidad se protege.</p></div>
         </div>
       </div>
@@ -360,26 +387,24 @@
     <section class="seccion nosotros" id="nosotros" aria-labelledby="titulo-nosotros">
       <div class="nosotros-texto" id="quienes-somos">
         <h2 id="titulo-nosotros">Nosotros</h2>
-        <p class="enunciado">Llevamos el agua potable y el desagüe a las casas de Lambayeque.</p>
-        <div id="cobertura">
-          <h3>Dónde damos servicio</h3>
-          <p>Chiclayo, José Leonardo Ortiz, La Victoria, Pimentel, Monsefú, Reque, Lambayeque, Ferreñafe y otros distritos de la región.</p>
-        </div>
+        <p class="enunciado">Desde 1930 llevamos el agua potable a Chiclayo.</p>
+        <p>Hoy EPSEL da agua y desagüe en Chiclayo, Lambayeque y Ferreñafe, con oficinas en 25 localidades. Está en el Régimen de Apoyo Transitorio del OTASS.</p>
         <div class="nosotros-enlaces">
-          <a class="enlace-flecha" id="directivos" href="informacion.html#gestion">Directivos y organización</a>
-          <a class="enlace-flecha" id="noticias" href="#avisos">Noticias y avisos</a>
+          <a class="enlace-flecha" href="nosotros.html#historia">Nuestra historia</a>
+          <a class="enlace-flecha" href="nosotros.html#cobertura">Dónde damos servicio</a>
+          <a class="enlace-flecha" href="nosotros.html#entidades">Entidades relacionadas</a>
         </div>
       </div>
       <div class="nosotros-fotos">
         <figure>
+          <img class="foto-gota" src="assets/epsel-equipo.webp" width="1400" height="788" loading="lazy"
+               alt="Trabajadores y directivos de EPSEL reunidos en una sala, muchos con chalecos naranjas.">
+          <figcaption>Nuestro equipo</figcaption>
+        </figure>
+        <figure>
           <img class="foto-gota" src="assets/chiclayo-plaza.webp" width="1100" height="619" loading="lazy"
                alt="Jardín de la Plaza de Armas de Chiclayo con el nombre de la ciudad escrito con piedras.">
           <figcaption>Chiclayo</figcaption>
-        </figure>
-        <figure>
-          <img class="foto-gota" src="assets/monsefu-plaza.webp" width="1100" height="825" loading="lazy"
-               alt="Plaza de Armas de Monsefú al atardecer, con familias paseando y la iglesia al fondo.">
-          <figcaption>Monsefú</figcaption>
         </figure>
       </div>
     </section>
@@ -393,22 +418,35 @@
         <ul class="pie-enlaces">
           <li><a href="avisos.html">Cortes y avisos</a></li>
           <li><a href="cisterna.html">¿Pasa hoy la cisterna?</a></li>
-          <li><a href="#donde-pagar">Dónde pagar</a></li>
-          <li><a href="#reclamo">Hacer un reclamo</a></li>
+          <li><a href="tramites.html">Dónde pagar</a></li>
+          <li><a href="atencion.html">Oficinas y teléfonos</a></li>
+          <li><a href="atencion.html#reclamo">Hacer un reclamo</a></li>
           <li><a href="informacion.html">Información pública</a></li>
-          <li><a href="#nosotros">Nosotros</a></li>
+          <li><a href="nosotros.html">Nosotros</a></li>
         </ul>
       </nav>
       <div class="pie-contacto">
-        <p><strong>EPSEL S.A.</strong> Empresa Prestadora de Servicios de Saneamiento de Lambayeque.</p>
-        <p>Supervisada por SUNASS.</p>
+        <p><strong>EPSEL S.A.</strong> Empresa Prestadora de Servicios de Saneamiento de Lambayeque. RUC 20103448591.</p>
+        <p>Atención al cliente: Av. Grau 451, Chiclayo · <a href="tel:+5174273609">(074) 273609</a></p>
+        <p>Emergencias: <a href="tel:+51932070554">932 070 554</a> · <a href="tel:+51942413905">942 413 905</a></p>
+        <p>WhatsApp #TeEscucha: <a href="https://api.whatsapp.com/send/?phone=51942813797" rel="noopener">942 813 797</a></p>
       </div>
     </div>
+    <nav class="pie-entidades" aria-labelledby="pie-entidades-titulo">
+      <h2 id="pie-entidades-titulo">Entidades relacionadas</h2>
+      <ul>
+        <li><a href="https://www.sunass.gob.pe/" rel="noopener"><strong>SUNASS</strong><span>Regula y supervisa el servicio de agua</span></a></li>
+        <li><a href="https://web.otass.gob.pe/" rel="noopener"><strong>OTASS</strong><span>Conduce a EPSEL en el Régimen de Apoyo Transitorio</span></a></li>
+        <li><a href="https://www.gob.pe/vivienda" rel="noopener"><strong>Ministerio de Vivienda</strong><span>Dirige el sector saneamiento</span></a></li>
+        <li><a href="https://www.ana.gob.pe/" rel="noopener"><strong>ANA</strong><span>Autoridad Nacional del Agua</span></a></li>
+        <li><a href="https://www.gob.pe/" rel="noopener"><strong>gob.pe</strong><span>Trámites y servicios del Estado</span></a></li>
+      </ul>
+    </nav>
     <div class="pie-final">
-      <p>Propuesta académica de rediseño, curso Interacción Humano-Computador, UTP Chiclayo. No es el sitio oficial de EPSEL. Avisos, horarios y cifras de ejemplo cuando el sistema de cisternas no responde.</p>
-      <a class="boton boton-pie" href="#">Acceso del personal</a>
+      <p>Propuesta académica de rediseño, curso Interacción Humano-Computador, UTP Chiclayo. No es el sitio oficial de EPSEL. Contenido tomado de www.epsel.com.pe el 5 de noviembre de 2026.</p>
+      <a class="boton boton-pie" href="https://www.epsel.com.pe/Intranet/WFrmLogueo.aspx" rel="noopener">Acceso del personal</a>
     </div>
-    <p class="creditos">Fotos: «Reservorio Tinajones», EdsonFuentesMera, CC BY-SA 4.0 · «Reservorio de Tinajones», Josefito123, CC BY-SA 4.0 · «Zapallal: water tap», SuSanA Secretariat, CC BY 2.0 · «Chiclayo, Plaza de Armas», Burkhard Mücke, CC BY-SA 4.0 · «Plaza de Armas de Monsefú», LLs, CC BY-SA 4.0, vía Wikimedia Commons · «Ministerio de Defensa y Ejército distribuyen agua en San Juan de Lurigancho», Ministerio de Defensa del Perú, CC BY 2.0, vía Flickr.</p>
+    <p class="creditos">Fotos de obras, cisternas y equipo: EPSEL S.A. · «Reservorio Tinajones», EdsonFuentesMera, y «Reservorio de Tinajones», Josefito123, CC BY-SA 4.0 · «Chiclayo, Plaza de Armas», Burkhard Mücke, CC BY-SA 4.0; todas vía Wikimedia Commons.</p>
   </footer>
 </body>
 </html>

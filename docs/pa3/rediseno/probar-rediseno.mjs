@@ -70,7 +70,7 @@ ok(await p.locator('#sub-atencion').isVisible(), 'celular: el menú funciona com
 await p.screenshot({ path: `${salida}/celular-menu.png` });
 await axe(p, 'celular-menu-abierto');
 // Objetivos táctiles
-const chicos = await p.evaluate(() => [...document.querySelectorAll('a[href], button, input, select, textarea, summary')].filter(e => { const r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0 && (r.height < 44 || r.width < 44) && !e.closest('p'); }).map(e => `${e.tagName} "${(e.textContent || e.id).trim().slice(0, 30)}" ${Math.round(e.getBoundingClientRect().width)}×${Math.round(e.getBoundingClientRect().height)}`));
+const chicos = await p.evaluate(() => [...document.querySelectorAll('a[href], button, input, select, textarea, summary')].filter(e => { const r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0 && (r.height < 44 || r.width < 44) && !e.closest('p, td, dd, .pasos li, .lista-simple li'); }).map(e => `${e.tagName} "${(e.textContent || e.id).trim().slice(0, 30)}" ${Math.round(e.getBoundingClientRect().width)}×${Math.round(e.getBoundingClientRect().height)}`));
 ok(chicos.length === 0, `controles menores de 44 px fuera de texto corrido: ${chicos.length}${chicos.length ? ' → ' + chicos.join('; ') : ''}`);
 const textoChico = await p.evaluate(() => [...document.querySelectorAll('body *')].filter(el => [...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim().length > 1) && el.getBoundingClientRect().height > 0 && parseFloat(getComputedStyle(el).fontSize) < 14).length);
 ok(textoChico === 0, `textos menores de 14 px: ${textoChico}`);

@@ -1,11 +1,13 @@
 {
   "url": "file:///C:/Users/user/agua-ya/rediseno-epsel/index.html",
   "violaciones": [],
-  "aprobadas": 50,
+  "aprobadas": 51,
   "incompletas": [
     {
       "id": "color-contrast",
       "nodos": [
+        "#titulo-portada · Element's background color could not be determined due to a pseudo element",
+        ".portada-bajada · Element's background color could not be determined due to a pseudo element",
         ".cupon-form-titulo · Element's background color could not be determined due to a pseudo element",
         "label[for=\"r-nombre\"] · Element's background color could not be determined due to a pseudo element",
         "label[for=\"r-suministro\"] · Element's background color could not be determined due to a pseudo element",
