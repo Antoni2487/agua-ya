@@ -35,8 +35,24 @@ const log = (...m) => console.log(`[${hora()}]`, ...m);
 
 let token = null;
 
+/** fetch con reintentos: el backend gratis de Render a veces corta la conexión ("fetch failed") o tarda en despertar. */
+async function pedir(url, opciones, intentos = 5) {
+  for (let i = 1; ; i++) {
+    try {
+      return await fetch(url, { ...opciones, signal: AbortSignal.timeout(60_000) });
+    } catch (e) {
+      if (i >= intentos) throw new Error(`Sin conexión con ${API} (${e.cause?.code ?? e.name}). Revisa tu internet o el estado de Render.`);
+      const espera = 2 ** i * 1000;
+      process.stdout.write(`
+[${hora()}] Se cortó la conexión (${e.cause?.code ?? e.name}); reintento ${i}/${intentos - 1} en ${espera / 1000} s…
+`);
+      await dormir(espera);
+    }
+  }
+}
+
 async function ingresar() {
-  const r = await fetch(`${API}/api/auth/login`, {
+  const r = await pedir(`${API}/api/auth/login`, {
     method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ dni: DNI, password: CLAVE }),
   });
   if (!r.ok) throw new Error(`No se pudo ingresar como ${DNI}: ${r.status} ${await r.text()}`);
@@ -48,7 +64,7 @@ async function ingresar() {
 
 /** Llama a la API como el conductor; si el token venció (15 min), vuelve a ingresar una vez. */
 async function api(metodo, ruta, cuerpo, reintento = true) {
-  const r = await fetch(`${API}${ruta}`, {
+  const r = await pedir(`${API}${ruta}`, {
     method: metodo,
     headers: { Authorization: `Bearer ${token}`, ...(cuerpo ? { 'Content-Type': 'application/json' } : {}) },
     body: cuerpo ? JSON.stringify(cuerpo) : undefined,
