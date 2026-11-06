@@ -37,6 +37,8 @@ class AuthIntegrationTest {
     /** Cada test usa DNI y teléfono propios para no interferir con los demás. */
     private static final AtomicInteger SECUENCIA = new AtomicInteger(1000);
     private static final String PASSWORD = "Clave1234";
+    /** Clave de 4 dígitos del vecino (V11). */
+    private static final String CLAVE = "4821";
 
     @Autowired
     private MockMvc mockMvc;
@@ -77,10 +79,10 @@ class AuthIntegrationTest {
         Vecino vecino = vecinoRepository.findByTelefono("+51" + telefono).orElseThrow();
         assertThat(vecino.getDni()).isEqualTo(dni);
         assertThat(vecino.isActivo()).isTrue();
-        // Nombres desde el proveedor de DNI (local en tests); el vecino no tiene contraseña
+        // Nombres desde el proveedor de DNI (local en tests); la clave se guarda con BCrypt
         assertThat(vecino.getNombres()).isEqualTo("Vecino");
         assertThat(vecino.getApellidos()).isEqualTo("De Prueba " + dni.substring(4));
-        assertThat(vecino.getPasswordHash()).isNull();
+        assertThat(passwordEncoder.matches(CLAVE, vecino.getPasswordHash())).isTrue();
         assertThat(vecino.getSector().getId()).isEqualTo(sector("Valle Hermoso").getId());
     }
 
@@ -105,15 +107,80 @@ class AuthIntegrationTest {
     }
 
     @Test
-    void vecinoSinContrasenaNoIngresaPorLoginConContrasena() throws Exception {
+    void vecinoIngresaConDniYClaveDeCuatroDigitos() throws Exception {
         String dni = dniNuevo();
         String telefono = telefonoNuevo();
         registrar(dni, telefono, solicitarOtp(telefono), "-6.765000", "-79.850000")
                 .andExpect(status().isCreated());
 
-        login(dni, PASSWORD)
+        login(dni, CLAVE)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.usuario.rol").value("VECINO"));
+        login(dni, "0000")
                 .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("$.codigo").value("CREDENCIALES_INVALIDAS"));
+                .andExpect(jsonPath("$.codigo").value("CREDENCIALES_INVALIDAS"))
+                .andExpect(jsonPath("$.mensaje").value("DNI o clave incorrectos"));
+    }
+
+    @Test
+    void registroSinClaveDeCuatroDigitosDevuelve400() throws Exception {
+        String telefono = telefonoNuevo();
+        postJson("/api/auth/registro/vecino", """
+                {"dni":"%s","telefono":"%s","codigo":"123456","clave":"12a4","latitud":-6.76,"longitud":-79.85}"""
+                .formatted(dniNuevo(), telefono))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.detalles[?(@.campo == 'clave')]").exists());
+    }
+
+    @Test
+    void vecinoQueOlvidoSuClaveLaRestableceConElCodigoSms() throws Exception {
+        String dni = dniNuevo();
+        String telefono = telefonoNuevo();
+        registrar(dni, telefono, solicitarOtp(telefono), "-6.765000", "-79.850000")
+                .andExpect(status().isCreated());
+
+        String body = postJson("/api/auth/login/codigo/solicitar", """
+                {"dni":"%s"}""".formatted(dni))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        postJson("/api/auth/clave/restablecer", """
+                {"dni":"%s","codigo":"%s","clave":"7395"}""".formatted(dni, JsonPath.read(body, "$.codigo")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.accessToken").isNotEmpty());
+
+        login(dni, CLAVE).andExpect(status().isUnauthorized());
+        login(dni, "7395").andExpect(status().isOk());
+    }
+
+    @Test
+    void cincoIntentosFallidosBloqueanElIngresoAunqueLaClaveSeaCorrecta() throws Exception {
+        String dni = dniNuevo();
+        String telefono = telefonoNuevo();
+        registrar(dni, telefono, solicitarOtp(telefono), "-6.765000", "-79.850000")
+                .andExpect(status().isCreated());
+
+        for (int i = 0; i < 5; i++) {
+            login(dni, "0000").andExpect(status().isUnauthorized());
+        }
+        login(dni, CLAVE)
+                .andExpect(status().isTooManyRequests())
+                .andExpect(jsonPath("$.codigo").value("CUENTA_BLOQUEADA"));
+
+        // Restablecer la clave con el código SMS levanta el bloqueo
+        String body = postJson("/api/auth/login/codigo/solicitar", """
+                {"dni":"%s"}""".formatted(dni))
+                .andReturn().getResponse().getContentAsString();
+        postJson("/api/auth/clave/restablecer", """
+                {"dni":"%s","codigo":"%s","clave":"%s"}""".formatted(dni, JsonPath.read(body, "$.codigo"), CLAVE))
+                .andExpect(status().isOk());
+        login(dni, CLAVE).andExpect(status().isOk());
+    }
+
+    @Test
+    void vecinoDePruebaIngresaConLaClave1234() throws Exception {
+        login("30000001", "1234")
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.usuario.rol").value("VECINO"));
     }
 
     @Test
@@ -372,9 +439,9 @@ class AuthIntegrationTest {
     private ResultActions registrar(String dni, String telefono, String codigo, String lat, String lng)
             throws Exception {
         return postJson("/api/auth/registro/vecino", """
-                {"dni":"%s","telefono":"%s","codigo":"%s","direccionReferencia":"Mz. B Lt. 12, AA.HH. Prueba",
+                {"dni":"%s","telefono":"%s","codigo":"%s","clave":"%s","direccionReferencia":"Mz. B Lt. 12, AA.HH. Prueba",
                  "latitud":%s,"longitud":%s}"""
-                .formatted(dni, telefono, codigo, lat, lng));
+                .formatted(dni, telefono, codigo, CLAVE, lat, lng));
     }
 
     private ResultActions login(String dni, String password) throws Exception {

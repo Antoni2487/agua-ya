@@ -42,7 +42,7 @@ class NotificacionesIntegrationTest extends EscenarioRutaHoy {
         String token = nuevoToken();
         registrar(vecino, token).andExpect(status().isNoContent());
         String otroSector = nuevoToken();
-        registrar(login("30000004", "Vecino2026!"), otroSector).andExpect(status().isNoContent());
+        registrar(login("30000004", "1234"), otroSector).andExpect(status().isNoContent());
 
         iniciar(e).andExpect(status().isOk());
         assertThat(esperar(token, "RUTA_INICIADA")).singleElement()
@@ -76,25 +76,25 @@ class NotificacionesIntegrationTest extends EscenarioRutaHoy {
     @Test
     void registrarEsIdempotenteYElTokenPasaAQuienLoRegistra() throws Exception {
         String token = nuevoToken();
-        String vecino1 = login("30000001", "Vecino2026!");
+        String vecino1 = login("30000001", "1234");
         registrar(vecino1, token).andExpect(status().isNoContent());
         registrar(vecino1, token).andExpect(status().isNoContent());
         assertThat(duenoDe(token)).isEqualTo("30000001");
 
-        registrar(login("30000002", "Vecino2026!"), token).andExpect(status().isNoContent());
+        registrar(login("30000002", "1234"), token).andExpect(status().isNoContent());
         assertThat(duenoDe(token)).isEqualTo("30000002");
 
         // Solo el dueño actual puede darlo de baja.
         baja(vecino1, token).andExpect(status().isNoContent());
         assertThat(duenoDe(token)).isEqualTo("30000002");
-        baja(login("30000002", "Vecino2026!"), token).andExpect(status().isNoContent());
+        baja(login("30000002", "1234"), token).andExpect(status().isNoContent());
         assertThat(jdbc.queryForObject("SELECT count(*) FROM dispositivo_push WHERE expo_token = ?",
                 Integer.class, token)).isZero();
     }
 
     @Test
     void validaElTokenYElRol() throws Exception {
-        registrar(login("30000001", "Vecino2026!"), "no-es-un-token").andExpect(status().isBadRequest());
+        registrar(login("30000001", "1234"), "no-es-un-token").andExpect(status().isBadRequest());
         registrar(login("10000001", "Admin2026!"), nuevoToken()).andExpect(status().isForbidden());
         registrar(login("20000001", "Conductor2026!"), nuevoToken()).andExpect(status().isNoContent());
     }

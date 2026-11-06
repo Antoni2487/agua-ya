@@ -117,7 +117,7 @@ class CapacidadIntegrationTest {
                 .andExpect(jsonPath("$.codigo").value("CAPACIDAD_INVALIDA"));
         capacidad("?fecha=no-es-fecha").andExpect(status().isBadRequest());
         mockMvc.perform(get("/api/admin/capacidad")
-                        .header("Authorization", "Bearer " + token("30000001", "Vecino2026!")))
+                        .header("Authorization", "Bearer " + token("30000001", "1234")))
                 .andExpect(status().isForbidden());
     }
 

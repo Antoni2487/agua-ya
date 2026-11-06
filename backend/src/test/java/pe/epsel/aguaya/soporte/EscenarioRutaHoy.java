@@ -127,13 +127,13 @@ public abstract class EscenarioRutaHoy {
         int n = SECUENCIA.incrementAndGet();
         String dni = String.format("%08d", 33_000_000 + n);
         Vecino vecino = new Vecino(dni, "Vecina", "Prueba", "+519" + String.format("%08d", 33_000_000 + n),
-                passwordEncoder.encode("Vecino2026!"));
+                passwordEncoder.encode("1234"));
         Parada p = e.paradas().get(0);
         vecino.setLatitud(BigDecimal.valueOf(p.latitud()));
         vecino.setLongitud(BigDecimal.valueOf(p.longitud()));
         vecino.setSector(sectorRepository.getReferenceById(e.sectorId()));
         vecinoRepository.save(vecino);
-        return login(dni, "Vecino2026!");
+        return login(dni, "1234");
     }
 
     private long idDe(MockHttpServletRequestBuilder request, String path) throws Exception {

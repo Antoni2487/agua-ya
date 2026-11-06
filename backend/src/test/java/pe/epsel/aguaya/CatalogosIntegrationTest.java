@@ -251,7 +251,7 @@ class CatalogosIntegrationTest {
 
     @Test
     void soloElAdminGestionaCatalogos() throws Exception {
-        String tokenVecino = login("30000001", "Vecino2026!");
+        String tokenVecino = login("30000001", "1234");
         String tokenConductor = login("20000001", "Conductor2026!");
         for (String token : new String[] {tokenVecino, tokenConductor}) {
             mockMvc.perform(get("/api/admin/cisternas").header("Authorization", "Bearer " + token))

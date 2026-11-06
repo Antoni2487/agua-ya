@@ -19,7 +19,7 @@ class VecinoPerfilIntegrationTest extends EscenarioRutaHoy {
 
     @Test
     void elVecinoVeSusDatosYSuSector() throws Exception {
-        mockMvc.perform(conToken(login("30000001", "Vecino2026!"), get("/api/vecino/me")))
+        mockMvc.perform(conToken(login("30000001", "1234"), get("/api/vecino/me")))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.dni").value("30000001"))
                 .andExpect(jsonPath("$.nombres").isNotEmpty())

@@ -1,5 +1,8 @@
 package pe.epsel.aguaya.auth.service;
 
+import java.time.Clock;
+import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.Comparator;
 
 import lombok.RequiredArgsConstructor;
@@ -15,6 +18,7 @@ import pe.epsel.aguaya.auth.dto.AuthResponse;
 import pe.epsel.aguaya.auth.dto.LoginCodigoRequest;
 import pe.epsel.aguaya.auth.dto.LoginRequest;
 import pe.epsel.aguaya.auth.dto.RegistroVecinoRequest;
+import pe.epsel.aguaya.auth.dto.RestablecerClaveRequest;
 import pe.epsel.aguaya.auth.dto.SolicitarCodigoLoginRequest;
 import pe.epsel.aguaya.auth.dto.SolicitarCodigoLoginResponse;
 import pe.epsel.aguaya.auth.dto.SolicitarOtpRequest;
@@ -48,6 +52,11 @@ public class AuthService {
     private final RefreshTokenService refreshTokenService;
     private final PasswordEncoder passwordEncoder;
     private final TransactionTemplate transaccion;
+    private final Clock clock;
+
+    /** Intentos fallidos seguidos antes de bloquear el ingreso con contraseña o clave. */
+    static final int MAX_INTENTOS = 5;
+    static final Duration BLOQUEO = Duration.ofMinutes(15);
 
     /** Envía el código que confirma el teléfono antes del registro. */
     @Transactional
@@ -83,23 +92,60 @@ public class AuthService {
             vecino.setLatitud(Coordenada.normalizar(request.latitud()));
             vecino.setLongitud(Coordenada.normalizar(request.longitud()));
             vecino.setSector(sectorMasCercano(latitud, longitud));
+            vecino.setPasswordHash(passwordEncoder.encode(request.clave()));
             vecinoRepository.save(vecino);
             return emitirSesion(vecino);
         });
     }
 
-    /** Login con DNI + contraseña: administrador, conductor y las cuentas de prueba de vecino. */
-    @Transactional
+    /**
+     * Login con DNI + contraseña (administrador y conductor) o DNI + clave de 4 dígitos (vecino). Tras
+     * {@link #MAX_INTENTOS} fallos seguidos la cuenta no acepta ingresos durante {@link #BLOQUEO}; el vecino puede
+     * restablecer su clave con el código SMS. Los fallos se guardan aunque la respuesta sea un error.
+     */
+    @Transactional(noRollbackFor = NegocioException.class)
     public AuthResponse login(LoginRequest request) {
         Persona persona = personaRepository.findByDni(request.dni()).orElse(null);
+        OffsetDateTime ahora = OffsetDateTime.now(clock);
+        if (persona != null && persona.getBloqueadoHasta() != null && persona.getBloqueadoHasta().isAfter(ahora)) {
+            throw new NegocioException(HttpStatus.TOO_MANY_REQUESTS, "CUENTA_BLOQUEADA",
+                    "Demasiados intentos. Espera 15 minutos o restablece tu clave con un código SMS");
+        }
 
         String hash = persona != null && persona.getPasswordHash() != null ? persona.getPasswordHash() : hashFicticio;
         boolean passwordOk = passwordEncoder.matches(request.password(), hash);
 
         if (persona == null || persona.getPasswordHash() == null || !passwordOk || !persona.isActivo()) {
-            throw new NegocioException(HttpStatus.UNAUTHORIZED, "CREDENCIALES_INVALIDAS", "DNI o contraseña incorrectos");
+            if (persona != null && !passwordOk) {
+                registrarFallo(persona, ahora);
+            }
+            throw new NegocioException(HttpStatus.UNAUTHORIZED, "CREDENCIALES_INVALIDAS",
+                    persona != null && persona.getRol() == Rol.VECINO ? "DNI o clave incorrectos"
+                            : "DNI o contraseña incorrectos");
         }
+        persona.setIntentosFallidos((short) 0);
+        persona.setBloqueadoHasta(null);
         return emitirSesion(persona);
+    }
+
+    private void registrarFallo(Persona persona, OffsetDateTime ahora) {
+        int intentos = persona.getIntentosFallidos() + 1;
+        if (intentos >= MAX_INTENTOS) {
+            persona.setBloqueadoHasta(ahora.plus(BLOQUEO));
+            intentos = 0;
+        }
+        persona.setIntentosFallidos((short) intentos);
+    }
+
+    /** El vecino que olvidó su clave la cambia con el código SMS que llega a su celular y queda con sesión. */
+    @Transactional
+    public AuthResponse restablecerClave(RestablecerClaveRequest request) {
+        Persona vecino = vecinoParaIngresar(request.dni());
+        proveedorOtp.verificar(vecino.getTelefono(), request.codigo());
+        vecino.setPasswordHash(passwordEncoder.encode(request.clave()));
+        vecino.setIntentosFallidos((short) 0);
+        vecino.setBloqueadoHasta(null);
+        return emitirSesion(vecino);
     }
 
     /** El vecino pide el código para ingresar; llega al celular con el que se registró. */

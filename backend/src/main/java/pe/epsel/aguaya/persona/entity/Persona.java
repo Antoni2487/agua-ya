@@ -24,7 +24,7 @@ import org.hibernate.type.SqlTypes;
 /**
  * Clase padre de vecino, conductor y administrador: tabla base {@code persona}
  * con una tabla por subtipo (herencia JOINED). Administrador y conductor ingresan con DNI + contraseña;
- * el vecino con DNI + código SMS (su {@code passwordHash} es nulo, salvo las cuentas de prueba).
+ * el vecino con DNI + clave de 4 dígitos (V11; el código SMS solo para registrarse o restablecerla).
  */
 @Entity
 @Table(name = "persona")
@@ -60,6 +60,14 @@ public abstract class Persona {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private Rol rol;
+
+    /** Intentos fallidos seguidos de ingreso con contraseña o clave (V11). */
+    @Column(name = "intentos_fallidos", nullable = false)
+    private short intentosFallidos;
+
+    /** Mientras no pase esta hora no se aceptan ingresos con contraseña o clave (V11). */
+    @Column(name = "bloqueado_hasta")
+    private OffsetDateTime bloqueadoHasta;
 
     @Column(nullable = false)
     private boolean activo = true;

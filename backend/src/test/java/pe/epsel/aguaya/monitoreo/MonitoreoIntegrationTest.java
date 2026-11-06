@@ -174,7 +174,7 @@ class MonitoreoIntegrationTest extends EscenarioRutaHoy {
     void vecinoDelSectorVeLaCisternaSoloMientrasLaRutaEstaEnCurso() throws Exception {
         Escenario e = escenario();
         String tokenVecino = vecinoDelSector(e);
-        String tokenVecinoOtroSector = login("30000004", "Vecino2026!");
+        String tokenVecinoOtroSector = login("30000004", "1234");
 
         posicionComoVecino(tokenVecino, e)
                 .andExpect(status().isConflict())

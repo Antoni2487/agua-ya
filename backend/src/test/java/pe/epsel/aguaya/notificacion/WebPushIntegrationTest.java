@@ -79,12 +79,12 @@ class WebPushIntegrationTest extends EscenarioRutaHoy {
     void suscribirEsIdempotenteYPasaAQuienLaRegistra() throws Exception {
         String endpoint = nuevoEndpoint();
         String clave = clavePublicaNavegador();
-        String vecino1 = login("30000001", "Vecino2026!");
+        String vecino1 = login("30000001", "1234");
         suscribir(vecino1, endpoint, clave).andExpect(status().isNoContent());
         suscribir(vecino1, endpoint, clave).andExpect(status().isNoContent());
         assertThat(contar(endpoint)).isEqualTo(1);
 
-        String vecino2 = login("30000002", "Vecino2026!");
+        String vecino2 = login("30000002", "1234");
         suscribir(vecino2, endpoint, clave).andExpect(status().isNoContent());
         assertThat(jdbc.queryForObject("SELECT p.dni FROM suscripcion_web_push s JOIN persona p ON p.id = s.persona_id "
                 + "WHERE s.endpoint = ?", String.class, endpoint)).isEqualTo("30000002");
@@ -98,7 +98,7 @@ class WebPushIntegrationTest extends EscenarioRutaHoy {
 
     @Test
     void soloAceptaServiciosDePushConocidosYClavesValidas() throws Exception {
-        String vecino = login("30000001", "Vecino2026!");
+        String vecino = login("30000001", "1234");
         // Evita que el servidor haga POST a direcciones arbitrarias (SSRF)
         suscribir(vecino, "https://localhost:8080/api/admin/rutas", clavePublicaNavegador())
                 .andExpect(status().isBadRequest())

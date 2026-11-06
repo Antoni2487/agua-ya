@@ -151,7 +151,7 @@ class IncidenciasIntegrationTest extends EscenarioRutaHoy {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.codigo").value("DETENER_NO_PERMITIDO"));
 
-        String vecinoOtroSector = login("30000004", "Vecino2026!");
+        String vecinoOtroSector = login("30000004", "1234");
         reportar(vecinoOtroSector, """
                 {"rutaId":%d,"tipo":"NO_LLEGO"}""".formatted(e.rutaId()))
                 .andExpect(status().isNotFound());

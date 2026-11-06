@@ -77,7 +77,7 @@ class CalificacionesIntegrationTest extends EscenarioRutaHoy {
                 .andExpect(jsonPath("$.codigo").value("PARADA_NO_ATENDIDA"));
         // El punto más cercano a su vivienda es el primero: el segundo no es suyo.
         calificar(vecino, otra.id(), 4, null).andExpect(status().isNotFound());
-        calificar(login("30000004", "Vecino2026!"), suya.id(), 4, null).andExpect(status().isNotFound());
+        calificar(login("30000004", "1234"), suya.id(), 4, null).andExpect(status().isNotFound());
         calificar(vecino, 999_999, 4, null).andExpect(status().isNotFound());
     }
 
