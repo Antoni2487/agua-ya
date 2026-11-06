@@ -136,7 +136,9 @@ main:focus { outline: none; }
 .marca-logo { width: auto; height: 60px; }
 @media (min-width: 60em) { .marca-logo { height: 76px; } }
 .marca-nombre { font-size: var(--t-entrada); font-weight: 800; letter-spacing: -0.05em; }
-.marca-detalle { display: none; max-width: 15ch; font-size: var(--t-pequeno); line-height: 1.2; color: var(--tinta-suave); }
+.marca { flex-shrink: 0; }
+/* Ancho fijo: si el menú la apretaba, el texto se partía en una columna angosta encima de "Agua en tu zona" */
+.marca-detalle { display: none; flex: 0 0 auto; width: 16ch; font-size: var(--t-pequeno); line-height: 1.2; color: var(--tinta-suave); }
 
 .boton-menu {
   display: inline-flex; align-items: center; gap: 0.6rem; min-height: 48px; padding: 0 1rem;
@@ -202,7 +204,7 @@ html:not(.js) .navegacion { position: static; box-shadow: none; }
   }
   .menu-item:last-child .submenu { left: auto; right: 0; border-radius: 24px 24px 0 24px; }
 }
-@media (min-width: 100em) { .marca-detalle { display: block; } }
+@media (min-width: 110em) { .marca-detalle { display: block; } }
 
 /* ------------------------------------------------------------------ Portada y carpetas */
 /* La portada: foto real de EPSEL a todo lo ancho con un velo azul (texto blanco ≥ 7:1 aun sobre lo más claro
