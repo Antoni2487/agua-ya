@@ -38,3 +38,6 @@ mobile/android/
 *.p12
 *.key
 *.mobileprovision
+
+# Caché de Vitest
+web/.vite/
